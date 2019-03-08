@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function index(){
         $users = DB::table('test')->get()->toArray();
-
+        echo 1;
         dd($users);
     }
 }
