@@ -41,6 +41,10 @@ class IndexController extends Controller
         if (!is_array($result)) {
             return response()->json(['status' => 'F', 'code' => '201', 'message' => $result]);
         }
+        $user_name=DB::table('ki_admin_administrtor')->where('user_name','=',$result['user_name'])->get()->toArray();
+        if ($user_name) {
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '该用户已被注册']);
+        }
         $request['time'] = time();
         $request['register_confirm_code'] = str_random(32);
         $res = DB::table('ki_admin_administrtor')->insertGetId($request);

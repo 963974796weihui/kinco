@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\Cache;
 
 class IndexServicesController extends Controller
 {
-    protected $id;
-    public function __construct()
-    {
-        $this->id=Cache::get('loginId')[0];
-    }
-
     public function registerServices($request)
     {
         $rules = [
