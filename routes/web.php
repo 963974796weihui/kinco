@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/admin/register','Admin\IndexController@register');
+//超管模块
+Route::post('/admin/register','Admin\IndexController@register');
 Route::post('/admin/login','Admin\IndexController@login');
 Route::post('/admin/registerDomain','Admin\IndexController@registerDomain');
+//用户模块
+Route::post('/user/userInfo','Admin\UserController@userInfo');
