@@ -16,8 +16,67 @@ class UserController extends Controller{
         $this->userServices=$userServicesController;
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * 查看域下用户信息
+     */
     public function userInfo($id){
-        $this->userServices->userInfo($id);
+        $result=$this->userServices->userInfo($id);//获得匹配组，人机，未分组人机
+        foreach ($result as $key=>$value){
+            $result[$key]->group=count($value->group);
+            $result[$key]->hmi=count($value->hmi);
+        }
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+    }
+
+    /**
+     * @param Request $request
+     * 获得设备组接口
+     */
+    public function supplyGroup(Request $request){
+        $id=$request->input('id');
+        $user_id=$request->input('user_id');
+        $result=$this->userServices->supplyGroup($user_id,$id);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 域下设备组确认（用户绑定组）
+     */
+    public function supplyGroupBind(Request $request){
+        $id=$request->input('id');
+        $user_id=$request->input('user_id');
+        $domain_id=$request->input('domain_id');
+        $this->userServices->supplyGroupBind($domain_id,$user_id,$id);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户绑定组成功']);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 获得设备接口
+     */
+    public function hmiGroup(Request $request){
+        $id=$request->input('id');
+        $user_id=$request->input('user_id');
+        $result=$this->userServices->hmiGroup($user_id,$id);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 域下设备绑定
+     */
+    public function hmiGroupBind(Request $request){
+        $id=$request->input('id');
+        $user_id=$request->input('user_id');
+        $domain_id=$request->input('domain_id');
+        $this->userServices->hmiGroupBind($domain_id,$user_id,$id);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户绑定成功']);
     }
 
     /**
