@@ -122,7 +122,8 @@ class UserController extends Controller{
      */
     public function search(Request $request){
         $user_name=$request->input('user_name');
-        $result=DB::table('ki_admin_user')->where('user_name','like','%'.$user_name.'%')->get()->toArray();
+        $domain_id=$request->input('domain_id');
+        $result=DB::table('ki_admin_user')->where('user_name','like','%'.$user_name.'%')->where('cut_off','!=','1')->where('domain_id',$domain_id)->get()->toArray();
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
     }
 

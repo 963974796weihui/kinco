@@ -27,3 +27,8 @@ Route::post('/user/updateInfo','Admin\UserController@updateInfo');//编辑用户
 Route::post('/user/search','Admin\UserController@search');//搜索用户
 Route::get('/user/delete/{id}','Admin\UserController@delete');//删除用户
 Route::get('/user/forbid/{id}','Admin\UserController@forbid');//禁用用户
+//设备模块
+Route::post('/supply/search','Admin\SupplyController@search');//搜索设备
+Route::post('/supply/supplyInfo','Admin\SupplyController@supplyInfo');//搜索设备
+Route::post('/supply/forbid/{id}','Admin\SupplyController@forbid');//禁用设备
+Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//禁用设备
