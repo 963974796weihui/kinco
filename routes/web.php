@@ -31,4 +31,9 @@ Route::get('/user/forbid/{id}','Admin\UserController@forbid');//禁用用户
 Route::post('/supply/search','Admin\SupplyController@search');//搜索设备
 Route::post('/supply/supplyInfo','Admin\SupplyController@supplyInfo');//搜索设备
 Route::post('/supply/forbid/{id}','Admin\SupplyController@forbid');//禁用设备
-Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//禁用设备
+Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//新增设备
+//设备组模块
+Route::post('/group/search','Admin\GroupController@search');//搜索设备组
+Route::post('/group/addSupply','Admin\GroupController@addSupply');//新增设备组
+Route::get('/group/supplyInfo/{id}','Admin\GroupController@supplyInfo');//域下设备组信息
+Route::get('/group/updateGroup','Admin\GroupController@updateGroup');//域下设备组信息

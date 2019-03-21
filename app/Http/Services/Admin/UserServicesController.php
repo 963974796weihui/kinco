@@ -167,7 +167,7 @@ class UserServicesController extends Controller
         $id=$request['id'];
         $email=$request['email'];
         $remark=$request['remark'];
-        $new_password=$request['new_password'];
+        $new_password=$request['new_password']; 
         if($new_password==1){//寄送新密码情况下
             $condition['email']=$email;
             $condition['remark']=$remark;
