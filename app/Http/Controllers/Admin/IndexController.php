@@ -87,4 +87,14 @@ class IndexController extends Controller
         }
         return response()->json(['status' => 'F', 'code' => '201', 'message' => '该域已存在']);
     }
+
+    /**
+     * @param Request $request
+     *
+     */
+    public function region(Request $request){
+        $id=$request->input('id');
+        $result=DB::table('ki_admin_region')->where('ParentId',$id)->get()->toArray();
+       dd($result);
+    }
 }

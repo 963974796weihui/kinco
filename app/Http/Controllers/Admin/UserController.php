@@ -93,4 +93,55 @@ class UserController extends Controller{
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '该用户已存在']);
         }
     }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * 域下用户编辑接口
+     */
+    public function info($id){
+        $result=DB::table('ki_admin_user')->where('id',$id)->get()->toArray();
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 修改用户信息
+     */
+    public function updateInfo(Request $request){
+        $request=$request->all();
+        $result=$this->userServices->updateInfo($request);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '修改成功']);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 搜索用户
+     */
+    public function search(Request $request){
+        $user_name=$request->input('user_name');
+        $result=DB::table('ki_admin_user')->where('user_name','like','%'.$user_name.'%')->get()->toArray();
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * 删除用户
+     */
+    public function delete($id){
+        DB::table('ki_admin_user')->where('id',$id)->update(['cut_off'=>1]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+    }
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * 禁用用户
+     */
+    public function forbid($id){
+        DB::table('ki_admin_user')->where('id',$id)->update(['cut_off'=>2]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+    }
 }

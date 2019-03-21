@@ -156,10 +156,33 @@ class UserServicesController extends Controller
         if ($id) {
             return false;
         }
-        $request['password'] = '123456';
+        $request['password'] =str_random(6);
         $request['register_confirm_code'] = str_random(32);
         $request['time'] = time();
         $id = DB::table('ki_admin_user')->insertGetId($request);
         return $id;
+    }
+
+    public function updateInfo($request){
+        $id=$request['id'];
+        $email=$request['email'];
+        $remark=$request['remark'];
+        $new_password=$request['new_password'];
+        if($new_password==1){//寄送新密码情况下
+            $condition['email']=$email;
+            $condition['remark']=$remark;
+            $condition['password']=str_random(6);
+            $condition['register_confirm_code'] = str_random(32);
+            $condition['status']=0;
+            $result=DB::table('ki_admin_user')->where('id',$id)->update($condition);
+            //发送邮件
+            return $result;
+        }else{
+            $condition['email']=$email;
+            $condition['remark']=$remark;
+            $result=DB::table('ki_admin_user')->where('id',$id)->update($condition);
+            return $result;
+        }
+
     }
 }
