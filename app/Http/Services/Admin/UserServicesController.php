@@ -106,6 +106,7 @@ class UserServicesController extends Controller
 
     public function hmiGroup($user_id, $id)
     {
+        $group = array();
         $allGroup = DB::table('ki_admin_hmi')//$groupName域下全部的人机
         ->where('domain_id', $id)
             ->where('cut_off', '0')

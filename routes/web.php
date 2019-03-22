@@ -36,4 +36,9 @@ Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//新增设�
 Route::post('/group/search','Admin\GroupController@search');//搜索设备组
 Route::post('/group/addSupply','Admin\GroupController@addSupply');//新增设备组
 Route::get('/group/supplyInfo/{id}','Admin\GroupController@supplyInfo');//域下设备组信息
-Route::get('/group/updateGroup','Admin\GroupController@updateGroup');//域下设备组信息
+Route::post('/group/updateGroup','Admin\GroupController@updateGroup');//更新组名
+Route::post('/group/deleteGroup','Admin\GroupController@deleteGroup');//删除组
+Route::post('/group/hmiInfo','Admin\GroupController@hmiInfo');//管理组成员
+Route::post('/group/hmiInfoBind','Admin\GroupController@hmiInfoBind');//管理组成员确认
+Route::post('/group/addUser','Admin\GroupController@addUser');//绑定用户
+Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定用户确认
