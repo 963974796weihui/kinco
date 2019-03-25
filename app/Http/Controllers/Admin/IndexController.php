@@ -47,13 +47,18 @@ class IndexController extends Controller
         }
         $request['time'] = time();
         $request['register_confirm_code'] = str_random(32);
+        $request['password'] = str_random(6);
         $res = DB::table('ki_admin_administrtor')->insertGetId($request);
+        $registerCode['id']=$res;
+        $registerCode['email']=$request['email'];
+        $registerCode['user_name']=$request['user_name'];//域名
+        $registerCode['first_name']=$request['first_name'];//姓名
+        $registerCode['password']=$request['password'];
+        $registerCode['register_confirm_code']=$request['register_confirm_code'];
+        $mail=$this->IndexServicesController->mailSend($registerCode);//发送邮件
         if ($res) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '注册成功']);
         }
-//        $registerCode['id']=$res;
-//        $registerCode['register_confirm_code']=$request['register_confirm_code'];
-//        $mail=$IndexServicesController->mailSend($registerCode);//发送邮件
     }
 
     /**

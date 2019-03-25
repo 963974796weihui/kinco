@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 
 class IndexServicesController extends Controller
 {
@@ -13,7 +14,6 @@ class IndexServicesController extends Controller
     {
         $rules = [
             'user_name' => 'required|min:2|max:20',
-            'password' => 'required',
             'first_name' => 'required',
             'email' => 'required|email',
             'address' => 'required',
@@ -53,13 +53,13 @@ class IndexServicesController extends Controller
 
     public function mailSend($registerCode)
     {
-        $to = '2350480107@qq.com';//接收人
+        $to =$registerCode['email'];//接收人
         $subject = 'EdgeAccess Domain 用户注册确认信';//主题
         Mail::send(
             'emails.test',//邮件发送的模板文件
             ['content' => $registerCode],//生成的模板文件变量 数组形式
             function ($message) use ($to, $subject) {
-                $message->to($to)->subject($subject);
+                $res=$message->to($to)->subject($subject);
             }
         );
     }
