@@ -22,23 +22,19 @@ class SupplyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * 搜索设备
      */
-    public function search(Request $request)
-    {
-        $hmi_name = $request->input('hmi_name');
-        $domain_id = $request->input('domain_id');
-        $result = DB::table('ki_admin_hmi')->where('hmi_name', 'like', '%' . $hmi_name . '%')->where('cut_off', '!=', '1')->where('domain_id', $domain_id)->get()->toArray();
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * 搜索设备
-     */
     public function supplyInfo(Request $request)
     {
         $domain_id = $request->input('domain_id');
-        $result = DB::table('ki_admin_hmi')->where('domain_id', $domain_id)->where('cut_off', '!=', '1')->get()->toArray();
+        $hmi_name = $request->input('hmi_name');
+        $limit = $request->input('limit');
+        $result = DB::table('ki_admin_hmi')
+            ->where('domain_id', $domain_id)
+            ->where('cut_off', '!=', '1')
+            ->when($hmi_name, function ($query) use ($hmi_name) {
+                return $query->where('hmi_name', 'like', '%' . $hmi_name . '%');
+            })
+            ->paginate($limit)
+            ->toArray();
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
     }
 

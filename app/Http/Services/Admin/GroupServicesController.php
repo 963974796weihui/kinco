@@ -8,23 +8,33 @@ use Illuminate\Support\Facades\DB;
 
 class GroupServicesController extends Controller
 {
-    public function supplyInfo($id){
-        $result = DB::table('ki_admin_group')->where('domain_id', '=', $id)->select('id', 'group_name','domain_id')->get()->toArray();
-        foreach ($result as $key => $value) {//匹配设备组
+    public function supplyInfo($id, $limit, $group_name)
+    {
+        $result = DB::table('ki_admin_group')
+            ->where('domain_id', '=', $id)
+            ->when($group_name, function ($query) use ($group_name) {
+                return $query->where('group_name', 'like', '%' . $group_name . '%');
+            })
+            ->select('id', 'group_name', 'domain_id')
+            ->paginate($limit)
+            ->toArray();
+        foreach ($result['data'] as $key => $value) {//匹配设备组
             $res = DB::table('ki_admin_user_hmi_group')
                 ->where('domain_id', $id)
                 ->where('group_id', $value->id)
                 ->where('user_id', '0')
                 ->get()
                 ->toArray();
-            $result[$key]->hmi_num = count($res);
+            $result['data'][$key]->hmi_num = count($res);
         }
-        return $result;
+        return $result['data'];
     }
-    public function hmiInfo($domain_id,$id){
+
+    public function hmiInfo($domain_id, $id)
+    {
         $group = array();
         $allGroup = DB::table('ki_admin_hmi')//域下的全部人机
-            ->where('domain_id', $domain_id)
+        ->where('domain_id', $domain_id)
             ->where('cut_off', '0')
             ->select('id', 'hmi_name')
             ->get()
@@ -48,7 +58,9 @@ class GroupServicesController extends Controller
         }
         return $allGroup;
     }
-    public function hmiInfoBind($domain_id,$group_id,$id){
+
+    public function hmiInfoBind($domain_id, $group_id, $id)
+    {
         $result = DB::table('ki_admin_user_hmi_group')
             ->where('domain_id', $domain_id)
             ->where('group_id', $group_id)
@@ -64,7 +76,9 @@ class GroupServicesController extends Controller
         }
         return true;
     }
-    public function addUser($domain_id,$id){
+
+    public function addUser($domain_id, $id)
+    {
         $group = array();
         $allGroup = DB::table('ki_admin_user')//域下的全部人机
         ->where('domain_id', $domain_id)
@@ -91,7 +105,9 @@ class GroupServicesController extends Controller
         }
         return $allGroup;
     }
-    public function addUserBind($domain_id,$group_id,$id){
+
+    public function addUserBind($domain_id, $group_id, $id)
+    {
         $result = DB::table('ki_admin_user_hmi_group')
             ->where('domain_id', $domain_id)
             ->where('group_id', $group_id)
@@ -107,5 +123,4 @@ class GroupServicesController extends Controller
         }
         return true;
     }
-
 }

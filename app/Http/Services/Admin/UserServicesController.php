@@ -9,9 +9,17 @@ namespace App\Http\Services\Admin;
 class UserServicesController extends Controller
 {
 
-    public function userInfo($id)
+    public function userInfo($id,$user_name,$limit)
     {//$id是域名id 缓存的$this->id为超管id
-        $result = DB::table('ki_admin_user')->where('domain_id', '=', $id)->select('id', 'user_name', 'remark', 'phone', 'email')->get()->toArray();
+        $result = DB::table('ki_admin_user')
+            ->where('domain_id', '=', $id)
+            ->when($user_name, function ($query) use ($user_name) {
+                return $query->where('user_name', 'like', '%' . $user_name . '%');
+            })
+            ->select('id', 'user_name', 'remark', 'phone', 'email')
+            ->paginate($limit)
+            ->toArray();
+        $result=$result['data'];
         foreach ($result as $key => $value) {//匹配设备组
             $res = DB::table('ki_admin_user_hmi_group')
                 ->where('domain_id', $id)
@@ -157,31 +165,32 @@ class UserServicesController extends Controller
         if ($id) {
             return false;
         }
-        $request['password'] =str_random(6);
+        $request['password'] = str_random(6);
         $request['register_confirm_code'] = str_random(32);
         $request['time'] = time();
         $id = DB::table('ki_admin_user')->insertGetId($request);
         return $id;
     }
 
-    public function updateInfo($request){
-        $id=$request['id'];
-        $email=$request['email'];
-        $remark=$request['remark'];
-        $new_password=$request['new_password']; 
-        if($new_password==1){//寄送新密码情况下
-            $condition['email']=$email;
-            $condition['remark']=$remark;
-            $condition['password']=str_random(6);
+    public function updateInfo($request)
+    {
+        $id = $request['id'];
+        $email = $request['email'];
+        $remark = $request['remark'];
+        $new_password = $request['new_password'];
+        if ($new_password == 1) {//寄送新密码情况下
+            $condition['email'] = $email;
+            $condition['remark'] = $remark;
+            $condition['password'] = str_random(6);
             $condition['register_confirm_code'] = str_random(32);
-            $condition['status']=0;
-            $result=DB::table('ki_admin_user')->where('id',$id)->update($condition);
+            $condition['status'] = 0;
+            $result = DB::table('ki_admin_user')->where('id', $id)->update($condition);
             //发送邮件
             return $result;
-        }else{
-            $condition['email']=$email;
-            $condition['remark']=$remark;
-            $result=DB::table('ki_admin_user')->where('id',$id)->update($condition);
+        } else {
+            $condition['email'] = $email;
+            $condition['remark'] = $remark;
+            $result = DB::table('ki_admin_user')->where('id', $id)->update($condition);
             return $result;
         }
 
