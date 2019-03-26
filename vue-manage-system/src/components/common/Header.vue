@@ -5,7 +5,19 @@
             <i class="el-icon-menu"></i>
         </div>
         <div class="logo">EdgeAccess</div>
-        <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger">新建域</el-button>
+        <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
+        <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
+        <el-form :model="formRegion">
+          <el-form-item label="域名" :label-width="formLabelWidth">
+            <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addRegion()">确 定</el-button>
+        </div>
+      </el-dialog>
+
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
@@ -49,6 +61,11 @@
     export default {
         data() {
             return {
+                formRegion:{
+                    name:''
+                },
+                 dialogTableVisible: false,
+        dialogFormVisible: false,
                 collapse: false,
                 fullscreen: false,
                 name: 'linxin',
@@ -62,6 +79,9 @@
             }
         },
         methods:{
+            //新建域
+            addRegion(){
+            },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if(command == 'loginout'){

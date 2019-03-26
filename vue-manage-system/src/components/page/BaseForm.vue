@@ -39,22 +39,86 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="date" label="日期" sortable width="150"></el-table-column>
-        <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-        <el-table-column prop="address" label="地址" :formatter="formatter"></el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+         <el-table-column prop="name" label="用户名" width="170"></el-table-column>
+         <el-table-column prop="remark" label="备注" width="170"></el-table-column>
+         <el-table-column prop="phone" label="手机号" width="220"></el-table-column>
+         <el-table-column prop="email" label="邮箱号" width="220"></el-table-column>
+         <el-table-column prop="eq" label="匹配设备" width="280"></el-table-column>
+        <el-table-column label="相关操作" width="350" align="center">
           <template slot-scope="scope">
+ <el-button
+             type="text"
+              icon="el-icon-date"
+              @click="dialogFormVisible1 = true"
+            >设备管理</el-button>
+      <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="30%">
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="设备组" name="first">
+  <div class="tr">
+           <el-transfer v-model="value1" :data="data"></el-transfer>
+           </div>
+    </el-tab-pane>
+    <el-tab-pane label="设备" name="second">
+  <div class="tr">
+           <el-transfer v-model="value2" :data="data2"></el-transfer>
+           </div>
+    </el-tab-pane>
+  </el-tabs>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+          <el-button type="primary" @click="addUser()">确 定</el-button>
+        </div>
+      </el-dialog>
+
             <el-button
               type="text"
               icon="el-icon-edit"
-              @click="handleEdit(scope.$index, scope.row)"
+              @click="dialogEdit= true"
             >编辑</el-button>
+            <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
+
+ <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+          <el-form-item label="备注名" :label-width="formLabelWidth">
+            <el-input v-model="form1.remark" autocomplete="off" prop="remark"></el-input>
+          </el-form-item>
+          <el-form-item label="个人email" :label-width="formLabelWidth" >
+            <el-input v-model="form1.email" autocomplete="off" prop="email">
+              <el-button slot="prepend" icon="el-icon-edit"></el-button>
+            </el-input>
+             <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
+          </el-form-item>
+        </el-form>
+
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogEdit = false">取 消</el-button>
+          <el-button type="primary" @click="addUser()">确 定</el-button>
+        </div>
+      </el-dialog>
+
             <el-button
               type="text"
               icon="el-icon-delete"
               class="red"
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
+             <el-button
+              type="text"
+              icon="el-icon-close"
+              class="red"
+              @click="aa= true"
+            >禁用</el-button>
+  <el-dialog title="禁用" :visible.sync="aa" width="30%">
+
+111
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="aa = false">取 消</el-button>
+          <el-button type="primary" @click="addUser()">确 定</el-button>
+        </div>
+      </el-dialog>
+
+
+
           </template>
         </el-table-column>
       </el-table>
@@ -108,6 +172,28 @@
     export default {
         name: 'basetable',
         data() {
+          const generateData = _ => {
+        const data = [];
+        for (let i = 1; i <= 15; i++) {
+          data.push({
+            key: i,
+            label: `设备组 ${ i }`,
+            disabled: i % 4 === 0
+          });
+        }
+        return data;
+      };
+         const generateData2 = _ => {
+        const data2 = [];
+        for (let i = 1; i <= 15; i++) {
+          data2.push({
+            key: i,
+            label: `设备 ${ i }`,
+            disabled: i % 4 === 0
+          });
+        }
+        return data2;
+      };
 //   //邮箱校验
 //     const validatemail=(rule, value, callback)=>{
 //         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
@@ -128,11 +214,20 @@
 //     }
 //      };
             return {
-         dialogTableVisible: false,
+                checked: true,//寄送新用户密码
+               activeName: 'first',
+               data: generateData(),
+                data2: generateData2(),
+        value1: [1, 4],
+        value2: [1, 4],
         dialogFormVisible: false,
+        dialogFormVisible1: false,
+        dialogEdit:false,
+        aa:false,
         form1: {
              name: '',
-          email:""
+          email:"1313132131@163.com",
+          remark:''
         },
         //匹配校验器
 //       ruleValidate: {
@@ -144,7 +239,7 @@
 
 //       },
         formLabelWidth: '120px',
-                url: './static/vuetable.json',
+                // url: './static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -156,8 +251,10 @@
                 delVisible: false,
                 form: {
                     name: '',
-                    date: '',
-                    address: ''
+                    remark:'',
+                    phone:'',
+                    email:'',
+                    eq:''
                 },
                 idx: -1
             }
@@ -195,11 +292,9 @@ name:this.form1.user_name,
      }
      )
      .then(function (response) {
-       alert(12);
      console.log(response);
       })
       .catch(function (error) {
-        alert(34);
           console.log(error);
      }); 
             },
@@ -299,5 +394,8 @@ name:this.form1.user_name,
 }
 .red {
   color: #ff0000;
+}
+.tr{
+text-align: left;
 }
 </style>
