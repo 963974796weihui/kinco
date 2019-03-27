@@ -102,4 +102,16 @@ class IndexController extends Controller
         $result=DB::table('ki_admin_region')->where('ParentId',$id)->get()->toArray();
        dd($result);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 激活邮箱
+     */
+    public function confirm(Request $request){
+        $id=$request->input('id');
+        $register_confirm_code=$request->input('register_confirm_code');
+        $res=DB::table('ki_admin_administrtor')->where('id',$id)->where('register_confirm_code',$register_confirm_code)->update(['status'=>1]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '激活成功']);
+    }
 }
