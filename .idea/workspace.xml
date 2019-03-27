@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="3.25">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/emails/test.blade.php" afterPath="$PROJECT_DIR$/resources/views/emails/test.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -64,8 +61,8 @@
       <file leaf-file-name="test.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/emails/test.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="574">
-              <caret line="35" column="4" lean-forward="true" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
+            <state relative-caret-position="626">
+              <caret line="37" column="5" lean-forward="false" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
               <folding>
                 <marker date="1553578192446" expanded="true" signature="143:160" ph="..." />
                 <marker date="1553578192446" expanded="true" signature="244:265" ph="..." />
@@ -137,8 +134,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="58" />
-    <option name="y" value="50" />
+    <option name="x" value="-96" />
     <option name="width" value="1936" />
     <option name="height" value="1035" />
   </component>
@@ -520,7 +516,7 @@
       <workItem from="1553566936093" duration="6853000" />
       <workItem from="1553587189176" duration="1715000" />
       <workItem from="1553593010243" duration="107000" />
-      <workItem from="1553664026190" duration="17000" />
+      <workItem from="1553664026190" duration="159000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -631,10 +627,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152350000" />
+    <option name="totallyTimeSpent" value="152492000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="58" y="50" width="1936" height="1035" extended-state="0" />
+    <frame x="-96" y="0" width="1936" height="1035" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22921109" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1048,8 +1044,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/emails/test.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="35" column="4" lean-forward="true" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
+        <state relative-caret-position="626">
+          <caret line="37" column="5" lean-forward="false" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
           <folding>
             <marker date="1553578192446" expanded="true" signature="143:160" ph="..." />
             <marker date="1553578192446" expanded="true" signature="244:265" ph="..." />
