@@ -11,10 +11,13 @@
           <el-form-item label="域名" :label-width="formLabelWidth">
             <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
           </el-form-item>
+           <el-form-item label="域简介" :label-width="formLabelWidth">
+            <el-input type="textarea" placeholder="80字以内" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"></el-input>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addRegion()">确 定</el-button>
+          <el-button type="primary" :plain="true" @click="addRegion()">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -62,8 +65,12 @@
         data() {
             return {
                 formRegion:{
-                    name:''
+                    name:'',
+                    regionInfo:''
                 },
+                //Bus总线接收
+                itemRegion:[],
+
                  dialogTableVisible: false,
         dialogFormVisible: false,
                 collapse: false,
@@ -81,6 +88,30 @@
         methods:{
             //新建域
             addRegion(){
+                this.$http.post('/api/admin/registerDomain',
+                {
+                     domain_name: this.formRegion.name,
+                     remark: this.formRegion.regionInfo
+                }).then(res => {
+            console.log(res)
+            if(res.data.status=="S"){
+                   this.$message({
+          message: '新建域成功',
+          type: 'success'
+        });
+        this.dialogFormVisible=false;
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该域已存在',
+          type: 'warning'
+        });
+            }
+
+        }).catch(function(error) {
+          alert(axios错误回调);
+          console.log(error);
+        });
+
             },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
@@ -126,6 +157,13 @@
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }
+        },
+           created(){
+            // 接收
+            bus.$on('items', msg => {
+                this.itemRegion = msg;
+                alert('接收');
+            })
         }
     }
 </script>

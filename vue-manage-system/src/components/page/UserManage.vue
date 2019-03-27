@@ -7,16 +7,19 @@
         type="primary"
         round
         @click="dialogFormVisible = true"
-      >添加设备群组</el-button>
-      <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="30%">
+      >新增用户</el-button>
+      <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="设备组名" :label-width="formLabelWidth">
-            <el-input v-model="form1.group" autocomplete="off" prop="group"></el-input>
+          <el-form-item label="用户名" :label-width="formLabelWidth">
+            <el-input v-model="form1.name" autocomplete="off" prop="name"></el-input>
+          </el-form-item>
+          <el-form-item label="用户个人Email" :label-width="formLabelWidth">
+            <el-input v-model="form1.email" autocomplete="off" prop="email"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addGroup()">确 定</el-button>
+          <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -36,66 +39,43 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="name" label="设备组名" width="170"></el-table-column>
-         <el-table-column prop="number" label="组成员" width="280"></el-table-column>
-          <el-table-column label="相关操作" width="500" align="center">
-          <template >
-               <el-button
-              type="text"
+         <el-table-column prop="name" label="用户名" width="170"></el-table-column>
+         <el-table-column prop="remark" label="备注" width="170"></el-table-column>
+         <el-table-column prop="phone" label="手机号" width="220"></el-table-column>
+         <el-table-column prop="email" label="邮箱号" width="220"></el-table-column>
+         <el-table-column prop="eq" label="匹配设备" width="280"></el-table-column>
+        <el-table-column label="相关操作" width="350" align="center">
+          <template slot-scope="scope">
+ <el-button
+             type="text"
               icon="el-icon-date"
-            >管理组成员</el-button>
-
-
-
-<el-button
-              type="text"
-              icon="el-icon-edit"
-              @click="dialogEdit1= true"
-            >编辑1</el-button>
-            <el-dialog title="编辑1" :visible.sync="dialogEdit1" width="30%">
-
- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form1.remark" autocomplete="off" prop="remark"></el-input>
-          </el-form-item>
-          <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form1.email" autocomplete="off" prop="email">
-              <el-button slot="prepend" icon="el-icon-edit"></el-button>
-            </el-input>
-             <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
-          </el-form-item>
-        </el-form>
-
-
+              @click="dialogFormVisible1 = true"
+            >设备管理</el-button>
+      <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="30%">
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="设备组" name="first">
+  <div class="tr">
+           <el-transfer v-model="value1" :data="data"></el-transfer>
+           </div>
+    </el-tab-pane>
+    <el-tab-pane label="设备" name="second">
+  <div class="tr">
+           <el-transfer v-model="value2" :data="data2"></el-transfer>
+           </div>
+    </el-tab-pane>
+  </el-tabs>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogEdit1 = false">取 消</el-button>
+          <el-button @click="dialogFormVisible1 = false">取 消</el-button>
           <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
       </el-dialog>
 
-
-
-
-
-
-
-
-
-
-              <el-button
+            <el-button
               type="text"
-              icon="el-icon-lx-people"
-              class="red"
-              @click="bindUser()"
-            >绑定用户</el-button>
-
-                <el-button
-              type="text"
-              icon="el-icon-document"
-              @click="dialogFormVisible = true"
-            >更改组名</el-button>
-
-<!-- <el-dialog title="更改组名" :visible.sync="dialogFormVisible" width="30%">
+              icon="el-icon-edit"
+              @click="dialogEdit= true"
+            >编辑</el-button>
+            <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
 
  <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="备注名" :label-width="formLabelWidth">
@@ -111,17 +91,25 @@
 
 
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button @click="dialogEdit = false">取 消</el-button>
           <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
-      </el-dialog> -->
+      </el-dialog>
 
+            <el-button
+              type="text"
+              icon="el-icon-delete"
+              class="red"
+              @click="handleDelete(scope.$index, scope.row)"
+            >删除</el-button>
              <el-button
               type="text"
-              icon="el-icon-circle-close"
+              icon="el-icon-close"
               class="red"
-              @click="deleteGroup()"
-            >删除</el-button>
+              @click="aa= true"
+            >禁用</el-button>
+
+
           </template>
         </el-table-column>
       </el-table>
@@ -175,6 +163,28 @@
     export default {
         name: 'basetable',
         data() {
+          const generateData = _ => {
+        const data = [];
+        for (let i = 1; i <= 15; i++) {
+          data.push({
+            key: i,
+            label: `设备组 ${ i }`,
+            disabled: i % 4 === 0
+          });
+        }
+        return data;
+      };
+         const generateData2 = _ => {
+        const data2 = [];
+        for (let i = 1; i <= 15; i++) {
+          data2.push({
+            key: i,
+            label: `设备 ${ i }`,
+            disabled: i % 4 === 0
+          });
+        }
+        return data2;
+      };
 //   //邮箱校验
 //     const validatemail=(rule, value, callback)=>{
 //         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
@@ -195,12 +205,17 @@
 //     }
 //      };
             return {
+                checked: true,//寄送新用户密码
+               activeName: 'first',
+               data: generateData(),
+                data2: generateData2(),
+        value1: [1, 4],
+        value2: [1, 4],
         dialogFormVisible: false,
-        dialogEdit1: false,
-        // form1: {
-        //      group:''
-        // },
-          form1: {
+        dialogFormVisible1: false,
+        dialogEdit:false,
+        aa:false,
+        form1: {
              name: '',
           email:"1313132131@163.com",
           remark:''
@@ -226,14 +241,11 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name:'',
-                    type1:'',
-                    serial:'',
-                    online:'',
-                    virtual:'',
-                    real:'',
-                    bind:'',
-                    date:''
+                    name: '',
+                    remark:'',
+                    phone:'',
+                    email:'',
+                    eq:''
                 },
                 idx: -1
             }
@@ -263,8 +275,19 @@
             }
         },
         methods: {
-            //添加设备群组
-            addGroup(){
+            addUser(){
+                 this.$http.post('/api/admin/register',
+   {
+name:this.form1.user_name,
+   email:this.form1.email,
+     }
+     )
+     .then(function (response) {
+     console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+     }); 
             },
             // 分页导航
             handleCurrentChange(val) {

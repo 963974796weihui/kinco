@@ -92,7 +92,7 @@
 
 <script>
     export default {
-        name: 'basetable',
+        name: 'codemanage',
         data() {
 //   //邮箱校验
 //     const validatemail=(rule, value, callback)=>{

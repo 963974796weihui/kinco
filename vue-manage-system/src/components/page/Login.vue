@@ -1,8 +1,30 @@
 <template>
     <div class="login-wrap">
+        <h1 class="white ea">EdgeAccess</h1>
         <div class="ms-login">
-            <div class="ms-title">管理员登录</div>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
+<el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="管理员" name="admin">
+ <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
+                <el-form-item prop="username">
+                    <el-input v-model="ruleForm.username" placeholder="admin">
+                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
+                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+                    </el-input>
+                </el-form-item>
+                <div class="login-btn">
+                    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                    <router-link to="/reg">
+                     <p class="white admin">建立管理员账号</p>
+                     </router-link>
+                </div>
+            </el-form>
+    </el-tab-pane>
+    <el-tab-pane label="普通用户" name="user">
+<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
@@ -15,10 +37,11 @@
                 </el-form-item>
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-                     <p class="white admin" @click="reg()">建立管理员账号</p>
                 </div>
-<!--                <p class="login-tips">Tips : 用户名和密码随便填。</p>
--->            </el-form>
+            </el-form>
+
+    </el-tab-pane>
+  </el-tabs>
         </div>
     </div>
 </template>
@@ -27,6 +50,7 @@
     export default {
         data: function(){
             return {
+                activeName: 'admin',
                 ruleForm: {
                     username: '',
                     password: ''
@@ -54,14 +78,18 @@
           password: this.ruleForm.password
         })
         .then(response => {
-          this.$router.push({ path: "/" });
+            console.log(response)
+            if(response.data.status=="S"){
+    this.$router.push({ path: "/" });
           console.log(response);
+            }
         })
         .catch(function(error) {
           alert(axios错误回调);
           console.log(error);
         });
                     } else {
+                        alert(34)
                         console.log('error submit!!');
                         return false;
                     }
@@ -99,6 +127,7 @@
         left:50%;
         top:50%;
         width:350px;
+        height:300px;
         margin:-190px 0 0 -175px;
         border-radius: 5px;
         background: rgba(255,255,255, 0.3);
@@ -120,4 +149,11 @@
         line-height:30px;
         color:#fff;
     }
+    .ea{
+        font-size: 50px;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+    }
+    
 </style>

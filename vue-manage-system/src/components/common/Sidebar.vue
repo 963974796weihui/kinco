@@ -37,29 +37,26 @@
         data() {
             return {
                 collapse: false,
+                // 左侧边栏数组
                 items: [
                     {
                         icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
                         index: 'dashboard',
                         title: '系统首页'
                     },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'license',
+                        index: 'codemanage',
                         title: '授权码管理'
                     },
-                    // {
-                    //     icon: 'el-icon-lx-copy',
-                    //     index: 'tabs',
-                    //     title: 'tab选项卡'
-                    // },
                     {
                         icon: 'el-icon-lx-calendar',
                         index: '3',
                         title: '域A',
                         subs: [
                             {
-                                index: 'user',
+                                index: 'usermanage',
                                 title: '用户'
                             },
                             {
@@ -67,62 +64,22 @@
                                 title: '设备',
                                 subs: [
                                     {
-                                        index: 'eq-ad',
+                                        index: 'eqmanage',
                                         title: '设备管理'
                                     },
                                     {
-                                        index: 'eq-gr',
+                                        index: 'eqgroup',
                                         title: '设备群组'
                                     },
                                 ]
                             },
-                            // {
-                            //     index: 'upload',
-                            //     title: '文件上传'
-                            // }
                         ]
                     },
-                     //  {
-                    //     icon: 'el-icon-lx-emoji',
-                    //     index: 'icon',
-                    //     title: '自定义图标'
-                    // },
-                    // {
-                    //     icon: 'el-icon-lx-favor',
-                    //     index: 'charts',
-                    //     title: 'schart图表'
-                    // },
-                    // {
-                    //     icon: 'el-icon-rank',
-                    //     index: '6',
-                    //     title: '拖拽组件',
-                    //     subs: [
-                    //         {
-                    //             index: 'drag',
-                    //             title: '拖拽列表',
-                    //         },
-                    //         {
-                    //             index: 'dialog',
-                    //             title: '拖拽弹框',
-                    //         }
-                    //     ]
-                    // },
-                    // {
-                    //     icon: 'el-icon-lx-warn',
-                    //     index: '7',
-                    //     title: '错误处理',
-                    //     subs: [
-                    //         {
-                    //             index: 'permission',
-                    //             title: '权限测试'
-                    //         },
-                    //         {
-                    //             index: '404',
-                    //             title: '404页面'
-                    //         }
-                    //     ]
-                    // }
                 ]
+
+
+
+
             }
         },
         computed:{
@@ -134,7 +91,9 @@
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
                 this.collapse = msg;
-            })
+            }),
+            //发送侧边栏数组
+            bus.$emit('items', this.items)
         }
     }
 </script>

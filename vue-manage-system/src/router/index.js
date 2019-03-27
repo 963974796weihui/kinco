@@ -15,8 +15,11 @@ export default new Router({
             meta: { title: '自述文件' },
             children:[
                 {
+                    // 网址路径
                     path: '/dashboard',
+                    // 关联vue组件
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
+                    // 面包屑的标题
                     meta: { title: '系统首页' }
                 },
                 {
@@ -25,8 +28,8 @@ export default new Router({
                     meta: { title: '自定义图标' }
                 },
                 {
-                    path: '/license',
-                    component: resolve => require(['../components/page/BaseTable.vue'], resolve),
+                    path: '/codemanage',
+                    component: resolve => require(['../components/page/CodeManage.vue'], resolve),
                     meta: { title: '授权码管理' }
                 },
                 {
@@ -35,20 +38,20 @@ export default new Router({
                     meta: { title: 'tab选项卡' }
                 },
                 {
-                    path: '/user',
-                    component: resolve => require(['../components/page/BaseForm.vue'], resolve),
+                    path: '/usermanage',
+                    component: resolve => require(['../components/page/UserManage.vue'], resolve),
                     meta: { title: '用户' }
                 },
                 {
                     // 富文本编辑器组件
-                    path: '/eq-ad',
-                    component: resolve => require(['../components/page/VueEditor.vue'], resolve),
+                    path: '/eqmanage',
+                    component: resolve => require(['../components/page/EqManage'], resolve),
                     meta: { title: '设备管理' }
                 },
                 {
                     // markdown组件
-                    path: '/eq-gr',
-                    component: resolve => require(['../components/page/Markdown.vue'], resolve),
+                    path: '/eqgroup',
+                    component: resolve => require(['../components/page/EqGroup.vue'], resolve),
                     meta: { title: '设备群组' }    
                 },
                 {

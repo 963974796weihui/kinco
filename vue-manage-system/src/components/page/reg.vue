@@ -218,8 +218,22 @@
   position: absolute;
   left: 0;
   right: 0;
+  /* border: 1px red solid; */
   width: 700px;
   padding: 0px 35px 15px 35px;
   margin: 50px auto;
+}
+.el-icon-back{
+  font-size: 38px;
+  color: #409eff;
+  position: relative;
+float: left;
+margin-left: -70px;
+}
+.reg-adm{
+}
+/* tab导航字体颜色 */
+.el-tabs__item{
+  color: #fff
 }
 </style>
