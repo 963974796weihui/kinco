@@ -1,13 +1,15 @@
 <template>
     <div class="sidebar">
+        <!-- 侧边栏    头-->
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
-            text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
+            text-color="#bfcbd9" active-text-color="#20a0ff" router>
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                         </template>
+
                         <template v-for="subItem in item.subs">
                             <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
                                 <template slot="title">{{ subItem.title }}</template>
@@ -28,6 +30,7 @@
                 </template>
             </template>
         </el-menu>
+ <!-- 侧边栏   尾 -->
     </div>
 </template>
 
@@ -37,52 +40,51 @@
         data() {
             return {
                 collapse: false,
+                 items:[]
                 // 左侧边栏数组
-                items: [
-                    {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'codemanage',
-                        title: '授权码管理'
-                    },
-                    {
-                        icon: 'el-icon-lx-calendar',
-                        index: '3',
-                        title: '域A',
-                        subs: [
-                            {
-                                index: 'usermanage',
-                                title: '用户'
-                            },
-                            {
-                                index: '3-2',
-                                title: '设备',
-                                subs: [
-                                    {
-                                        index: 'eqmanage',
-                                        title: '设备管理'
-                                    },
-                                    {
-                                        index: 'eqgroup',
-                                        title: '设备群组'
-                                    },
-                                ]
-                            },
-                        ]
-                    },
-                ]
-
-
-
+                // items: [
+                //     {
+                //         icon: 'el-icon-lx-home',
+                //         //index关联路由数组对象中的路径path
+                //         index: 'dashboard',
+                //         title: '系统首页'
+                //     },
+                //     {
+                //         icon: 'el-icon-lx-cascades',
+                //         index: 'codemanage',
+                //         title: '授权码管理'
+                //     },
+                //     {
+                //         icon: 'el-icon-lx-calendar',
+                //         index: '3',
+                //         title: '域A',
+                //         subs: [
+                //             {
+                //                 index: 'usermanage',
+                //                 title: '用户'
+                //             },
+                //             {
+                //                 index: '3-2',
+                //                 title: '设备',
+                //                 subs: [
+                //                     {
+                //                         index: 'eqmanage',
+                //                         title: '设备管理'
+                //                     },
+                //                     {
+                //                         index: 'eqgroup',
+                //                         title: '设备群组'
+                //                     },
+                //                 ]
+                //             },
+                //         ]
+                //     },
+                // ]
 
             }
         },
         computed:{
+            //记住下一次刷新的位置
             onRoutes(){
                 return this.$route.path.replace('/','');
             }
@@ -92,8 +94,10 @@
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             }),
-            //发送侧边栏数组
-            bus.$emit('items', this.items)
+            //bus接收侧边栏
+                  bus.$on('items', msg => {
+                this.items = msg;
+            })
         }
     }
 </script>

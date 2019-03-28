@@ -69,8 +69,45 @@
                     regionInfo:''
                 },
                 //Bus总线接收
-                itemRegion:[],
-
+                // itemRegion:[],
+     itemRegion: [
+                    {
+                        icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
+                        index: 'dashboard',
+                        title: '系统首页'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'codemanage',
+                        title: '授权码管理'
+                    },
+                    {
+                        icon: 'el-icon-lx-calendar',
+                        index: '3-1',
+                        title: '域A',
+                        subs: [
+                            {
+                                index: 'usermanage',
+                                title: '用户'
+                            },
+                            {
+                                index: '3-2',
+                                title: '设备',
+                                subs: [
+                                    {
+                                        index: 'eqmanage',
+                                        title: '设备管理'
+                                    },
+                                    {
+                                        index: 'eqgroup',
+                                        title: '设备群组'
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+                ],
                  dialogTableVisible: false,
         dialogFormVisible: false,
                 collapse: false,
@@ -100,6 +137,35 @@
           type: 'success'
         });
         this.dialogFormVisible=false;
+        var a=1;
+        var b=2;
+        this.itemRegion.push(
+       {
+                        icon: 'el-icon-lx-calendar',
+                        index: a++,
+                        title: this.formRegion.name,
+                        subs: [
+                            {
+                                index: 'usermanage',
+                                title: '用户'
+                            },
+                            {
+                                index: b++,
+                                title: '设备',
+                                subs: [
+                                    {
+                                        index: 'eqmanage',
+                                        title: '设备管理'
+                                    },
+                                    {
+                                        index: 'eqgroup',
+                                        title: '设备群组'
+                                    },
+                                ]
+                            }
+                        ]
+                    },
+        )
             }else if(res.data.status=="F"){
  this.$message({
           message: '该域已存在',
@@ -111,7 +177,6 @@
           alert(axios错误回调);
           console.log(error);
         });
-
             },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
@@ -154,17 +219,12 @@
             }
         },
         mounted(){
+            //bus发送侧边栏
+             bus.$emit('items', this.itemRegion)
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }
         },
-           created(){
-            // 接收
-            bus.$on('items', msg => {
-                this.itemRegion = msg;
-                alert('接收');
-            })
-        }
     }
 </script>
 <style scoped>

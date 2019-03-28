@@ -31,15 +31,16 @@
           <el-button type="primary" icon="search" @click="search">搜索</el-button>
         </div>
       </div>
+      <!-- :data="data1" -->
       <el-table
-        :data="data1"
+        :data="tableData"
         border
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="name" label="用户名" width="170"></el-table-column>
+         <el-table-column prop="user_name" label="用户名" width="170"></el-table-column>
          <el-table-column prop="remark" label="备注" width="170"></el-table-column>
          <el-table-column prop="phone" label="手机号" width="220"></el-table-column>
          <el-table-column prop="email" label="邮箱号" width="220"></el-table-column>
@@ -217,7 +218,7 @@
         aa:false,
         form1: {
              name: '',
-          email:"1313132131@163.com",
+          email:"",
           remark:''
         },
         //匹配校验器
@@ -258,7 +259,8 @@
                 return this.tableData.filter((d) => {
                     let is_del = false;
                     for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
+                      //res.data.message[0].user_name
+                        if (d.name === this.del_list[i].user_name) {
                             is_del = true;
                             break;
                         }
@@ -276,18 +278,32 @@
         },
         methods: {
             addUser(){
-                 this.$http.post('/api/admin/register',
-   {
-name:this.form1.user_name,
-   email:this.form1.email,
-     }
-     )
-     .then(function (response) {
-     console.log(response);
-      })
-      .catch(function (error) {
+              alert(1)
+ this.$http.post('/api/user/addUser',
+                {
+                     user_name: this.form1.name,
+                     email: this.form1.email,
+                     domain_id: 1
+                }).then(res => {
+            console.log(res)
+            if(res.data.status=="S"){
+                   this.$message({
+          message: '新增用户成功',
+          type: 'success'
+        });
+        this.dialogFormVisible=false;
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该用户已存在',
+          type: 'warning'
+        });
+            }
+
+        }).catch(function(error) {
+          alert(axios错误回调);
           console.log(error);
-     }); 
+        });
+
             },
             // 分页导航
             handleCurrentChange(val) {
@@ -298,12 +314,13 @@ name:this.form1.user_name,
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
                 if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
+                    // this.url = '/ms/table/list';
+                    this.url = '/api/user/info/6';
                 };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+                this.$axios.get(this.url).then((res) => {
+                  // console.log(res.data.message[0].user_name)   输入h  
+                  console.log(res);
+                    this.tableData = res.data.message;
                 })
             },
             search() {
