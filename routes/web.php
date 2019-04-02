@@ -42,3 +42,8 @@ Route::post('/group/addUser','Admin\GroupController@addUser');//绑定用户
 Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定用户确认
 //授权码模块
 Route::post('/AuthCode/codeInfo','Admin\AuthCodeController@codeInfo');//授权码信息
+
+//支付宝支付处理路由
+Route::get('alipay','Admin\AlipayController@Alipay');  // 发起支付请求
+Route::any('notify','Admin\AlipayController@AliPayNotify'); //服务器异步通知页面路径
+Route::any('return','Admin\AlipayController@AliPayReturn');  //页面跳转同步通知页面路径

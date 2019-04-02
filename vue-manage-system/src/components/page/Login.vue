@@ -47,6 +47,7 @@
 </template>
 
 <script>
+  import bus from '../common/bus';
     export default {
         data: function(){
             return {
@@ -62,7 +63,20 @@
                     password: [
                         { required: true, message: '请输入密码', trigger: 'blur' }
                     ]
-                }
+                },
+                firstItem:[
+                       {
+                        icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
+                        index: 'dashboard',
+                        title: '系统首页'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'codemanage',
+                        title: '授权码管理'
+                    }
+                ]
             }
         },
         methods: {
@@ -77,11 +91,47 @@
           user_name: this.ruleForm.username,
           password: this.ruleForm.password
         })
-        .then(response => {
-            console.log(response)
-            if(response.data.status=="S"){
+        .then(res => {
+           
+            //  console.log( this.firstItem)
+            if(res.data.status=="S"){
+                console.log(res)
+                 var total=res.data.message.length
+             for(var i=0;i<total;i++){
+                this.firstItem.push(
+  {
+                        icon: 'el-icon-lx-calendar',
+                        index: res.data.message[i].id,
+                        title: res.data.message[i].domain_name,
+                        subs: [
+                            {
+                                index: 'usermanage',
+                                title: '用户'
+                            },
+                            {
+                                index: res.data.message[i].id,
+                                title: '设备',
+                                subs: [
+                                    {
+                                        index: 'eqmanage',
+                                        title: '设备管理'
+                                    },
+                                    {
+                                        index: 'eqgroup',
+                                        title: '设备群组'
+                                    },
+                                ]
+                            },
+                        ]
+                    }
+                )
+
+             }
+             console.log( this.firstItem)
+               //bus.$emit('firstitem', this.firstItem);
+               localStorage.setItem('hou', JSON.stringify(this.firstItem));
     this.$router.push({ path: "/" });
-          console.log(response);
+          
             }
         })
         .catch(function(error) {

@@ -15,7 +15,7 @@
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="date" label="日期" sortable width="150">
                 </el-table-column>
@@ -25,6 +25,8 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
+                        <!-- 这里拿到每一行的index----------scope.$index
+                        这里拿到每一行的数据-----------scope.$row -->
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
@@ -95,23 +97,23 @@
         },
         computed: {
             data() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
+                // return this.tableData.filter((d) => {
+                //     let is_del = false;
+                //     for (let i = 0; i < this.del_list.length; i++) {
+                //         if (d.name === this.del_list[i].name) {
+                //             is_del = true;
+                //             break;
+                //         }
+                //     }
+                //     if (!is_del) {
+                //         if (d.address.indexOf(this.select_cate) > -1 &&
+                //             (d.name.indexOf(this.select_word) > -1 ||
+                //                 d.address.indexOf(this.select_word) > -1)
+                //         ) {
+                //             return d;
+                //         }
+                //     }
+                // })
             }
         },
         methods: {
@@ -129,6 +131,7 @@
                 this.$axios.post(this.url, {
                     page: this.cur_page
                 }).then((res) => {
+                    console.log(res)
                     this.tableData = res.data.list;
                 })
             },
@@ -176,6 +179,8 @@
             },
             // 确定删除
             deleteRow(){
+                //参数1：位置
+                //参数2： 删除的数量
                 this.tableData.splice(this.idx, 1);
                 this.$message.success('删除成功');
                 this.delVisible = false;
