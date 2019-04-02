@@ -1,9 +1,9 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar"> 
         <!-- 侧边栏    头-->
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" router>
-            <template v-for="item in items">
+            <div v-for="(item,index) of items" :key="index">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -28,7 +28,7 @@
                         <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
-            </template>
+            </div>
         </el-menu>
  <!-- 侧边栏   尾 -->
     </div>
@@ -103,6 +103,7 @@
         },
         mounted() {
             // this.items = JSON.parse(localStorage.getItem('a'));
+            
         },
 
         created(){
@@ -110,11 +111,20 @@
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
-                    //bus接收侧边栏
-                  bus.$on('items', msg => {
-                this.items = msg;
+            //   //bus接收侧边栏
+            //       bus.$on('firstitem', msg => {
+            //           alert(331)
+            //     this.items = msg;
                 
-            })
+            // })
+             //bus接收侧边栏
+            //       bus.$on('firstitem', msg => {
+            //     this.items = msg;
+            //     console.log(999)
+            //       console.log(this.items)
+                
+            // })
+           this.items= JSON.parse(localStorage.getItem('hou'));
           
         }
     }
