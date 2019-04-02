@@ -5,7 +5,7 @@
   "author": "lin-xin <2981207131@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  --host 192.168.205.64",
     "build": "node build/build.js"
   },
   "dependencies": {

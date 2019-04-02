@@ -40,7 +40,19 @@
         data() {
             return {
                 collapse: false,
-                 items:[]
+                 items:[
+                    //      {
+                    //     icon: 'el-icon-lx-home',
+                    //     //index关联路由数组对象中的路径path
+                    //     index: 'dashboard',
+                    //     title: '系统首页'
+                    // },
+                    // {
+                    //     icon: 'el-icon-lx-cascades',
+                    //     index: 'codemanage',
+                    //     title: '授权码管理'
+                    // }
+                 ]
                 // 左侧边栏数组
                 // items: [
                 //     {
@@ -84,20 +96,26 @@
             }
         },
         computed:{
-            //记住下一次刷新的位置
+            //记住下一次侧边栏刷新的位置
             onRoutes(){
                 return this.$route.path.replace('/','');
             }
         },
+        mounted() {
+            // this.items = JSON.parse(localStorage.getItem('a'));
+        },
+
         created(){
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
                 this.collapse = msg;
-            }),
-            //bus接收侧边栏
+            })
+                    //bus接收侧边栏
                   bus.$on('items', msg => {
                 this.items = msg;
+                
             })
+          
         }
     }
 </script>

@@ -41,7 +41,7 @@
                 <!-- 用户头像 -->
                 <div class="user-avator"><img src="static/img/img.jpg"></div>
                 <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <el-dropdown class="user-name" trigger="click" @comaaaaamand="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
@@ -68,8 +68,6 @@
                     name:'',
                     regionInfo:''
                 },
-                //Bus总线接收
-                // itemRegion:[],
      itemRegion: [
                     {
                         icon: 'el-icon-lx-home',
@@ -81,39 +79,16 @@
                         icon: 'el-icon-lx-cascades',
                         index: 'codemanage',
                         title: '授权码管理'
-                    },
-                    {
-                        icon: 'el-icon-lx-calendar',
-                        index: '3-1',
-                        title: '域A',
-                        subs: [
-                            {
-                                index: 'usermanage',
-                                title: '用户'
-                            },
-                            {
-                                index: '3-2',
-                                title: '设备',
-                                subs: [
-                                    {
-                                        index: 'eqmanage',
-                                        title: '设备管理'
-                                    },
-                                    {
-                                        index: 'eqgroup',
-                                        title: '设备群组'
-                                    },
-                                ]
-                            }
-                        ]
-                    },
+                    }
                 ],
                  dialogTableVisible: false,
         dialogFormVisible: false,
                 collapse: false,
                 fullscreen: false,
-                name: 'linxin',
-                message: 2
+                name: '无名氏',
+                message: 2,
+                num1:0,
+                  num2:1
             }
         },
         computed:{
@@ -137,12 +112,11 @@
           type: 'success'
         });
         this.dialogFormVisible=false;
-        var a=1;
-        var b=2;
+         //this.itemRegion = JSON.parse(localStorage.getItem('regionTotal'));
         this.itemRegion.push(
        {
                         icon: 'el-icon-lx-calendar',
-                        index: a++,
+                        index: this.num1++,
                         title: this.formRegion.name,
                         subs: [
                             {
@@ -150,7 +124,7 @@
                                 title: '用户'
                             },
                             {
-                                index: b++,
+                                index: this.num2++,
                                 title: '设备',
                                 subs: [
                                     {
@@ -165,7 +139,9 @@
                             }
                         ]
                     },
+                    
         )
+        localStorage.setItem('regionTotal',JSON.stringify(this.itemRegion));
             }else if(res.data.status=="F"){
  this.$message({
           message: '该域已存在',
@@ -225,6 +201,9 @@
                 this.collapseChage();
             }
         },
+            created(){
+          
+        }
     }
 </script>
 <style scoped>
