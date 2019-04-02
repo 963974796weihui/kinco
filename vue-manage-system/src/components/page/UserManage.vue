@@ -39,11 +39,11 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="user_name" label="用户名" width="170"></el-table-column>
-         <el-table-column prop="remark" label="备注" width="170"></el-table-column>
-         <el-table-column prop="phone" label="手机号" width="220"></el-table-column>
-         <el-table-column prop="email" label="邮箱号" width="220"></el-table-column>
+        <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
+         <el-table-column prop="user_name" label="用户名" width="100"></el-table-column>
+         <el-table-column prop="remark" label="备注" width="100"></el-table-column>
+         <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
+         <el-table-column prop="email" label="邮箱号" width="200"></el-table-column>
          <el-table-column prop="eq" label="匹配设备" width="280"></el-table-column>
         <el-table-column label="相关操作" width="350" align="center">
           <template slot-scope="scope">
@@ -74,9 +74,9 @@
             <el-button
               type="text"
               icon="el-icon-edit"
-              @click="dialogEdit= true"
+              @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
-            <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
+            <!-- <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
 
  <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="备注名" :label-width="formLabelWidth">
@@ -89,13 +89,11 @@
              <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
           </el-form-item>
         </el-form>
-
-
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogEdit = false">取 消</el-button>
           <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
-      </el-dialog>
+      </el-dialog> -->
 
             <el-button
               type="text"
@@ -125,30 +123,17 @@
     </div>
 
     <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="50px">
-        <el-form-item label="日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.date"
-            value-format="yyyy-MM-dd"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="form.address"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveEdit">确 定</el-button>
-      </span>
-    </el-dialog>
-
+        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="form" label-width="50px">
+                <el-form-item label="备注">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
@@ -214,7 +199,7 @@
         value2: [1, 4],
         dialogFormVisible: false,
         dialogFormVisible1: false,
-        dialogEdit:false,
+        // dialogEdit:false,
         aa:false,
         form1: {
              name: '',
@@ -277,13 +262,21 @@
             }
         },
         methods: {
+          //禁用
+// checkboxT(row,index){
+//     		if(row.status==0){
+//     			return 1;
+//     		}else{
+//     			return 0;
+//     		}
+//     	},
+
             addUser(){
-              alert(1)
  this.$http.post('/api/user/addUser',
                 {
                      user_name: this.form1.name,
                      email: this.form1.email,
-                     domain_id: 1
+                     domain_id: 1//域id
                 }).then(res => {
             console.log(res)
             if(res.data.status=="S"){
@@ -312,17 +305,30 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    // this.url = '/ms/table/list';
-                    this.url = '/api/user/info/6';
-                };
-                this.$axios.get(this.url).then((res) => {
+                //开发环境使用 easy-mock 数据，正式环境使用 json 文件
+                // if (process.env.NODE_ENV === 'development') {
+                //     // this.url = '/ms/table/list';
+                //     this.url = '/api/user/userInfo';
+                // };
+                // this.$axios.get(this.url).then((res) => {
+                //   // console.log(res.data.message[0].user_name)   输入h  
+                //   console.log(res);
+                //     this.tableData = res.data.message;
+                // })
+              this.$http({
+  method: 'get',
+  url: '/api/user/userInfo',
+    params: {
+      domain_id: 3,
+      limit: 10
+  },
+}).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
                   console.log(res);
                     this.tableData = res.data.message;
                 })
             },
+            
             search() {
                 this.is_search = true;
             },
@@ -336,9 +342,7 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
-                    name: item.name,
-                    date: item.date,
-                    address: item.address
+                    name: item.user_name,
                 }
                 this.editVisible = true;
             },

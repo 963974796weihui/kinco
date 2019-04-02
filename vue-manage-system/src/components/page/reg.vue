@@ -58,7 +58,7 @@
     <el-form-item>
       <el-button
         type="primary"
-        @click="zhuce()"
+        @click="reg()"
         style="margin-left: 350px;width:100px"
       >注册</el-button>
       <!-- <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button> -->
@@ -183,7 +183,7 @@
 		 	a(){
 		 		this.$router.push('/login');
 		 	},
-		 	zhuce(){
+		 	reg(){
 		 		 this.$http.post('/api/admin/register',
    {
    user_name:this.formValidate.user_name,
@@ -198,12 +198,14 @@
    phone:this.formValidate.phone
      }
      )
-     .then(function (response) {
-       alert(12);
+     .then(response=>{
+         if(response.data.status=="S"){
+        this.$router.push('/login');
+            }
+        
      console.log(response);
       })
       .catch(function (error) {
-        alert(34);
           console.log(error);
      }); 
 		 	}
