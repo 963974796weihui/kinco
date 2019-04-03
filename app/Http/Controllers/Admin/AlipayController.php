@@ -70,6 +70,7 @@ class AlipayController extends Controller
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             //$e->getMessage();
+            //ceshi
         }
 
         return $alipay->success();// laravel 框架中请直接 `return $alipay->success()`
