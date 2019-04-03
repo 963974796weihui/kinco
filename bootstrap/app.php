@@ -12,7 +12,7 @@
 */
 
 $app = new Illuminate\Foundation\Application(
-    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+    realpath(__DIR__.'/../')
 );
 
 /*
@@ -40,7 +40,10 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
-
+$app->register(
+    Ignited\LaravelOmnipay\LumenOmnipayServiceProvider::class
+);
+//$app->configure('laravel-omnipay');
 /*
 |--------------------------------------------------------------------------
 | Return The Application
