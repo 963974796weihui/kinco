@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="嵌入支付宝">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -538,7 +537,7 @@
       <workItem from="1554172073911" duration="642000" />
       <workItem from="1554174995888" duration="8327000" />
       <workItem from="1554195006081" duration="3799000" />
-      <workItem from="1554257470144" duration="6275000" />
+      <workItem from="1554257470144" duration="6920000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -649,7 +648,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="203098000" />
+    <option name="totallyTimeSpent" value="203743000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="1" width="1932" height="1036" extended-state="0" />
