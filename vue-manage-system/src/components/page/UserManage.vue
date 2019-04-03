@@ -9,12 +9,12 @@
         @click="dialogFormVisible = true"
       >新增用户</el-button>
       <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%">
-        <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+        <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="用户名" :label-width="formLabelWidth">
-            <el-input v-model="form1.name" autocomplete="off" prop="name"></el-input>
+            <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
           </el-form-item>
           <el-form-item label="用户个人Email" :label-width="formLabelWidth">
-            <el-input v-model="form1.email" autocomplete="off" prop="email"></el-input>
+            <el-input v-model="form.email" autocomplete="off" prop="email"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -32,6 +32,7 @@
         </div>
       </div>
       <!-- :data="data1" -->
+      <!-- :header-cell-style="{background:'#20a0ff',color:'#92ff00'}" -->
       <el-table
         :data="tableData"
         border
@@ -44,7 +45,7 @@
          <el-table-column prop="remark" label="备注" width="100"></el-table-column>
          <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
          <el-table-column prop="email" label="邮箱号" width="200"></el-table-column>
-         <el-table-column prop="eq" label="匹配设备" width="280"></el-table-column>
+         <el-table-column prop="hmi" label="匹配设备" width="280"></el-table-column>
         <el-table-column label="相关操作" width="350" align="center">
           <template slot-scope="scope">
  <el-button
@@ -78,12 +79,12 @@
             >编辑</el-button>
             <!-- <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
 
- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+ <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form1.remark" autocomplete="off" prop="remark"></el-input>
+            <el-input v-model="form.remark" autocomplete="off" prop="remark"></el-input>
           </el-form-item>
           <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form1.email" autocomplete="off" prop="email">
+            <el-input v-model="form.email" autocomplete="off" prop="email">
               <el-button slot="prepend" icon="el-icon-edit"></el-button>
             </el-input>
              <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
@@ -126,7 +127,7 @@
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="50px">
                 <el-form-item label="备注">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.remark"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -201,11 +202,12 @@
         dialogFormVisible1: false,
         // dialogEdit:false,
         aa:false,
-        form1: {
-             name: '',
-          email:"",
-          remark:''
-        },
+        //曾经form1
+        // form: {
+        //      name: '',
+        //   email:"",
+        //   remark:''
+        // },
         //匹配校验器
 //       ruleValidate: {
 //    name: [{ required: true, message: "账号名不能为空", trigger: "blur" },
@@ -227,11 +229,12 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name: '',
+                    user_name: '',
+                    email:'',
                     remark:'',
                     phone:'',
-                    email:'',
-                    eq:''
+                    hmi:'',
+                    domain_id:1
                 },
                 idx: -1
             }
@@ -240,26 +243,26 @@
             this.getData();
         },
         computed: {
-            data1() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                      //res.data.message[0].user_name
-                        if (d.name === this.del_list[i].user_name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
-            }
+            // data1() {
+            //     return this.tableData.filter((d) => {
+            //         let is_del = false;
+            //         for (let i = 0; i < this.del_list.length; i++) {
+            //           //res.data.message[0].user_name
+            //             if (d.name === this.del_list[i].user_name) {
+            //                 is_del = true;
+            //                 break;
+            //             }
+            //         }
+            //         if (!is_del) {
+            //             if (d.address.indexOf(this.select_cate) > -1 &&
+            //                 (d.name.indexOf(this.select_word) > -1 ||
+            //                     d.address.indexOf(this.select_word) > -1)
+            //             ) {
+            //                 return d;
+            //             }
+            //         }
+            //     })
+            // }
         },
         methods: {
           //禁用
@@ -274,9 +277,9 @@
             addUser(){
  this.$http.post('/api/user/addUser',
                 {
-                     user_name: this.form1.name,
-                     email: this.form1.email,
-                     domain_id: 1//域id
+                     user_name: this.form.user_name,
+                     email: this.form.email,
+                     domain_id: this.form.domain_id//域id
                 }).then(res => {
             console.log(res)
             if(res.data.status=="S"){
@@ -284,6 +287,7 @@
           message: '新增用户成功',
           type: 'success'
         });
+         this.getData();
         this.dialogFormVisible=false;
             }else if(res.data.status=="F"){
  this.$message({
@@ -303,28 +307,16 @@
                 this.cur_page = val;
                 this.getData();
             },
-            // 获取 easy-mock 的模拟数据
             getData() {
-                //开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                // if (process.env.NODE_ENV === 'development') {
-                //     // this.url = '/ms/table/list';
-                //     this.url = '/api/user/userInfo';
-                // };
-                // this.$axios.get(this.url).then((res) => {
-                //   // console.log(res.data.message[0].user_name)   输入h  
-                //   console.log(res);
-                //     this.tableData = res.data.message;
-                // })
               this.$http({
   method: 'get',
   url: '/api/user/userInfo',
     params: {
-      domain_id: 3,
+      domain_id: this.form.domain_id,
       limit: 10
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
-                  console.log(res);
                     this.tableData = res.data.message;
                 })
             },
@@ -342,7 +334,11 @@
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
-                    name: item.user_name,
+                   // remark: item.remark,
+                     user_name: item.user_name,
+                    remark: item.remark,
+                    phone: item.phone,
+                    email: item.email,
                 }
                 this.editVisible = true;
             },
@@ -372,6 +368,14 @@
             // 确定删除
             deleteRow(){
                 this.tableData.splice(this.idx, 1);
+                           this.$http({
+  method: 'get',
+  url: '/api/user/delete/1',
+}).then((res) => {
+                  // console.log(res.data.message[0].user_name)   输入h  
+                  console.log(res);
+                    //  this.tableData = res.data.message;
+                })
                 this.$message.success('删除成功');
                 this.delVisible = false;
             }
@@ -380,7 +384,7 @@
 
 </script>
 
-<style scoped>
+<style >
 .search {
   float: right;
 }
@@ -410,4 +414,13 @@
 .tr{
 text-align: left;
 }
+
+.el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #dcdee2;
+}
+
+.el-table--border td {
+    border-right: 1px solid #dcdee2;
+}
+
 </style>

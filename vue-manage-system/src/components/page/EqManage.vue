@@ -9,9 +9,15 @@
         @click="dialogFormVisible = true"
       >添加设备</el-button>
       <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="30%">
-        <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+        <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="序列号" :label-width="formLabelWidth">
-            <el-input v-model="form1.serial" autocomplete="off" prop="serial"></el-input>
+            <el-input v-model="form.sncode" autocomplete="off" prop="sncode"></el-input>
+          </el-form-item>
+           <el-form-item label="授权码" :label-width="formLabelWidth">
+            <el-input v-model="form.auth_code" autocomplete="off" prop="auth_code"></el-input>
+          </el-form-item>
+             <el-form-item label="人机名" :label-width="formLabelWidth">
+            <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -29,56 +35,52 @@
         </div>
       </div>
       <el-table
-        :data="data1"
+        :data="tableData"
         border
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="name" label="设备名" width="170"></el-table-column>
+         <el-table-column prop="hmi_name" label="设备名" width="170"></el-table-column>
          <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
-         <el-table-column prop="serial" label="序列号" width="220"></el-table-column>
-         <el-table-column prop="online" label="在线状态" width="120"></el-table-column>
+         <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
+         <el-table-column prop="hmi_status" label="在线状态" width="120"></el-table-column>
          <el-table-column prop="virtual" label="虚拟ip" width="150"></el-table-column>
          <el-table-column prop="real" label="真实ip" width="150"></el-table-column>
-         <el-table-column prop="bind" label="授权码绑定情况" width="180"></el-table-column>
-          <el-table-column prop="date" label="开通日期" width="250"></el-table-column>
+         <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
+          <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
           <el-table-column label="相关操作" width="100" align="center">
           <template >
-             <!-- <el-button
+             <el-button
               type="text"
               icon="el-icon-close"
               class="red"
               @click="ban()"
-            >禁用</el-button> -->
-<el-button
+            >禁用</el-button>
+<!-- <el-button
               type="text"
               icon="el-icon-close"
               class="red"
               @click="dialogEdit= true"
             >禁用</el-button>
             <el-dialog title="禁用" :visible.sync="dialogEdit" width="30%">
-
- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+ <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form1.remark" autocomplete="off" prop="remark"></el-input>
+            <el-input v-model="form.remark" autocomplete="off" prop="remark"></el-input>
           </el-form-item>
           <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form1.email" autocomplete="off" prop="email">
+            <el-input v-model="form.email" autocomplete="off" prop="email">
               <el-button slot="prepend" icon="el-icon-edit"></el-button>
             </el-input>
              <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
           </el-form-item>
         </el-form>
-
-
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogEdit = false">取 消</el-button>
           <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
-      </el-dialog>
-
+      </el-dialog> -->
 
           </template>
         </el-table-column>
@@ -156,14 +158,11 @@
          dialogTableVisible: false,
         dialogFormVisible: false,
         dialogEdit: false,
-        // form1: {
-        //      serial:''
+        //     form: {
+        //      name: '',
+        //   email:"1313132131@163.com",
+        //   remark:''
         // },
-            form1: {
-             name: '',
-          email:"1313132131@163.com",
-          remark:''
-        },
         //匹配校验器
 //       ruleValidate: {
 //    name: [{ required: true, message: "账号名不能为空", trigger: "blur" },
@@ -185,14 +184,18 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name:'',
-                    type1:'',
-                    serial:'',
-                    online:'',
-                    virtual:'',
-                    real:'',
-                    bind:'',
-                    date:''
+                  auth_code:'',
+                  sncode:'',
+                  hmi_name:'',
+                    // name:'',
+                    // type1:'',
+                    // serial:'',
+                    // online:'',
+                    // virtual:'',
+                    // real:'',
+                    // bind:'',
+                    // date:'',
+                    domain_id:1
                 },
                 idx: -1
             }
@@ -201,29 +204,54 @@
             this.getData();
         },
         computed: {
-            data1() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.name === this.del_list[i].name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.address.indexOf(this.select_cate) > -1 &&
-                            (d.name.indexOf(this.select_word) > -1 ||
-                                d.address.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
-            }
+            // data1() {
+            //     return this.tableData.filter((d) => {
+            //         let is_del = false;
+            //         for (let i = 0; i < this.del_list.length; i++) {
+            //             if (d.name === this.del_list[i].name) {
+            //                 is_del = true;
+            //                 break;
+            //             }
+            //         }
+            //         if (!is_del) {
+            //             if (d.address.indexOf(this.select_cate) > -1 &&
+            //                 (d.name.indexOf(this.select_word) > -1 ||
+            //                     d.address.indexOf(this.select_word) > -1)
+            //             ) {
+            //                 return d;
+            //             }
+            //         }
+            //     })
+            // }
         },
         methods: {
             //添加序列号
             addSerial(){
+          this.$http({
+  method: 'post',
+  url: '/api/supply/addSupply',
+    data: {
+      auth_code: this.form.auth_code,
+      sncode: this.form.sncode,
+      domain_id: this.form.domain_id,
+      hmi_name: this.form.hmi_name,
+  },
+}).then(res => {
+            console.log(res)
+            if(res.data.status=="S"){
+                   this.$message({
+          message: '新增设备成功',
+          type: 'success'
+        });
+        this.getData();
+        this.dialogFormVisible=false;
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该设备已存在',
+          type: 'warning'
+        });
+            }
+        })
             },
             // 分页导航
             handleCurrentChange(val) {
@@ -232,14 +260,19 @@
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
+                       this.$http({
+  method: 'post',
+  url: '/api/supply/supplyInfo',
+    params: {
+      domain_id: this.form.domain_id,
+      limit: 10
+  },
+}).then((res) => {
+                  // console.log(res.data.message[0].user_name)   输入h  
+                  console.log(111);
+                  console.log(res);
+                    this.tableData = res.data.message.data;
+                     console.log(this.tableData );
                 })
             },
             search() {

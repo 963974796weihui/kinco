@@ -9,9 +9,9 @@
         @click="dialogFormVisible = true"
       >添加设备群组</el-button>
       <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="30%">
-        <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+        <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="设备组名" :label-width="formLabelWidth">
-            <el-input v-model="form1.group" autocomplete="off" prop="group"></el-input>
+            <el-input v-model="form.group_name" autocomplete="off" prop="group_name"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -29,14 +29,14 @@
         </div>
       </div>
       <el-table
-        :data="data1"
+        :data="tableData"
         border
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="name" label="设备组名" width="170"></el-table-column>
+        <el-table-column prop="group_name" label="设备组名" width="170"></el-table-column>
         <el-table-column prop="number" label="组成员" width="280"></el-table-column>
         <el-table-column label="相关操作" width="500" align="center">
           <template slot-scope="scope">
@@ -66,9 +66,9 @@
             <el-button type="text" icon="el-icon-document" @click="dialogGroupName = true">更改组名</el-button>
  <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
    
- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+ <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="组名" :label-width="formLabelWidth">
-            <el-input v-model="form1.GroupName" autocomplete="off" prop="remark"></el-input>
+            <el-input v-model="form.GroupName" autocomplete="off" prop="remark"></el-input>
           </el-form-item>
         </el-form>
         
@@ -79,12 +79,12 @@
       </el-dialog>
             <!-- <el-dialog title="更改组名" :visible.sync="dialogFormVisible" width="30%">
 
- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
+ <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form1.remark" autocomplete="off" prop="remark"></el-input>
+            <el-input v-model="form.remark" autocomplete="off" prop="remark"></el-input>
           </el-form-item>
           <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form1.email" autocomplete="off" prop="email">
+            <el-input v-model="form.email" autocomplete="off" prop="email">
               <el-button slot="prepend" icon="el-icon-edit"></el-button>
             </el-input>
              <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
@@ -182,26 +182,7 @@ export default {
       dialogManagerMember: false,
       dialogBindUser: false,
       dialogGroupName: false,
-      // form1: {
-      //      group:''
-      // },
-      form1: {
-        name: "",
-        email: "1313132131@163.com",
-        remark: "",
-        GroupName:''
-      },
-      //匹配校验器
-      //       ruleValidate: {
-      //    name: [{ required: true, message: "账号名不能为空", trigger: "blur" },
-      //           { validator: validatename, trigger: "blur" }],
-      //            email: [
-      //            {required: true, message: '请输入电子邮箱', trigger: 'blur'},
-      //           { validator: validatemail, trigger: "blur" }],
-
-      //       },
       formLabelWidth: "120px",
-      // url: './static/vuetable.json',
       tableData: [],
       cur_page: 1,
       multipleSelection: [],
@@ -212,6 +193,8 @@ export default {
       editVisible: false,
       delVisible: false,
       form: {
+        domain_id: 1,
+        group_name:'',
         name: "",
         type1: "",
         serial: "",
@@ -228,48 +211,57 @@ export default {
     this.getData();
   },
   computed: {
-    data1() {
-      return this.tableData.filter(d => {
-        let is_del = false;
-        for (let i = 0; i < this.del_list.length; i++) {
-          if (d.name === this.del_list[i].name) {
-            is_del = true;
-            break;
-          }
-        }
-        if (!is_del) {
-          if (
-            d.address.indexOf(this.select_cate) > -1 &&
-            (d.name.indexOf(this.select_word) > -1 ||
-              d.address.indexOf(this.select_word) > -1)
-          ) {
-            return d;
-          }
-        }
-      });
-    }
   },
   methods: {
     //添加设备群组
-    addGroup() {},
+    addGroup() {
+      this.$http({
+  method: 'post',
+  url: '/api/group/addGroup',
+    data: {
+      domain_id: this.form.domain_id,
+      group_name: this.form.group_name
+  },
+}).then(res => {
+            console.log(res)
+            if(res.data.status=="S"){
+                   this.$message({
+          message: '新增设备组成功',
+          type: 'success'
+        });
+        this.getData();
+        this.dialogFormVisible=false;
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该设备组已存在',
+          type: 'warning'
+        });
+            }
+        })
+
+
+    },
     // 分页导航
     handleCurrentChange(val) {
       this.cur_page = val;
       this.getData();
     },
-    // 获取 easy-mock 的模拟数据
     getData() {
-      // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-      if (process.env.NODE_ENV === "development") {
-        this.url = "/ms/table/list";
-      }
-      this.$axios
-        .post(this.url, {
-          page: this.cur_page
-        })
-        .then(res => {
-          this.tableData = res.data.list;
-        });
+           this.$http({
+  method: 'post',
+  url: '/api/group/supplyInfo',
+    data: {
+      id: this.form.domain_id,
+      limit: 10
+  },
+}).then((res) => {
+                  // console.log(res.data.message[0].user_name)   输入h  
+                  console.log(111);
+                  console.log(res);
+                    this.tableData = res.data.message;
+                     console.log(this.tableData );
+                })
+
     },
     search() {
       this.is_search = true;
