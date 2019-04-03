@@ -66,6 +66,20 @@ class AlipayController extends Controller
             // 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）；
             // 4、验证app_id是否为该商户本身。
             // 5、其它业务逻辑情况
+		
+
+ 	$date['gmt_payment'] = $data->gmt_payment;
+	$date['subject'] = $data->subject;
+	$date['out_trade_no'] = $data->out_trade_no;
+	$date['total_amount'] = $data->total_amount;
+	$date['trade_status'] = $data->trade_status;
+	$date['trade_no'] = $data->trade_no;
+	$date['auth_app_id'] = $data->auth_app_id;
+	$date['receipt_amount'] = $data->receipt_amount;
+	$date['app_id'] = $data->app_id;
+	$date['buyer_pay_amount'] = $data->buyer_pay_amount;
+	$date['seller_id'] = $data->seller_id;
+        $res = DB::table('test')->insertGetId($date);
 
             Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
