@@ -5,7 +5,7 @@
             <i class="el-icon-menu"></i>
         </div>
         <div class="logo">EdgeAccess</div>
-        <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域1</el-button>
+        <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域2</el-button>
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="formRegion">
           <el-form-item label="域名" :label-width="formLabelWidth">
@@ -196,7 +196,7 @@
         },
         mounted(){
             //bus发送侧边栏
-             bus.$emit('items', this.itemRegion)
+            // bus.$emit('items', this.itemRegion)
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }

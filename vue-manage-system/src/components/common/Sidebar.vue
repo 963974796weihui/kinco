@@ -40,58 +40,58 @@
         data() {
             return {
                 collapse: false,
-                 items:[
-                    //      {
-                    //     icon: 'el-icon-lx-home',
-                    //     //index关联路由数组对象中的路径path
-                    //     index: 'dashboard',
-                    //     title: '系统首页'
-                    // },
-                    // {
-                    //     icon: 'el-icon-lx-cascades',
-                    //     index: 'codemanage',
-                    //     title: '授权码管理'
-                    // }
-                 ]
+                //  items:[
+                //     //      {
+                //     //     icon: 'el-icon-lx-home',
+                //     //     //index关联路由数组对象中的路径path
+                //     //     index: 'dashboard',
+                //     //     title: '系统首页'
+                //     // },
+                //     // {
+                //     //     icon: 'el-icon-lx-cascades',
+                //     //     index: 'codemanage',
+                //     //     title: '授权码管理'
+                //     // }
+                //  ]
                 // 左侧边栏数组
-                // items: [
-                //     {
-                //         icon: 'el-icon-lx-home',
-                //         //index关联路由数组对象中的路径path
-                //         index: 'dashboard',
-                //         title: '系统首页'
-                //     },
-                //     {
-                //         icon: 'el-icon-lx-cascades',
-                //         index: 'codemanage',
-                //         title: '授权码管理'
-                //     },
-                //     {
-                //         icon: 'el-icon-lx-calendar',
-                //         index: '3',
-                //         title: '域A',
-                //         subs: [
-                //             {
-                //                 index: 'usermanage',
-                //                 title: '用户'
-                //             },
-                //             {
-                //                 index: '3-2',
-                //                 title: '设备',
-                //                 subs: [
-                //                     {
-                //                         index: 'eqmanage',
-                //                         title: '设备管理'
-                //                     },
-                //                     {
-                //                         index: 'eqgroup',
-                //                         title: '设备群组'
-                //                     },
-                //                 ]
-                //             },
-                //         ]
-                //     },
-                // ]
+                items: [
+                    {
+                        icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
+                        index: 'dashboard',
+                        title: '系统首页'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'codemanage',
+                        title: '授权码管理'
+                    },
+                    {
+                        icon: 'el-icon-lx-calendar',
+                        index: '3',
+                        title: '域A',
+                        subs: [
+                            {
+                                index: 'usermanage',
+                                title: '用户'
+                            },
+                            {
+                                index: '3-2',
+                                title: '设备',
+                                subs: [
+                                    {
+                                        index: 'eqmanage',
+                                        title: '设备管理'
+                                    },
+                                    {
+                                        index: 'eqgroup',
+                                        title: '设备群组'
+                                    },
+                                ]
+                            },
+                        ]
+                    },
+                ]
 
             }
         },
@@ -124,7 +124,7 @@
             //       console.log(this.items)
                 
             // })
-           this.items= JSON.parse(localStorage.getItem('hou'));
+          // this.items= JSON.parse(localStorage.getItem('hou'));
           
         }
     }
