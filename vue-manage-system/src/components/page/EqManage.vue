@@ -132,6 +132,7 @@
 </template>
 
 <script>
+import bus from '../common/bus';
     export default {
         name: 'basetable',
         data() {
@@ -158,26 +159,13 @@
          dialogTableVisible: false,
         dialogFormVisible: false,
         dialogEdit: false,
-        //     form: {
-        //      name: '',
-        //   email:"1313132131@163.com",
-        //   remark:''
-        // },
-        //匹配校验器
-//       ruleValidate: {
-//    name: [{ required: true, message: "账号名不能为空", trigger: "blur" },
-//           { validator: validatename, trigger: "blur" }],
-//            email: [
-//            {required: true, message: '请输入电子邮箱', trigger: 'blur'},
-//           { validator: validatemail, trigger: "blur" }],
-
-//       },
         formLabelWidth: '120px',
                 // url: './static/vuetable.json',
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
                 select_cate: '',
+                trHmi:[],
                 select_word: '',
                 del_list: [],
                 is_search: false,
@@ -273,6 +261,12 @@
                   console.log(res);
                     this.tableData = res.data.message.data;
                      console.log(this.tableData );
+for(var i=0;i<res.data.message.data.length;i++){
+  this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
+}
+ bus.$emit('trhmi', this.trHmi);
+
+
                 })
             },
             search() {
