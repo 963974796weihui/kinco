@@ -41,7 +41,7 @@ class IndexController extends Controller
         if (!is_array($result)) {
             return response()->json(['status' => 'F', 'code' => '201', 'message' => $result]);
         }
-        $user_name=DB::table('ki_admin_administrtor')->where('user_name','=',$result['user_name'])->get()->toArray();
+        $user_name = DB::table('ki_admin_administrtor')->where('user_name', '=', $result['user_name'])->get()->toArray();
         if ($user_name) {
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '该用户已被注册']);
         }
@@ -49,13 +49,13 @@ class IndexController extends Controller
         $request['register_confirm_code'] = str_random(32);
         $request['password'] = str_random(6);
         $res = DB::table('ki_admin_administrtor')->insertGetId($request);
-        $registerCode['id']=$res;
-        $registerCode['email']=$request['email'];
-        $registerCode['user_name']=$request['user_name'];//域名
-        $registerCode['first_name']=$request['first_name'];//姓名
-        $registerCode['password']=$request['password'];
-        $registerCode['register_confirm_code']=$request['register_confirm_code'];
-        $mail=$this->IndexServicesController->mailSend($registerCode);//发送邮件
+        $registerCode['id'] = $res;
+        $registerCode['email'] = $request['email'];
+        $registerCode['user_name'] = $request['user_name'];//域名
+        $registerCode['first_name'] = $request['first_name'];//姓名
+        $registerCode['password'] = $request['password'];
+        $registerCode['register_confirm_code'] = $request['register_confirm_code'];
+        $mail = $this->IndexServicesController->mailSend($registerCode);//发送邮件
         if ($res) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '注册成功']);
         }
@@ -72,9 +72,9 @@ class IndexController extends Controller
         $result = $this->IndexServicesController->login($request);
         if ($result) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
-        } elseif($result==0) {
+        } elseif ($result == 0) {
             return response()->json(['status' => 'F', 'code' => '202', 'message' => '请前往邮箱进行确认']);
-        }else{
+        } else {
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '账号密码不正确']);
         }
     }
@@ -84,10 +84,11 @@ class IndexController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * 新建域
      */
-    public function registerDomain(Request $request){
-        $request=$request->all();
-        $result=$this->IndexServicesController->registerDomain($request);
-        if($result){
+    public function registerDomain(Request $request)
+    {
+        $request = $request->all();
+        $result = $this->IndexServicesController->registerDomain($request);
+        if ($result) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
         }
         return response()->json(['status' => 'F', 'code' => '201', 'message' => '该域已存在']);
@@ -97,10 +98,11 @@ class IndexController extends Controller
      * @param Request $request
      *
      */
-    public function region(Request $request){
-        $id=$request->input('id');
-        $result=DB::table('ki_admin_region')->where('ParentId',$id)->get()->toArray();
-       dd($result);
+    public function region(Request $request)
+    {
+        $id = $request->input('id');
+        $result = DB::table('ki_admin_region')->where('ParentId', $id)->get()->toArray();
+        dd($result);
     }
 
     /**
@@ -108,10 +110,35 @@ class IndexController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * 激活邮箱
      */
-    public function confirm(Request $request){
-        $id=$request->input('id');
-        $register_confirm_code=$request->input('code');
-        $res=DB::table('ki_admin_administrtor')->where('id',$id)->where('register_confirm_code',$register_confirm_code)->update(['status'=>1]);
+    public function confirm(Request $request)
+    {
+        $id = $request->input('id');
+        $register_confirm_code = $request->input('code');
+        $res = DB::table('ki_admin_administrtor')->where('id', $id)->where('register_confirm_code', $register_confirm_code)->update(['status' => 1]);
         return view('emails.confirm');
+    }
+
+    /**
+     * 测试
+     */
+    public function test()
+    {
+        $online_id=array();
+        $filename = "/root/openvpn_docker/release_1/deploy_map_related/openvpn/server";
+        $handle = file($filename);
+        $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
+        $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数
+        for($i=$start_line;$i<$end_line;$i++){
+            $array=explode(',',$handle[$i]);
+            $condition['virtual_address']=$array[0];
+            $condition['real_address']=$array[2];
+            $condition['hmi_status']=1;
+            DB::table('ki_admin_hmi')->where('cert_name',$array[1])->update($condition);//更新在线人机状态
+            $id=DB::table('ki_admin_hmi')->where('cert_name',$array[1])->select('id')->get()->toArray();//查找未在线人机
+            if($id){
+                $online_id[]=$id[0]->id;
+            }
+        }
+        DB::table('ki_admin_hmi')->whereNotIn('id',$online_id)->update(['hmi_status'=>0]);//更新未在线人机状态为0
     }
 }

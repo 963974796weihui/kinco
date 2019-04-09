@@ -44,7 +44,7 @@
 
             <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="30%">
               <div class="tr">
-                <el-transfer v-model="value1" :data="data"></el-transfer>
+                <el-transfer v-model="value1" :data="dataGroupHmi"></el-transfer>
               </div>
 
               <div slot="footer" class="dialog-footer">
@@ -56,7 +56,7 @@
             <el-button type="text" icon="el-icon-lx-people" class="red" @click="dialogBindUser= true">绑定用户</el-button>
     <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="30%">
               <div class="tr">
-                <el-transfer v-model="value1" :data="data"></el-transfer>
+                <el-transfer v-model="value1" :data="dataUser"></el-transfer>
               </div>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogBindUser = false">取 消</el-button>
@@ -154,28 +154,10 @@
 </template>
 
 <script>
+ import bus from '../common/bus';
 export default {
   name: "basetable",
   data() {
-    //   //邮箱校验
-    //     const validatemail=(rule, value, callback)=>{
-    //         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
-    //     let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/
-    //     if (value && (!(temp).test(value))) {
-    //       callback(new Error('邮箱格式不符合规范'))
-    //     } else {
-    //       callback()
-    //     }
-    //     };
-    //     //账户名校验
-    //      const validatename=(rule, value, callback)=>{
-    //        let acount = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/
-    //     if (value && (!(acount).test(value))) {
-    //       callback(new Error('账号不符合规范'))
-    //     } else {
-    //       callback()
-    //     }
-    //      };
     return {
       dialogFormVisible: false,
       dialogEdit1: false,
@@ -184,6 +166,9 @@ export default {
       dialogGroupName: false,
       formLabelWidth: "120px",
       tableData: [],
+      dataGroupHmi:[],
+      dataUser:[],
+      trGroup:[],
       cur_page: 1,
       multipleSelection: [],
       select_cate: "",
@@ -209,6 +194,33 @@ export default {
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    //调用 管理组成员 接口
+              this.$http({
+  method: 'post',
+  url: '/api/group/hmiInfo',
+    data: {
+      domain_id: this.form.domain_id,
+  },
+}).then((res) => {
+  			for(var i=0;i<res.data.message.length;i++){
+  this.dataGroupHmi.push({key:i+1,label:res.data.message[i].hmi_name});
+}
+                })
+
+//调用 绑定用户 接口
+   this.$http({
+  method: 'post',
+  url: '/api/group/addUser',
+    data: {
+      domain_id: this.form.domain_id,
+  },
+}).then((res) => {
+  			for(var i=0;i<res.data.message.length;i++){
+  this.dataUser.push({key:i+1,label:res.data.message[i].user_name});
+}
+                })
   },
   computed: {
   },
@@ -257,9 +269,25 @@ export default {
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
                   console.log(111);
+                  console.log(res.data.message.length);
                   console.log(res);
                     this.tableData = res.data.message;
                      console.log(this.tableData );
+// for(var i=0;i<res.data.message.length;i++){
+//   this.trGroup.push({key:i+1,label:res.data.message[i].group_name});
+// }
+//  bus.$emit('trgroup', this.trGroup);
+ //------------------------------
+  // //  bus接收
+  //                 bus.$on('trhmi', msg => {
+  //               this.dataGroupHmi = msg;
+                
+  //           })
+            //        bus.$on('truser', msg => {
+            //     this.dataUser = msg;
+                
+            // })
+			
                 })
 
     },

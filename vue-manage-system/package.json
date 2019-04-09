@@ -1,11 +1,11 @@
 {
   "name": "vue-manage-system",
   "version": "3.2.0",
-  "description": "鍩轰簬Vue.js 2.x绯诲垪 + element-ui 鍐呭绠＄悊绯荤粺瑙ｅ喅鏂规",
+  "description": "基于Vue.js 2.x系列 + element-ui 内容管理系统解决方案",
   "author": "lin-xin <2981207131@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  ",
     "build": "node build/build.js"
   },
   "dependencies": {

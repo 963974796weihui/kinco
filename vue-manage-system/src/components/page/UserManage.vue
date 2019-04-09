@@ -40,6 +40,7 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
+      
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
          <el-table-column prop="user_name" label="用户名" width="100"></el-table-column>
          <el-table-column prop="remark" label="备注" width="100"></el-table-column>
@@ -57,12 +58,12 @@
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="设备组" name="first">
   <div class="tr">
-           <el-transfer v-model="value1" :data="data"></el-transfer>
+           <el-transfer v-model="value1" :data="dataGroup"></el-transfer>
            </div>
     </el-tab-pane>
     <el-tab-pane label="设备" name="second">
   <div class="tr">
-           <el-transfer v-model="value2" :data="data2"></el-transfer>
+           <el-transfer v-model="value2" :data="dataHmi"></el-transfer>
            </div>
     </el-tab-pane>
   </el-tabs>
@@ -77,25 +78,6 @@
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
-            <!-- <el-dialog title="编辑" :visible.sync="dialogEdit" width="30%">
-
- <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form.remark" autocomplete="off" prop="remark"></el-input>
-          </el-form-item>
-          <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form.email" autocomplete="off" prop="email">
-              <el-button slot="prepend" icon="el-icon-edit"></el-button>
-            </el-input>
-             <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogEdit = false">取 消</el-button>
-          <el-button type="primary" @click="addUser()">确 定</el-button>
-        </div>
-      </el-dialog> -->
-
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -147,31 +129,21 @@
 </template>
 
 <script>
+import bus from '../common/bus';
     export default {
         name: 'basetable',
         data() {
-          const generateData = _ => {
-        const data = [];
-        for (let i = 1; i <= 15; i++) {
-          data.push({
-            key: i,
-            label: `设备组 ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data;
-      };
-         const generateData2 = _ => {
-        const data2 = [];
-        for (let i = 1; i <= 15; i++) {
-          data2.push({
-            key: i,
-            label: `设备 ${ i }`,
-            disabled: i % 4 === 0
-          });
-        }
-        return data2;
-      };
+      //    const generateData2 = _ => {
+      //   const data2 = [];
+      //   for (let i = 1; i <= 15; i++) {
+      //     data2.push({
+      //       key: i,
+      //       label: `设备 ${ i }`,
+      //       disabled: i % 4 === 0
+      //     });
+      //   }
+      //   return data2;
+      // };
 //   //邮箱校验
 //     const validatemail=(rule, value, callback)=>{
 //         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
@@ -194,10 +166,13 @@
             return {
                 checked: true,//寄送新用户密码
                activeName: 'first',
-               data: generateData(),
-                data2: generateData2(),
-        value1: [1, 4],
-        value2: [1, 4],
+              //  dataGroup: generateData(),
+              //  dataGroup: [{label:'测试1'},{label:'测试2'},{label:'测试3'}],
+              dataGroup:[],
+                dataHmi:[],
+                receiveGroup:[],
+        // value1: [1, 4],
+        // value2: [1, 4],
         dialogFormVisible: false,
         dialogFormVisible1: false,
         // dialogEdit:false,
@@ -222,6 +197,7 @@
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
+                trUser:[],
                 select_cate: '',
                 select_word: '',
                 del_list: [],
@@ -240,39 +216,48 @@
             }
         },
         created() {
+          
             this.getData();
+              
+        },
+        mounted() {
+          //  //bus接收设备组数据
+          //         bus.$on('trgroup', msg => {
+          //           alert(222)
+          //       this.dataGroup = msg;
+          //   })
+          //调用获取所有设备组 接口  
+            this.$http({
+  method: 'post',
+  url: '/api/user/supplyGroup',
+    data: {
+      id: this.form.domain_id,
+  },
+}).then((res) => {
+  			for(var i=0;i<res.data.message.length;i++){
+  this.dataGroup.push({key:i+1,label:res.data.message[i].group_name});
+}
+                })
+
+//调用获取所有设备 接口
+         this.$http({
+  method: 'post',
+  url: '/api/user/hmiGroup',
+    data: {
+      id: this.form.domain_id,
+  },
+}).then((res) => {
+  console.log(456)
+  console.log(res)
+  			for(var i=0;i<res.data.message.length;i++){
+  this.dataHmi.push({key:i+1,label:res.data.message[i].hmi_name});
+}
+                })
+
         },
         computed: {
-            // data1() {
-            //     return this.tableData.filter((d) => {
-            //         let is_del = false;
-            //         for (let i = 0; i < this.del_list.length; i++) {
-            //           //res.data.message[0].user_name
-            //             if (d.name === this.del_list[i].user_name) {
-            //                 is_del = true;
-            //                 break;
-            //             }
-            //         }
-            //         if (!is_del) {
-            //             if (d.address.indexOf(this.select_cate) > -1 &&
-            //                 (d.name.indexOf(this.select_word) > -1 ||
-            //                     d.address.indexOf(this.select_word) > -1)
-            //             ) {
-            //                 return d;
-            //             }
-            //         }
-            //     })
-            // }
         },
         methods: {
-          //禁用
-// checkboxT(row,index){
-//     		if(row.status==0){
-//     			return 1;
-//     		}else{
-//     			return 0;
-//     		}
-//     	},
 
             addUser(){
  this.$http.post('/api/user/addUser',
@@ -333,13 +318,28 @@
             handleEdit(index, row) {
                 this.idx = index;
                 const item = this.tableData[index];
-                this.form = {
+               
+                var _this = this.form;
+				         this.$http({
+  method: 'post',
+  url: '/api/user/updateInfo',
+    data: {
+      id: item.id,
+      email: item.email,
+       remark: _this.remark
+  },
+}).then((res) => {
+                })
+                  this.form = {
                    // remark: item.remark,
+
                      user_name: item.user_name,
                     remark: item.remark,
                     phone: item.phone,
                     email: item.email,
+                    hmi:item.hmi
                 }
+
                 this.editVisible = true;
             },
             handleDelete(index, row) {
@@ -364,6 +364,20 @@
                 this.$set(this.tableData, this.idx, this.form);
                 this.editVisible = false;
                 this.$message.success(`修改第 ${this.idx+1} 行成功`);
+
+//          this.$http({
+//   method: 'post',
+//   url: '/api/user/updateInfo',
+//     data: {
+//       id: this.form.domain_id,
+//       email:"",
+//       remark:""
+//   },
+// }).then((res) => {
+//                 })
+
+
+
             },
             // 确定删除
             deleteRow(){
