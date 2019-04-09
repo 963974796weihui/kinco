@@ -124,7 +124,7 @@ class IndexController extends Controller
     public function test()
     {
         $online_id=array();
-        $filename = "/root/openvpn_docker/release_1/deploy_map_related/openvpn/server/test.log";
+        $filename = "d:phpStudy/PHPTutorial/WWW/a.log";
         $handle = file($filename);
         $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
         $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数

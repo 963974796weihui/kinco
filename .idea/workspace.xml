@@ -15,11 +15,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexController.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php">
+      <file leaf-file-name="GroupController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="128" column="70" lean-forward="true" selection-start-line="128" selection-start-column="70" selection-end-line="128" selection-end-column="70" />
+            <state relative-caret-position="608">
+              <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -30,14 +30,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="26">
               <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
-              <folding>
-                <marker date="1554799501752" expanded="true" signature="0:2042" ph="{&quot;name&quot;: &quot;vue-manage-system&quot;...}" />
-                <marker date="1554799501752" expanded="true" signature="198:328" ph="{&quot;dev&quot;: &quot;webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  &quot;...}" />
-                <marker date="1554799501752" expanded="true" signature="348:670" ph="{&quot;axios&quot;: &quot;^0.15.3&quot;...}" />
-                <marker date="1554799501752" expanded="true" signature="693:1896" ph="{&quot;autoprefixer&quot;: &quot;^7.1.2&quot;...}" />
-                <marker date="1554799501752" expanded="true" signature="1911:1962" ph="{&quot;node&quot;: &quot;&gt;= 4.0.0&quot;...}" />
-                <marker date="1554799501752" expanded="true" signature="1982:2040" ph="[...]" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -57,6 +50,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
               <caret line="19" column="72" lean-forward="false" selection-start-line="19" selection-start-column="72" selection-end-line="19" selection-end-column="72" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IndexController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="133" column="49" lean-forward="true" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -446,7 +449,7 @@
       <workItem from="1554284758791" duration="1770000" />
       <workItem from="1554341287891" duration="8955000" />
       <workItem from="1554687656575" duration="6693000" />
-      <workItem from="1554773847790" duration="15940000" />
+      <workItem from="1554773847790" duration="17298000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -557,7 +560,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244633000" />
+    <option name="totallyTimeSpent" value="245991000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-37" y="31" width="1932" height="926" extended-state="0" />
@@ -852,14 +855,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/emails/confirm.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -924,21 +919,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
           <caret line="1" column="30" lean-forward="false" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
-          <folding>
-            <marker date="1554799501752" expanded="true" signature="0:2042" ph="{&quot;name&quot;: &quot;vue-manage-system&quot;...}" />
-            <marker date="1554799501752" expanded="true" signature="198:328" ph="{&quot;dev&quot;: &quot;webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  &quot;...}" />
-            <marker date="1554799501752" expanded="true" signature="348:670" ph="{&quot;axios&quot;: &quot;^0.15.3&quot;...}" />
-            <marker date="1554799501752" expanded="true" signature="693:1896" ph="{&quot;autoprefixer&quot;: &quot;^7.1.2&quot;...}" />
-            <marker date="1554799501752" expanded="true" signature="1911:1962" ph="{&quot;node&quot;: &quot;&gt;= 4.0.0&quot;...}" />
-            <marker date="1554799501752" expanded="true" signature="1982:2040" ph="[...]" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="128" column="70" lean-forward="true" selection-start-line="128" selection-start-column="70" selection-end-line="128" selection-end-column="70" />
+        <state relative-caret-position="339">
+          <caret line="133" column="49" lean-forward="true" selection-start-line="133" selection-start-column="49" selection-end-line="133" selection-end-column="49" />
           <folding />
         </state>
       </provider>
