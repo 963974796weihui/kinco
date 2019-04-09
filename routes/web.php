@@ -47,3 +47,6 @@ Route::post('/AuthCode/codeInfo','Admin\AuthCodeController@codeInfo');//授权�
 Route::get('alipay','Admin\AlipayController@Alipay');  // 发起支付请求
 Route::any('notify','Admin\AlipayController@AliPayNotify'); //服务器异步通知页面路径
 Route::any('return','Admin\AlipayController@AliPayReturn');  //页面跳转同步通知页面路径
+
+//测试模块
+Route::get('test','Admin\IndexController@test');  // 发起支付请求
