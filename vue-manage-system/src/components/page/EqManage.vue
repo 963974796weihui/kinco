@@ -35,7 +35,7 @@
         </div>
       </div>
       <el-table
-        :data="tableData"
+        :data="data1"
         border
         class="table"
         ref="multipleTable"
@@ -191,26 +191,26 @@ import bus from '../common/bus';
         created() {
             this.getData();
         },
-        computed: {
-            // data1() {
-            //     return this.tableData.filter((d) => {
-            //         let is_del = false;
-            //         for (let i = 0; i < this.del_list.length; i++) {
-            //             if (d.name === this.del_list[i].name) {
-            //                 is_del = true;
-            //                 break;
-            //             }
-            //         }
-            //         if (!is_del) {
-            //             if (d.address.indexOf(this.select_cate) > -1 &&
-            //                 (d.name.indexOf(this.select_word) > -1 ||
-            //                     d.address.indexOf(this.select_word) > -1)
-            //             ) {
-            //                 return d;
-            //             }
-            //         }
-            //     })
-            // }
+       computed: {
+            data1() {
+                return this.tableData.filter((d) => {
+                    let is_del = false;
+                    for (let i = 0; i < this.del_list.length; i++) {
+                        if (d.hmi_name === this.del_list[i].hmi_name) {
+                            is_del = true;
+                            break;
+                        }
+                    }
+                    if (!is_del) {
+                        if (d.hmi_name.indexOf(this.select_cate) > -1 &&
+                            (d.hmi_name.indexOf(this.select_word) > -1 ||
+                                d.hmi_name.indexOf(this.select_word) > -1)
+                        ) {
+                            return d;
+                        }
+                    }
+                })
+            }
         },
         methods: {
             //添加序列号
@@ -253,7 +253,8 @@ import bus from '../common/bus';
   url: '/api/supply/supplyInfo',
     params: {
       domain_id: this.form.domain_id,
-      limit: 10
+      limit: 10,
+      page: this.cur_page
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
@@ -297,7 +298,7 @@ for(var i=0;i<res.data.message.data.length;i++){
                 let str = '';
                 this.del_list = this.del_list.concat(this.multipleSelection);
                 for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
+                    str += this.multipleSelection[i].hmi_name + ' ';
                 }
                 this.$message.error('删除了' + str);
                 this.multipleSelection = [];

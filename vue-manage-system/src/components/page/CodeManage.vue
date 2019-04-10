@@ -71,9 +71,9 @@
         <el-form-item label="姓名">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="地址">
+        <!-- <el-form-item label="地址">
           <el-input v-model="form.address"></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editVisible = false">取 消</el-button>
@@ -210,9 +210,9 @@ name:this.form1.user_name,
             search() {
                 this.is_search = true;
             },
-            formatter(row, column) {
-                return row.address;
-            },
+            // formatter(row, column) {
+            //     return row.address;
+            // },
             filterTag(value, row) {
                 return row.tag === value;
             },
@@ -222,7 +222,7 @@ name:this.form1.user_name,
                 this.form = {
                     name: item.name,
                     date: item.date,
-                    address: item.address
+                    // address: item.address
                 }
                 this.editVisible = true;
             },
