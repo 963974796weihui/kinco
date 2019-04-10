@@ -39,9 +39,7 @@ class Hmi_status extends Command
     public function handle()
     {
         $online_id=array();
-        $filename = "./a.log";
-        DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['hmi_status'=>100]);
-        $handle = file($filename);
+        $handle = file(public_path().'/a.log');
         $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
         $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数
         for($i=$start_line;$i<$end_line;$i++){
