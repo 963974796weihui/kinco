@@ -39,7 +39,9 @@ class Hmi_status extends Command
     public function handle()
     {
         $online_id=array();
+        echo 111;
         DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'1']);
+        echo 222;
         $handle = file(public_path().'/a.log');
         DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'2']);
         $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
