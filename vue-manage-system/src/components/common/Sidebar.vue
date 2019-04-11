@@ -40,22 +40,8 @@
         data() {
             return {
                 collapse: false,
-                //  items:[
-                //     //      {
-                //     //     icon: 'el-icon-lx-home',
-                //     //     //index关联路由数组对象中的路径path
-                //     //     index: 'dashboard',
-                //     //     title: '系统首页'
-                //     // },
-                //     // {
-                //     //     icon: 'el-icon-lx-cascades',
-                //     //     index: 'codemanage',
-                //     //     title: '授权码管理'
-                //     // }
-                //  ]
-                // 左侧边栏数组
-                items: [
-                    {
+                 items:[
+                         {
                         icon: 'el-icon-lx-home',
                         //index关联路由数组对象中的路径path
                         index: 'dashboard',
@@ -65,33 +51,47 @@
                         icon: 'el-icon-lx-cascades',
                         index: 'codemanage',
                         title: '授权码管理'
-                    },
-                    {
-                        icon: 'el-icon-lx-calendar',
-                        index: '3',
-                        title: '域A',
-                        subs: [
-                            {
-                                index: 'usermanage',
-                                title: '用户'
-                            },
-                            {
-                                index: '3-2',
-                                title: '设备',
-                                subs: [
-                                    {
-                                        index: 'eqmanage',
-                                        title: '设备管理'
-                                    },
-                                    {
-                                        index: 'eqgroup',
-                                        title: '设备群组'
-                                    },
-                                ]
-                            },
-                        ]
-                    },
-                ]
+                    }
+                 ]
+                // 左侧边栏数组
+                // items: [
+                //     {
+                //         icon: 'el-icon-lx-home',
+                //         //index关联路由数组对象中的路径path
+                //         index: 'dashboard',
+                //         title: '系统首页'
+                //     },
+                //     {
+                //         icon: 'el-icon-lx-cascades',
+                //         index: 'codemanage',
+                //         title: '授权码管理'
+                //     },
+                //     {
+                //         icon: 'el-icon-lx-calendar',
+                //         index: '3',
+                //         title: '域A',
+                //         subs: [
+                //             {
+                //                 index: 'usermanage',
+                //                 title: '用户'
+                //             },
+                //             {
+                //                 index: '3-2',
+                //                 title: '设备',
+                //                 subs: [
+                //                     {
+                //                         index: 'eqmanage',
+                //                         title: '设备管理'
+                //                     },
+                //                     {
+                //                         index: 'eqgroup',
+                //                         title: '设备群组'
+                //                     },
+                //                 ]
+                //             },
+                //         ]
+                //     },
+                // ]
 
             }
         },
@@ -102,29 +102,19 @@
             }
         },
         mounted() {
-            // this.items = JSON.parse(localStorage.getItem('a'));
-            
+           //接收侧边栏
+                     bus.$on('items', msg => {
+                this.items=msg
+            })
         },
 
         created(){
-            // 通过 Event Bus 进行组件间通信，来折叠侧边栏
+           
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
-            //   //bus接收侧边栏
-            //       bus.$on('firstitem', msg => {
-            //           alert(331)
-            //     this.items = msg;
-                
-            // })
-             //bus接收侧边栏
-            //       bus.$on('firstitem', msg => {
-            //     this.items = msg;
-            //     console.log(999)
-            //       console.log(this.items)
-                
-            // })
-          // this.items= JSON.parse(localStorage.getItem('hou'));
+          
+
           
         }
     }

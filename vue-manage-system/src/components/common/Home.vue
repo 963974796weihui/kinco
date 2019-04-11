@@ -24,13 +24,56 @@
         data(){
             return {
                 tagsList: [],
-                collapse: false
+                collapse: false,
+                // parent1:{}
             }
         },
         components:{
             vHead, vSidebar, vTags
         },
         created(){
+// this.$http({
+//       method: "post",
+//       url: "/api/admin/login",
+//       data: {
+//         user_name:localStorage.getItem('ms_username'),
+//         password:localStorage.getItem('ms_password')
+//       }
+//     }).then(res => {
+//         const domain_id=res.data.message[0].id;
+//          const domain_name=res.data.message[0].domain_name;
+// // console.log(res.data.message[0].domain_name)
+//  this.parent1=
+//        {
+//                         icon: 'el-icon-lx-calendar',
+//                         title: domain_name,
+//                         index: domain_id,
+//                         subs: [
+//                             {
+//                                 index: 'usermanage',
+//                                 title: '用户'
+//                             },
+//                             {
+//                                 index: this.num2++,
+//                                 title: '设备',
+//                                 subs: [
+//                                     {
+//                                         index: 'eqmanage',
+//                                         title: '设备管理'
+//                                     },
+//                                     {
+//                                         index: 'eqgroup',
+//                                         title: '设备群组'
+//                                     },
+//                                 ]
+//                             }
+//                         ]
+//                     }
+//                     //使浏览器静止的代码
+//                 //   bus.$emit('parent1', this.parent1)  
+
+//     });
+   
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
