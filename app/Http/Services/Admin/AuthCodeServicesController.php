@@ -34,6 +34,7 @@ class AuthCodeServicesController extends Controller
                 $data[$key]->end_time = date('Y-m-d H:i:s', Strtotime($data[$key]->activate_time) + $data[$key]->long * 24 * 60 * 60);
             }
         }
+        $data['total'] = $result['total'];
         return $data;
     }
 }

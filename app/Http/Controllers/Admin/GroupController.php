@@ -44,7 +44,7 @@ class GroupController extends Controller
         $limit = $request->input('limit');
         $group_name = $request->input('group_name');
         $result = $this->groupServices->supplyInfo($id, $limit, $group_name);//获得组内的人机
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result['data'],'total'=>$result['total']]);
     }
 
     /**

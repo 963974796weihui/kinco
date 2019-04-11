@@ -27,7 +27,7 @@ class GroupServicesController extends Controller
                 ->toArray();
             $result['data'][$key]->hmi_num = count($res);
         }
-        return $result['data'];
+        return $result;
     }
 
     public function hmiInfo($domain_id, $id)
