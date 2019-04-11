@@ -74,10 +74,10 @@ class IndexServicesController extends Controller
     {
         $result = DB::table('ki_admin_administrtor')->where($condition)->pluck('id')->toArray();
         $status = DB::table('ki_admin_administrtor')->where($condition)->pluck('status')->toArray();
-        if($status[0]==0){//未通过邮箱确认
-            return $status[0];
-        }
         if ($result) {
+            if($status[0]==0){//未通过邮箱确认
+                return $status[0];
+            }
             DB::table('ki_admin_administrtor')->where($condition)->update(['last_time' => time()]);//更新最后一次登录时间
             Cache::put('loginId', $result, 3600);//缓存登录ip
             $domain_name = DB::table('ki_admin_administrtor')

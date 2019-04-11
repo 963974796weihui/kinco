@@ -111,7 +111,7 @@ class UserController extends Controller
      */
     public function info($id)
     {
-        $result = DB::table('ki_admin_user')->where('id', $id)->get()->toArray();
+        $result = DB::table('ki_admin_user')->where('id', $id)->where('cut_off','!=','0')->get()->toArray();
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
     }
 

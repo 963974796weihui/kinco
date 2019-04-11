@@ -72,10 +72,10 @@ class IndexController extends Controller
         $result = $this->IndexServicesController->login($request);
         if ($result) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
-        } elseif ($result == 0) {
-            return response()->json(['status' => 'F', 'code' => '202', 'message' => '请前往邮箱进行确认']);
-        } else {
+        } elseif ($result === false) {
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '账号密码不正确']);
+        } else {
+            return response()->json(['status' => 'F', 'code' => '202', 'message' => '请前往邮箱进行确认']);
         }
     }
 
