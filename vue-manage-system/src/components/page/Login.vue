@@ -17,6 +17,7 @@
                 </el-form-item>
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                    <!-- <el-button type="primary" @click="aaa()">登录1</el-button> -->
                     <router-link to="/reg">
                      <p class="white admin">建立管理员账号</p>
                      </router-link>
@@ -64,22 +65,25 @@
                         { required: true, message: '请输入密码', trigger: 'blur' }
                     ]
                 },
-                firstItem:[
-                       {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'codemanage',
-                        title: '授权码管理'
-                    }
-                ]
+                // firstItem:[
+                //        {
+                //         icon: 'el-icon-lx-home',
+                //         //index关联路由数组对象中的路径path
+                //         index: 'dashboard',
+                //         title: '系统首页'
+                //     },
+                //     {
+                //         icon: 'el-icon-lx-cascades',
+                //         index: 'codemanage',
+                //         title: '授权码管理'
+                //     }
+                // ]
             }
         },
         methods: {
+            // aaa(){
+            //         this.$router.push({ path: "/",query: { num:1} });
+            // },
         	reg(){
         		this.$router.push('/reg');
         	},
@@ -87,6 +91,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         localStorage.setItem('ms_username',this.ruleForm.username);
+                         localStorage.setItem('ms_password',this.ruleForm.password);
          this.$http.post("/api/admin/login", {
           user_name: this.ruleForm.username,
           password: this.ruleForm.password
@@ -98,38 +103,38 @@
                 console.log(res)
                  var total=res.data.message.length
              for(var i=0;i<total;i++){
-                this.firstItem.push(
-  {
-                        icon: 'el-icon-lx-calendar',
-                        index: res.data.message[i].id,
-                        title: res.data.message[i].domain_name,
-                        subs: [
-                            {
-                                index: 'usermanage',
-                                title: '用户'
-                            },
-                            {
-                                index: res.data.message[i].id,
-                                title: '设备',
-                                subs: [
-                                    {
-                                        index: 'eqmanage',
-                                        title: '设备管理'
-                                    },
-                                    {
-                                        index: 'eqgroup',
-                                        title: '设备群组'
-                                    },
-                                ]
-                            },
-                        ]
-                    }
-                )
+//                 this.firstItem.push(
+//   {
+//                         icon: 'el-icon-lx-calendar',
+//                         index: res.data.message[i].id,
+//                         title: res.data.message[i].domain_name,
+//                         subs: [
+//                             {
+//                                 index: 'usermanage',
+//                                 title: '用户'
+//                             },
+//                             {
+//                                 index: res.data.message[i].id,
+//                                 title: '设备',
+//                                 subs: [
+//                                     {
+//                                         index: 'eqmanage',
+//                                         title: '设备管理'
+//                                     },
+//                                     {
+//                                         index: 'eqgroup',
+//                                         title: '设备群组'
+//                                     },
+//                                 ]
+//                             },
+//                         ]
+//                     }
+//                 )
 
              }
-             console.log( this.firstItem)
+            //  console.log( this.firstItem)
                //bus.$emit('firstitem', this.firstItem);
-               localStorage.setItem('hou', JSON.stringify(this.firstItem));
+            //    localStorage.setItem('hou', JSON.stringify(this.firstItem));
     this.$router.push({ path: "/" });
           
             }

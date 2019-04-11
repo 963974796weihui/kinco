@@ -24,22 +24,38 @@ module.exports = {
     //   }
     // },
     proxyTable: {
-      '/api': {  //使用"/api"来代替"http://f.apiplus.c" 
-      target: 'http://kinco.com', //源地址 
-      changeOrigin: true, //改变源 
-      pathRewrite: { 
-        '^/api': 'http://kinco.com' //路径重写 
-        } 
-    },
+
+      // '/seller': {
+      //   target: 'http://39.104.56.173:9418',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/seller': '/seller'
+      //   }
+      // }
+      //1111111111111
+    //   '/api': {  //使用"/api"来代替"http://f.apiplus.c" 
+    //   target: 'http://kinco.com', //源地址 
+    //   changeOrigin: true, //改变源 
+    //   pathRewrite: { 
+    //     '^/api': 'http://kinco.com' //路径重写 
+    //     } 
+    // },
+    '/api': {  //使用"/api"来代替"http://f.apiplus.c" 
+    target: 'http://39.104.56.173:9418', //源地址 
+    changeOrigin: true, //改变源 
+    pathRewrite: { 
+      '^/api': 'http://39.104.56.173:9418' //路径重写 
+      } 
+  },
+    
     //表格假数据
     '/ms':{
       target: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
       changeOrigin: true
   }
   },
-
     // Various Dev Server settings
-    host: '0.0.0.0', // can be overwritten by process.env.HOST
+    host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

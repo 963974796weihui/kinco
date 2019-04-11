@@ -5,6 +5,7 @@
             <i class="el-icon-menu"></i>
         </div>
         <div class="logo">EdgeAccess</div>
+        <!-- <h3>{{this.$route.query.num}}</h3> -->
         <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="formRegion">
@@ -12,7 +13,9 @@
             <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
           </el-form-item>
            <el-form-item label="域简介" :label-width="formLabelWidth">
-            <el-input type="textarea" placeholder="80字以内" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"></el-input>
+            <el-input type="textarea" placeholder="80字以内" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"
+            @change="SomeJavaScriptCode"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -68,19 +71,7 @@
                     name:'',
                     regionInfo:''
                 },
-     itemRegion: [
-                    {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
-                    {
-                        icon: 'el-icon-lx-cascades',
-                        index: 'codemanage',
-                        title: '授权码管理'
-                    }
-                ],
+     itemRegion:[],
                  dialogTableVisible: false,
                  dialogFormVisible: false,
                 collapse: false,
@@ -98,9 +89,8 @@
             }
         },
         methods:{
-            //新建域
-            addRegion(){
-                this.$http.post('/api/admin/registerDomain',
+            SomeJavaScriptCode(){
+                 this.$http.post('/api/admin/registerDomain',
                 {
                      domain_name: this.formRegion.name,
                      remark: this.formRegion.regionInfo
@@ -111,13 +101,73 @@
           message: '新建域成功',
           type: 'success'
         });
-        this.dialogFormVisible=false;
-         //this.itemRegion = JSON.parse(localStorage.getItem('regionTotal'));
-        this.itemRegion.push(
-       {
+       
+    //     this.itemRegion=
+    //    {
+    //                     icon: 'el-icon-lx-calendar',
+    //                     title: this.formRegion.name,
+    //                     index: this.num1++,
+    //                     subs: [
+    //                         {
+    //                             index: 'usermanage',
+    //                             title: '用户'
+    //                         },
+    //                         {
+    //                             index: this.num2++,
+    //                             title: '设备',
+    //                             subs: [
+    //                                 {
+    //                                     index: 'eqmanage',
+    //                                     title: '设备管理'
+    //                                 },
+    //                                 {
+    //                                     index: 'eqgroup',
+    //                                     title: '设备群组'
+    //                                 },
+    //                             ]
+    //                         }
+    //                     ]
+    //                 },
+          //bus发送侧边栏
+            // bus.$emit('items', this.itemRegion)
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该域已存在',
+          type: 'warning'
+        });
+            }
+        })
+            },
+            //新建域
+            addRegion(){
+this.$http({
+      method: "post",
+      url: "/api/admin/login",
+      data: {
+        user_name:localStorage.getItem('ms_username'),
+        password:localStorage.getItem('ms_password')
+      }
+    }).then(res => {
+        const domain_id=res.data.message[0].id;
+         const domain_name=res.data.message[0].domain_name;
+// console.log(res.data.message[0].domain_name)
+ this.itemRegion=
+[
+                    {
+                        icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
+                        index: 'dashboard',
+                        title: '系统首页'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'codemanage',
+                        title: '授权码管理'
+                    },
+                      {
                         icon: 'el-icon-lx-calendar',
-                        index: this.num1++,
-                        title: this.formRegion.name,
+                        title: domain_name,
+                        index: domain_id,
                         subs: [
                             {
                                 index: 'usermanage',
@@ -138,21 +188,15 @@
                                 ]
                             }
                         ]
-                    },
-                    
-        )
-        // localStorage.setItem('regionTotal',JSON.stringify(this.itemRegion));
-            }else if(res.data.status=="F"){
- this.$message({
-          message: '该域已存在',
-          type: 'warning'
-        });
-            }
+                    }
+]
+     
+//                     var objStr=JSON.stringify(this.itemRegion);
+// localStorage.setItem('aa',objStr);
+                     bus.$emit('items', this.itemRegion)
+    });
+ this.dialogFormVisible=false;
 
-        }).catch(function(error) {
-          alert(axios错误回调);
-          console.log(error);
-        });
             },
             // 用户名下拉菜单选择事件
             handleCommand(command) {
@@ -195,8 +239,7 @@
             }
         },
         mounted(){
-            //bus发送侧边栏
-            // bus.$emit('items', this.itemRegion)
+          
             if(document.body.clientWidth < 1500){
                 this.collapseChage();
             }

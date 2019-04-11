@@ -1,29 +1,22 @@
 <template>
   <div class="table">
     <div class="crumbs">
-      <el-button
+      <a  target="_blank" href="http://kinco.com/alipay" > <el-button
         class="add-user"
         icon="el-icon-plus"
         type="primary"
         round
-        @click="dialogFormVisible = true"
-      >购买授权码</el-button>
-      <el-dialog title="购买授权码" :visible.sync="dialogFormVisible" width="30%">
+        @click="buyCode()"
+      >购买授权码</el-button></a>
+     
+      <!-- <el-dialog title="购买授权码" :visible.sync="dialogFormVisible" width="30%">
         <h3>支付宝付款</h3>
           <div class="two-div"><img class="two" src="static/img/two.jpg"></div>
-        <!-- <el-form :model="form1" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="用户名" :label-width="formLabelWidth">
-            <el-input v-model="form1.name" autocomplete="off" prop="name"></el-input>
-          </el-form-item>
-          <el-form-item label="用户个人Email" :label-width="formLabelWidth">
-            <el-input v-model="form1.email" autocomplete="off" prop="email"></el-input>
-          </el-form-item>
-        </el-form> -->
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
           <el-button type="primary" @click="addUser()">确 定</el-button>
         </div>
-      </el-dialog>
+      </el-dialog> -->
     </div>
     <div class="container">
       <div class="handle-box">
@@ -117,7 +110,7 @@
 //      };
             return {
          dialogTableVisible: false,
-        dialogFormVisible: false,
+        // dialogFormVisible: false,
         form1: {
              name: '',
           email:""
@@ -176,6 +169,9 @@
             }
         },
         methods: {
+          buyCode(){
+
+          },
             addUser(){
                  this.$http.post('/api/admin/register',
    {
