@@ -25,7 +25,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <p>{{this.$store.state.domainId}}</p>
+        <!-- <p>{{this.domain_id}}</p> -->
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
@@ -134,6 +134,20 @@ export default {
   name: "basetable",
   data() {
     return {
+        form: {
+        user_name: "",
+        email: "",
+        remark: "",
+        phone: "",
+        hmi: "",
+        group:"",
+        // domain_id:this.$store.state.domainId,
+        //计算属性
+        domain_id:this.domain_id,
+        id:""
+      },
+      // ccc:this.$store.state.domainId,
+      // ccc:"小明",
       checked: true, //寄送新用户密码
       activeName: "first",
       dataGroup: [],
@@ -158,26 +172,16 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
-      form: {
-        user_name: "",
-        email: "",
-        remark: "",
-        phone: "",
-        hmi: "",
-        group:"",
-        domain_id:this.$store.state.domainId,
-        id:""
-      },
       idx: -1
     };
   },
   store,
   created() {
-    console.log(999999999)
-    console.log(this.$store.state.domainId);
+   
     this.getData();
   },
   mounted() {
+      // alert( this.$store.state.domainId)
     this.$http({
       method: "post",
       url: "/api/user/supplyGroup",
@@ -208,6 +212,10 @@ export default {
     });
   },
        computed: {
+domain_id(){
+  return this.$store.state.domainId
+  },
+         
             data1() {
                 return this.tableData.filter((d) => {
                     let is_del = false;
@@ -231,9 +239,6 @@ export default {
   methods: {
     //穿梭框的hmigroupchange事件
     hmiGroupChange(){
-      console.log("666");
-      console.log(this.form.domain_id);
-      console.log(this.form.id);
       this.$http({
         method: "post",
         url: "/api/user/supplyGroupBind",
@@ -282,7 +287,7 @@ export default {
         .post("/api/user/addUser", {
           user_name: this.form.user_name,
           email: this.form.email,
-          domain_id: this.form.domain_id //域id
+          domain_id: this.domain_id //域id
         })
         .then(res => {
           console.log(res);
@@ -323,6 +328,7 @@ export default {
         // console.log(res.data.message[0].user_name)   输入h
         this.tableData = res.data.message;
       });
+      
     },
 
     search() {

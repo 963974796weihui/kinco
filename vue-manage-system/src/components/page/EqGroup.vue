@@ -190,6 +190,7 @@ export default {
     this.getData();
   },
   mounted() {
+  
     //调用 管理组成员 接口
               this.$http({
   method: 'post',

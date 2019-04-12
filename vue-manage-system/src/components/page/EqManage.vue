@@ -29,7 +29,6 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <p>{{this.$store.state.domainId}}</p>
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
@@ -116,25 +115,6 @@ import bus from '../common/bus';
     export default {
         name: 'basetable',
         data() {
-//   //邮箱校验
-//     const validatemail=(rule, value, callback)=>{
-//         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
-//     let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/
-//     if (value && (!(temp).test(value))) {
-//       callback(new Error('邮箱格式不符合规范'))
-//     } else {
-//       callback()
-//     }
-//     };
-//     //账户名校验
-//      const validatename=(rule, value, callback)=>{
-//        let acount = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/
-//     if (value && (!(acount).test(value))) {
-//       callback(new Error('账号不符合规范'))
-//     } else {
-//       callback()
-//     }
-//      };
             return {
          dialogTableVisible: false,
         dialogFormVisible: false,
@@ -154,17 +134,25 @@ import bus from '../common/bus';
                 form: {
                   auth_code:'',
                   sncode:'',
-                   domain_id:1,
+                     //计算属性
+                  domain_id:this.domain_id,
+                  // domain_id:1,
                   hmi_name:'',
                 },
                 idx: -1
             }
         },
+        store,
         created() {
           // alert(this.$store.state.domainId)
             this.getData();
         },
+        mounted() {
+        },
        computed: {
+         domain_id(){
+  return this.$store.state.domainId
+  },
             data1() {
                 return this.tableData.filter((d) => {
                     let is_del = false;
@@ -194,7 +182,7 @@ import bus from '../common/bus';
     data: {
       auth_code: this.form.auth_code,
       sncode: this.form.sncode,
-      domain_id: this.form.domain_id,
+      domain_id: this.domain_id,
       hmi_name: this.form.hmi_name,
   },
 }).then(res => {
@@ -226,7 +214,7 @@ import bus from '../common/bus';
   method: 'post',
   url: '/api/supply/supplyInfo',
     params: {
-      domain_id: this.form.domain_id,
+      domain_id: this.domain_id,
       limit: 10,
       page: this.cur_page
   },

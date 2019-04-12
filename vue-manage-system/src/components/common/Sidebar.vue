@@ -106,11 +106,17 @@ import store from '../../store/store.js'
             }
         },
         mounted() {
+            
         //  //  接收侧边栏
                      bus.$on('items', msg => {
                 this.items=msg
             })
-this.$http({
+            //登录接口
+        },
+
+        created(){
+            alert("侧边栏刷新")
+            this.$http({
       method: "post",
       url: "/api/admin/login",
       data: {
@@ -166,15 +172,11 @@ if(!domain_id){
 ]
 //存入vuex中
 this.$store.commit('saveDomainId',domain_id)
-     
+    //  console.log(this.$store.state.domainId)   可以打印
 //                     var objStr=JSON.stringify(this.itemRegion);
 // localStorage.setItem('aa',objStr);
                     //  bus.$emit('items', this.itemRegion)
     });
-
-        },
-
-        created(){
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })

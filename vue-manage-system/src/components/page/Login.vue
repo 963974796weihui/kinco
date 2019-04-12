@@ -100,38 +100,38 @@
            
             //  console.log( this.firstItem)
             if(res.data.status=="S"){
-                console.log(res)
-                 var total=res.data.message.length
-             for(var i=0;i<total;i++){
-//                 this.firstItem.push(
-//   {
-//                         icon: 'el-icon-lx-calendar',
-//                         index: res.data.message[i].id,
-//                         title: res.data.message[i].domain_name,
-//                         subs: [
-//                             {
-//                                 index: 'usermanage',
-//                                 title: '用户'
-//                             },
-//                             {
-//                                 index: res.data.message[i].id,
-//                                 title: '设备',
-//                                 subs: [
-//                                     {
-//                                         index: 'eqmanage',
-//                                         title: '设备管理'
-//                                     },
-//                                     {
-//                                         index: 'eqgroup',
-//                                         title: '设备群组'
-//                                     },
-//                                 ]
-//                             },
-//                         ]
-//                     }
-//                 )
+//                 console.log(res)
+//                  var total=res.data.message.length
+//              for(var i=0;i<total;i++){
+// //                 this.firstItem.push(
+// //   {
+// //                         icon: 'el-icon-lx-calendar',
+// //                         index: res.data.message[i].id,
+// //                         title: res.data.message[i].domain_name,
+// //                         subs: [
+// //                             {
+// //                                 index: 'usermanage',
+// //                                 title: '用户'
+// //                             },
+// //                             {
+// //                                 index: res.data.message[i].id,
+// //                                 title: '设备',
+// //                                 subs: [
+// //                                     {
+// //                                         index: 'eqmanage',
+// //                                         title: '设备管理'
+// //                                     },
+// //                                     {
+// //                                         index: 'eqgroup',
+// //                                         title: '设备群组'
+// //                                     },
+// //                                 ]
+// //                             },
+// //                         ]
+// //                     }
+// //                 )
 
-             }
+//              }
             //  console.log( this.firstItem)
                //bus.$emit('firstitem', this.firstItem);
             //    localStorage.setItem('hou', JSON.stringify(this.firstItem));

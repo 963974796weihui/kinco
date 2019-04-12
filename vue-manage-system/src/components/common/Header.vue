@@ -86,7 +86,7 @@ import store from '../../store/store.js'
         store,
     created(){
 // this.$store.commit('saveMenuList',this.itemRegion)
-          
+          alert(111111111)
         },
 computed:{
             username(){
