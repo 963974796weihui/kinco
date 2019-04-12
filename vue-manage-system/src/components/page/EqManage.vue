@@ -8,6 +8,7 @@
         round
         @click="dialogFormVisible = true"
       >添加设备</el-button>
+
       <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="序列号" :label-width="formLabelWidth">
@@ -28,6 +29,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
+        <p>{{this.$store.state.domainId}}</p>
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
@@ -58,29 +60,6 @@
               class="red"
               @click="ban()"
             >禁用</el-button>
-<!-- <el-button
-              type="text"
-              icon="el-icon-close"
-              class="red"
-              @click="dialogEdit= true"
-            >禁用</el-button>
-            <el-dialog title="禁用" :visible.sync="dialogEdit" width="30%">
- <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="备注名" :label-width="formLabelWidth">
-            <el-input v-model="form.remark" autocomplete="off" prop="remark"></el-input>
-          </el-form-item>
-          <el-form-item label="个人email" :label-width="formLabelWidth" >
-            <el-input v-model="form.email" autocomplete="off" prop="email">
-              <el-button slot="prepend" icon="el-icon-edit"></el-button>
-            </el-input>
-             <el-checkbox style="float:left" v-model="checked">寄送新密码</el-checkbox>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogEdit = false">取 消</el-button>
-          <el-button type="primary" @click="addUser()">确 定</el-button>
-        </div>
-      </el-dialog> -->
 
           </template>
         </el-table-column>
@@ -132,6 +111,7 @@
 </template>
 
 <script>
+import store from '../../store/store.js'
 import bus from '../common/bus';
     export default {
         name: 'basetable',
@@ -174,21 +154,14 @@ import bus from '../common/bus';
                 form: {
                   auth_code:'',
                   sncode:'',
+                   domain_id:1,
                   hmi_name:'',
-                    // name:'',
-                    // type1:'',
-                    // serial:'',
-                    // online:'',
-                    // virtual:'',
-                    // real:'',
-                    // bind:'',
-                    // date:'',
-                    domain_id:1
                 },
                 idx: -1
             }
         },
         created() {
+          // alert(this.$store.state.domainId)
             this.getData();
         },
        computed: {
@@ -248,6 +221,7 @@ import bus from '../common/bus';
             },
             // 获取 easy-mock 的模拟数据
             getData() {
+              //  alert(this.$store.state.domainId)
                        this.$http({
   method: 'post',
   url: '/api/supply/supplyInfo',

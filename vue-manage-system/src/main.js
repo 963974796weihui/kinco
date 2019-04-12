@@ -9,6 +9,8 @@ import '../static/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
 import Distpicker from 'v-distpicker'
+import Vuex from 'vuex'
+Vue.use(Vuex)
 Vue.component('v-distpicker', Distpicker)
 Vue.prototype.$http=axios;
 Vue.use(ElementUI, { size: 'small' });

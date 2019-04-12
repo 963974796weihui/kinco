@@ -95,7 +95,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="1000"
+          :total=dot
         ></el-pagination>
       </div>
     </div>
@@ -137,11 +137,13 @@
 </template>
 
 <script>
- import bus from '../common/bus';
+import store from '../../store/store.js'
+//  import bus from '../common/bus';
 export default {
   name: "basetable",
   data() {
     return {
+      dot:100,
       //穿梭框
       value1:[],
       value2:[],
@@ -236,6 +238,7 @@ export default {
             }
         },
   methods: {
+
   //管理组成员按钮事件
      handleGroupHmi(index, row) {
         this.idx = index;
@@ -244,7 +247,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:1,
+        domain_id:this.$store.state.domainId,
         //设备id
         id:item.id
       };
@@ -258,7 +261,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:1,
+        domain_id:this.$store.state.domainId,
         //设备id
         id:item.id
       };

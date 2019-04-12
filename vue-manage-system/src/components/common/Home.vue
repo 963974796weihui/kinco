@@ -74,6 +74,7 @@
 
 //     });
    
+
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })

@@ -25,6 +25,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
+        <p>{{this.$store.state.domainId}}</p>
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
@@ -127,7 +128,8 @@
 </template>
 
 <script>
-import bus from "../common/bus";
+import store from '../../store/store.js'
+// import bus from "../common/bus";
 export default {
   name: "basetable",
   data() {
@@ -163,13 +165,16 @@ export default {
         phone: "",
         hmi: "",
         group:"",
-        domain_id: 1,
+        domain_id:this.$store.state.domainId,
         id:""
       },
       idx: -1
     };
   },
+  store,
   created() {
+    console.log(999999999)
+    console.log(this.$store.state.domainId);
     this.getData();
   },
   mounted() {
@@ -342,7 +347,7 @@ export default {
         email: item.email,
         hmi: item.hmi,
         group:item.group,
-        domain_id:1,
+        domain_id:this.$store.state.domainId,
         //用户id
         id:item.id
       };
@@ -373,7 +378,7 @@ export default {
         email: item.email,
         hmi: item.hmi,
         group:item.group,
-        domain_id:1,
+        domain_id:this.$store.state.domainId,
         //用户id
         id:item.id
       };

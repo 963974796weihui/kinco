@@ -4,8 +4,8 @@
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">EdgeAccess</div>
-        <!-- <h3>{{this.$route.query.num}}</h3> -->
+        <div class="logo">后台管理</div>
+        <!-- <h3>{{this.$store.state.domainId}}</h3> -->
         <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="formRegion">
@@ -63,6 +63,7 @@
     </div>
 </template>
 <script>
+import store from '../../store/store.js'
     import bus from '../common/bus';
     export default {
         data() {
@@ -71,7 +72,6 @@
                     name:'',
                     regionInfo:''
                 },
-     itemRegion:[],
                  dialogTableVisible: false,
                  dialogFormVisible: false,
                 collapse: false,
@@ -79,10 +79,16 @@
                 name: '无名氏',
                 message: 2,
                 num1:0,
-                num2:1
+                num2:1,
+                itemRegion:[],
             }
         },
-        computed:{
+        store,
+    created(){
+// this.$store.commit('saveMenuList',this.itemRegion)
+          
+        },
+computed:{
             username(){
                 let username = localStorage.getItem('ms_username');
                 return username ? username : this.name;
@@ -244,9 +250,7 @@ this.$http({
                 this.collapseChage();
             }
         },
-            created(){
-          
-        }
+        
     }
 </script>
 <style scoped>

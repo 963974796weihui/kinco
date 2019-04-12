@@ -3,7 +3,7 @@
         <!-- 侧边栏    头-->
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" router>
-            <div v-for="(item,index) of items" :key="index">
+            <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
@@ -28,18 +28,20 @@
                         <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
-            </div>
+            </template>
         </el-menu>
  <!-- 侧边栏   尾 -->
     </div>
 </template>
 
 <script>
+import store from '../../store/store.js'
     import bus from '../common/bus';
     export default {
         data() {
             return {
                 collapse: false,
+                num2:'',
                  items:[
                          {
                         icon: 'el-icon-lx-home',
@@ -52,7 +54,8 @@
                         index: 'codemanage',
                         title: '授权码管理'
                     }
-                 ]
+                 ],
+               
                 // 左侧边栏数组
                 // items: [
                 //     {
@@ -95,6 +98,7 @@
 
             }
         },
+              store,
         computed:{
             //记住下一次侧边栏刷新的位置
             onRoutes(){
@@ -102,19 +106,78 @@
             }
         },
         mounted() {
-           //接收侧边栏
+        //  //  接收侧边栏
                      bus.$on('items', msg => {
                 this.items=msg
             })
+this.$http({
+      method: "post",
+      url: "/api/admin/login",
+      data: {
+        user_name:localStorage.getItem('ms_username'),
+        password:localStorage.getItem('ms_password')
+      }
+    }).then(res => {
+        const domain_id=res.data.message[0].id;
+         const domain_name=res.data.message[0].domain_name;
+
+//如果此用户从没建过域
+if(!domain_id){
+    return;
+}
+ this.items=
+[
+                    {
+                        icon: 'el-icon-lx-home',
+                        //index关联路由数组对象中的路径path
+                        index: 'dashboard',
+                        title: '系统首页'
+                    },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'codemanage',
+                        title: '授权码管理'
+                    },
+                      {
+                        icon: 'el-icon-lx-calendar',
+                        title: domain_name,
+                        index: domain_id,
+                        subs: [
+                            {
+                                index: 'usermanage',
+                                title: '用户'
+                            },
+                            {
+                                index: this.num2++,
+                                title: '设备',
+                                subs: [
+                                    {
+                                        index: 'eqmanage',
+                                        title: '设备管理'
+                                    },
+                                    {
+                                        index: 'eqgroup',
+                                        title: '设备群组'
+                                    },
+                                ]
+                            }
+                        ]
+                    }
+]
+//存入vuex中
+this.$store.commit('saveDomainId',domain_id)
+     
+//                     var objStr=JSON.stringify(this.itemRegion);
+// localStorage.setItem('aa',objStr);
+                    //  bus.$emit('items', this.itemRegion)
+    });
+
         },
 
         created(){
-           
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
-          
-
           
         }
     }
