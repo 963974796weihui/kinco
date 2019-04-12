@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'5']);
-        $schedule->command('hmi_status')->everyTenMinutes();
+        $schedule->command('hmi_status')->everyMinute();
     }
 
     /**
