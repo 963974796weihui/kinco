@@ -12,6 +12,7 @@ class GroupServicesController extends Controller
     {
         $result = DB::table('ki_admin_group')
             ->where('domain_id', '=', $id)
+            ->where('cut_off','=','0')
             ->when($group_name, function ($query) use ($group_name) {
                 return $query->where('group_name', 'like', '%' . $group_name . '%');
             })
