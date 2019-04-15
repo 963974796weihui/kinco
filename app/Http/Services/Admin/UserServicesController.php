@@ -13,6 +13,7 @@ class UserServicesController extends Controller
     {//$id是域名id 缓存的$this->id为超管id
         $result = DB::table('ki_admin_user')
             ->where('domain_id', '=', $id)
+            ->where('cut_off', '!=', '1')
             ->when($user_name, function ($query) use ($user_name) {
                 return $query->where('user_name', 'like', '%' . $user_name . '%');
             })
