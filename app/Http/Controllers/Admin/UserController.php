@@ -132,8 +132,9 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * 删除用户
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
+        $id=$request->input('user_id');
         DB::table('ki_admin_user')->where('id', $id)->update(['cut_off' => 1]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }

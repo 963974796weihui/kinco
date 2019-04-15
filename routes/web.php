@@ -25,7 +25,7 @@ Route::post('/user/hmiGroup','Admin\UserController@hmiGroup');//设备接口
 Route::post('/user/hmiGroupBind','Admin\UserController@hmiGroupBind');//设备绑定接口
 Route::get('/user/info/{id}','Admin\UserController@info');//获得用户信息
 Route::post('/user/updateInfo','Admin\UserController@updateInfo');//编辑用户信息
-Route::get('/user/delete/{id}','Admin\UserController@delete');//删除用户
+Route::get('/user/delete','Admin\UserController@delete');//删除用户
 Route::get('/user/forbid/{id}','Admin\UserController@forbid');//禁用用户
 //设备模块
 Route::post('/supply/supplyInfo','Admin\SupplyController@supplyInfo');//搜索设备
