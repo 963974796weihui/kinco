@@ -29,7 +29,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
           <el-button type="primary" icon="search" @click="search">搜索</el-button>
@@ -314,16 +314,16 @@ this.idx = index;
                 this.idx = index;
                 this.delVisible = true;
             },
-            delAll() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.del_list = this.del_list.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].hmi_name + ' ';
-                }
-                this.$message.error('删除了' + str);
-                this.multipleSelection = [];
-            },
+            // delAll() {
+            //     const length = this.multipleSelection.length;
+            //     let str = '';
+            //     this.del_list = this.del_list.concat(this.multipleSelection);
+            //     for (let i = 0; i < length; i++) {
+            //         str += this.multipleSelection[i].hmi_name + ' ';
+            //     }
+            //     this.$message.error('删除了' + str);
+            //     this.multipleSelection = [];
+            // },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },

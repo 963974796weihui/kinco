@@ -44,7 +44,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="1000"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -109,6 +109,7 @@
 //     }
 //      };
             return {
+              total:'',
          dialogTableVisible: false,
         // dialogFormVisible: false,
         form1: {
@@ -213,9 +214,10 @@ name:this.form1.user_name,
       // user_id:164
   },
 }).then((res) => {
-    console.log(222);
-                  console.log(res);
-                  console.log(res.data.message)
+    // console.log(5555555555);
+    //               console.log(res);
+    //               console.log(res.data.message)
+    this.total=res.data.total;
                    this.tableData = res.data.data;
                 });
 
