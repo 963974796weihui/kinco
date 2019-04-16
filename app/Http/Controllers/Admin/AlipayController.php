@@ -47,7 +47,7 @@ class AlipayController extends Controller
     public function AliPayReturn()
     {
         $data = Pay::alipay($this->config)->verify(); // 是的，验签就这么简单！
-        dd($data);
+        return view('emails.alipay', ['data' => $data]);
         // 订单号：$data->out_trade_no
         // 支付宝交易号：$data->trade_no
         // 订单总金额：$data->total_amount
