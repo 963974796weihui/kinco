@@ -42,7 +42,7 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column type="selection" :selectable='checkboxT' width="55" align="center"></el-table-column>
          <el-table-column prop="hmi_name" label="设备名" width="170"></el-table-column>
          <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
          <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
@@ -52,12 +52,12 @@
          <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
           <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
           <el-table-column label="相关操作" width="100" align="center">
-          <template >
+          <template slot-scope="scope">
              <el-button
               type="text"
               icon="el-icon-close"
               class="red"
-              @click="ban()"
+              @click="ban(scope.$index, scope.row)"
             >禁用</el-button>
 
           </template>
@@ -165,29 +165,29 @@ if(!domain_id){
 }
 //存入vuex中
 this.$store.commit('saveDomainId',domain_id);
+this.getData();
+//                        this.$http({
+//   method: 'post',
+//   url: '/api/supply/supplyInfo',
+//     params: {
+//       domain_id: this.domain_id,
+//       limit: 10,
+//       page: this.cur_page
+//   },
+// }).then((res) => {
+//                   // console.log(res.data.message[0].user_name)   输入h  
+//                   // console.log(111);
+//                   // console.log(res);
+//                     this.tableData = res.data.message.data;
+//                     //  console.log(this.tableData );
 
-                       this.$http({
-  method: 'post',
-  url: '/api/supply/supplyInfo',
-    params: {
-      domain_id: this.domain_id,
-      limit: 10,
-      page: this.cur_page
-  },
-}).then((res) => {
-                  // console.log(res.data.message[0].user_name)   输入h  
-                  // console.log(111);
-                  // console.log(res);
-                    this.tableData = res.data.message.data;
-                    //  console.log(this.tableData );
-
-// for(var i=0;i<res.data.message.data.length;i++){
-//   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
-// }
-//  bus.$emit('trhmi', this.trHmi);
+// // for(var i=0;i<res.data.message.data.length;i++){
+// //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
+// // }
+// //  bus.$emit('trhmi', this.trHmi);
 
 
-                });
+//                 });
 
 
 
@@ -222,6 +222,15 @@ this.$store.commit('saveDomainId',domain_id);
             }
         },
         methods: {
+          //禁用
+          ban(index, row){
+this.idx = index;
+          },
+//禁用选择框checkboxT
+ 
+
+
+
             //添加序列号
             addSerial(){
           this.$http({
@@ -268,8 +277,9 @@ this.$store.commit('saveDomainId',domain_id);
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
-                  // console.log(111);
-                  // console.log(res);
+                  console.log(111);
+                  console.log(res);
+                  console.log(res.data.message.data)
                     this.tableData = res.data.message.data;
                     //  console.log(this.tableData );
 

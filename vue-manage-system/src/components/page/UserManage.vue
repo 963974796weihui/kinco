@@ -170,6 +170,7 @@ export default {
       tableData: [],
       cur_page: 1,
       multipleSelection: [],
+      shuzu:[],
       trUser: [],
       select_cate: "",
       select_word: "",
@@ -318,6 +319,15 @@ domain_id(){
             }
         },
   methods: {
+ checkboxT(row, rowIndex){
+        if(rowIndex==0){
+          return false;//禁用
+        }else{
+          return true;//不禁用
+        }
+      },
+
+
     //穿梭框的hmigroupchange事件
     hmiGroupChange(){
       this.$http({
@@ -511,15 +521,35 @@ domain_id(){
 
       this.delVisible = true;
     },
+    //批量删除
     delAll() {
       const length = this.multipleSelection.length;
+      console.log(33333333333333);
+      console.log(this.multipleSelection[0].id)
       let str = "";
       this.del_list = this.del_list.concat(this.multipleSelection);
       for (let i = 0; i < length; i++) {
+        this.shuzu.push(this.multipleSelection[i].id);
+
         str += this.multipleSelection[i].user_name + " ";
       }
       this.$message.error("删除了" + str);
       this.multipleSelection = [];
+
+  this.$http({
+        method: "get",
+        url: "/api/user/delete",
+         params: {
+          user_id: this.shuzu,
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(333333333333333)
+        console.log(res);
+        //  this.tableData = res.data.message;
+      });
+
+
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -554,7 +584,7 @@ this.$set(this.tableData, this.idx, this.form);
         method: "get",
         url: "/api/user/delete",
          params: {
-          user_id: this.form.id,
+          user_id: [this.form.id],
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h

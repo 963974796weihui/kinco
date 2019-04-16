@@ -1,7 +1,7 @@
 <template>
   <div class="table">
     <div class="crumbs">
-      <a  target="_blank" href="http://kinco.com/alipay" > <el-button
+      <a  target="_blank" href="http://39.104.56.173:8091/alipay" > <el-button
         class="add-user"
         icon="el-icon-plus"
         type="primary"
@@ -34,9 +34,9 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="name" label="授权码" width="170"></el-table-column>
-         <el-table-column prop="validity" label="有效期" width="170"></el-table-column>
-         <el-table-column prop="activate" label="激活时间" width="220"></el-table-column>
+         <el-table-column prop="sncode" label="授权码" width="170"></el-table-column>
+         <el-table-column prop="long" label="有效期" width="170"></el-table-column>
+         <el-table-column prop="activate_time" label="激活时间" width="220"></el-table-column>
          <el-table-column prop="bind" label="绑定情况" width="220"></el-table-column>
       </el-table>
       <div class="pagination">
@@ -126,6 +126,7 @@
 //       },
         formLabelWidth: '120px',
                 // url: './static/vuetable.json',
+                // tableData1:[],
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -136,9 +137,9 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name: '',
-                    validity:'',
-                    activate:'',
+                   sncode: '',
+                    long:'',
+                    activate_time:'',
                     bind:''
                 },
                 idx: -1
@@ -208,10 +209,14 @@ name:this.form1.user_name,
   url: '/api/AuthCode/codeInfo',
     data: {
       limit: 10,
-      page: this.cur_page
+      page: this.cur_page,
+      // user_id:164
   },
 }).then((res) => {
-                    this.tableData = res.data.message;
+    console.log(222);
+                  console.log(res);
+                  console.log(res.data.message)
+                   this.tableData = res.data.data;
                 });
 
             },

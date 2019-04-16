@@ -14,12 +14,12 @@
       <el-input type="text" v-model="formValidate.user_name" placeholder="包括中文字、英文字母、数字和下划线"></el-input>
     </el-form-item>
 
-    <el-form-item label="密码" prop="password">
+    <!-- <el-form-item label="密码" prop="password">
       <el-input type="password" v-model="formValidate.password" placeholder="数字,小写字母,大写字母,特殊符号至少包含三种,长度为 8 - 30位"></el-input>
     </el-form-item>
     <el-form-item label="确认密码" prop="passwdCheck">
       <el-input type="password" v-model="formValidate.passwdCheck"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="姓名" prop="first_name">
       <el-input type="text" v-model="formValidate.first_name"></el-input>
     </el-form-item>
@@ -182,13 +182,16 @@
             }, 
 		 	a(){
 		 		this.$router.push('/login');
-		 	},
+       },
+       //注册按钮
 		 	reg(){
-		 		 this.$http.post('/api/admin/register',
-   {
-   user_name:this.formValidate.user_name,
+  this.$http({
+        method: "post",
+        url: "/api/admin/register",
+        data: {
+          user_name:this.formValidate.user_name,
    email:this.formValidate.email,
-   password:this.formValidate.password,
+  //  password:this.formValidate.password,
    first_name:this.formValidate.first_name,
    address:this.formValidate.address,
    company_name:this.formValidate.company_name,
@@ -196,18 +199,37 @@
    city:this.formValidate.city,
    area:this.formValidate.area,
    phone:this.formValidate.phone
-     }
-     )
-     .then(response=>{
-         if(response.data.status=="S"){
+        }
+      }).then(res => {
+         if(res.data.status=="S"){
         this.$router.push('/login');
             }
+     console.log(res);
+      });
+	// 	 		 this.$http.post('/api/admin/register',
+  //  {
+  //  user_name:this.formValidate.user_name,
+  //  email:this.formValidate.email,
+  // //  password:this.formValidate.password,
+  //  first_name:this.formValidate.first_name,
+  //  address:this.formValidate.address,
+  //  company_name:this.formValidate.company_name,
+  //  province:this.formValidate.province,
+  //  city:this.formValidate.city,
+  //  area:this.formValidate.area,
+  //  phone:this.formValidate.phone
+  //    }
+  //    )
+  //    .then(response=>{
+  //        if(response.data.status=="S"){
+  //       this.$router.push('/login');
+  //           }
         
-     console.log(response);
-      })
-      .catch(function (error) {
-          console.log(error);
-     }); 
+  //    console.log(response);
+  //     })
+  //     .catch(function (error) {
+  //         console.log(error);
+  //    }); 
 		 	}
 		 },
 		   components: { VDistpicker },
