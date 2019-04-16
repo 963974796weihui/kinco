@@ -51,7 +51,7 @@ class AlipayController extends Controller
         if($alidata){
             return view('emails.alipay', ['data' => $alidata]);
         }else{
-            return response()->json(['status' => 'S', 'code' => '200', 'message' => '服务器内部错误']);
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '服务器内部错误']);
         }
         // 订单号：$data->out_trade_no
         // 支付宝交易号：$data->trade_no
