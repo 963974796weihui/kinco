@@ -68,7 +68,7 @@ class GroupController extends Controller
     public function deleteGroup(Request $request)
     {
         $id = $request->input('id');
-        DB::table('ki_admin_group')->where('id', $id)->update(['cut_off' => 1]);
+        DB::table('ki_admin_group')->whereIn('id', $id)->update(['cut_off' => 1]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
 
