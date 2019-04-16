@@ -4,7 +4,7 @@
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">后台管理</div>
+        <div class="logo">EdgeAccess</div>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
         <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
@@ -86,7 +86,7 @@ import store from '../../store/store.js'
         store,
     created(){
 // this.$store.commit('saveMenuList',this.itemRegion)
-          alert(111111111)
+        //   alert(111111111)
         },
 computed:{
             username(){
@@ -159,12 +159,12 @@ this.$http({
 // console.log(res.data.message[0].domain_name)
  this.itemRegion=
 [
-                    {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
+                    // {
+                    //     icon: 'el-icon-lx-home',
+                    //     //index关联路由数组对象中的路径path
+                    //     index: 'dashboard',
+                    //     title: '系统首页'
+                    // },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'codemanage',

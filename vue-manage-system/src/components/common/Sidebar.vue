@@ -43,17 +43,28 @@ import store from '../../store/store.js'
                 collapse: false,
                 num2:'',
                  items:[
-                         {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
+                    //      {
+                    //     icon: 'el-icon-lx-home',
+                    //     //index关联路由数组对象中的路径path
+                    //     index: 'dashboard',
+                    //     title: '系统首页'
+                    // },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'codemanage',
                         title: '授权码管理'
-                    }
+                    },
+
+
+
+
+
+
+
+
+
+
+                    
                  ],
                
                 // 左侧边栏数组
@@ -115,7 +126,7 @@ import store from '../../store/store.js'
         },
 
         created(){
-            alert("侧边栏刷新")
+            // alert("侧边栏刷新")
             this.$http({
       method: "post",
       url: "/api/admin/login",
@@ -133,12 +144,12 @@ if(!domain_id){
 }
  this.items=
 [
-                    {
-                        icon: 'el-icon-lx-home',
-                        //index关联路由数组对象中的路径path
-                        index: 'dashboard',
-                        title: '系统首页'
-                    },
+                    // {
+                    //     icon: 'el-icon-lx-home',
+                    //     //index关联路由数组对象中的路径path
+                    //     index: 'dashboard',
+                    //     title: '系统首页'
+                    // },
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'codemanage',

@@ -165,59 +165,116 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
-      // form: {
-      //   domain_id: 1,
-      //   group_name:'',
-      //   name: "",
-      //   type1: "",
-      //   serial: "",
-      //   online: "",
-      //   virtual: "",
-      //   real: "",
-      //   bind: "",
-      //   date: ""
-      // },
       form: {
         group_name: "",
         hmi_num: "",
-        domain_id: 1,
+        domain_id: this.domain_id,
         id:""
       },
       idx: -1
     };
   },
-  created() {
-    this.getData();
-  },
-  mounted() {
-  
-    //调用 管理组成员 接口
+   store,
+  // created() {
+  //   this.getData();
+  // },
+
+ created() {
+         this.$http({
+      method: "post",
+      url: "/api/admin/login",
+      data: {
+        user_name:localStorage.getItem('ms_username'),
+        password:localStorage.getItem('ms_password')
+      }
+    }).then(res => {
+        const domain_id=res.data.message[0].id;
+         const domain_name=res.data.message[0].domain_name;
+//如果此用户从没建过域
+if(!domain_id){
+    return;
+}
+//存入vuex中
+this.$store.commit('saveDomainId',domain_id);
+
+  //调用 管理组成员 接口
               this.$http({
   method: 'post',
   url: '/api/group/hmiInfo',
     data: {
-      domain_id: this.form.domain_id,
+      domain_id: this.domain_id,
   },
 }).then((res) => {
   			for(var i=0;i<res.data.message.length;i++){
   this.dataGroupHmi.push({key:res.data.message[i].id,label:res.data.message[i].hmi_name});
 }
                 })
-
 //调用 绑定用户 接口
-   this.$http({
+                  this.$http({
   method: 'post',
   url: '/api/group/addUser',
     data: {
-      domain_id: this.form.domain_id,
+      domain_id: this.domain_id,
   },
 }).then((res) => {
   			for(var i=0;i<res.data.message.length;i++){
   this.dataUser.push({key:res.data.message[i].id,label:res.data.message[i].user_name});
 }
                 })
+
+
+         this.$http({
+  method: 'post',
+  url: '/api/group/supplyInfo',
+    data: {
+      id: this.domain_id, //域id
+      limit: 10,
+      page: this.cur_page
+  },
+}).then((res) => {
+                  // console.log(res.data.message[0].user_name)   输入h  
+                  // console.log(111);
+                  // console.log(res.data.message.length);
+                  // console.log(res);
+                    this.tableData = res.data.message;
+                     console.log(this.tableData );
+			
+                })
+    });
+  },
+
+  mounted() {
+  
+//     //调用 管理组成员 接口
+//               this.$http({
+//   method: 'post',
+//   url: '/api/group/hmiInfo',
+//     data: {
+//       domain_id: this.domain_id,
+//   },
+// }).then((res) => {
+//   			for(var i=0;i<res.data.message.length;i++){
+//   this.dataGroupHmi.push({key:res.data.message[i].id,label:res.data.message[i].hmi_name});
+// }
+//                 })
+
+//调用 绑定用户 接口
+//    this.$http({
+//   method: 'post',
+//   url: '/api/group/addUser',
+//     data: {
+//       domain_id: this.domain_id,
+//   },
+// }).then((res) => {
+//   			for(var i=0;i<res.data.message.length;i++){
+//   this.dataUser.push({key:res.data.message[i].id,label:res.data.message[i].user_name});
+// }
+//                 })
   },
   computed: {
+    domain_id(){
+  return this.$store.state.domainId
+  },
             data1() {
                 return this.tableData.filter((d) => {
                     let is_del = false;
@@ -248,7 +305,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:this.$store.state.domainId,
+        domain_id:this.domain_id,
         //设备id
         id:item.id
       };
@@ -262,7 +319,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:this.$store.state.domainId,
+        domain_id:this.domain_id,
         //设备id
         id:item.id
       };
@@ -275,7 +332,7 @@ export default {
         method: "post",
         url: "/api/group/hmiInfoBind",
         data: {
-           domain_id: this.form.domain_id,
+           domain_id: this.domain_id,
           group_id: this.form.id,
           id:this.value1
         }
@@ -288,7 +345,7 @@ export default {
         method: "post",
         url: "/api/group/addUserBind",
         data: {
-           domain_id: this.form.domain_id,
+           domain_id: this.domain_id,
           group_id: this.form.id,
           id:this.value2
         }
@@ -303,7 +360,7 @@ export default {
   method: 'post',
   url: '/api/group/addGroup',
     data: {
-      domain_id: this.form.domain_id,
+      domain_id: this.domain_id, //域id
       group_name: this.form.group_name
   },
 }).then(res => {
@@ -347,31 +404,17 @@ this.$set(this.tableData, this.idx, this.form);
   method: 'post',
   url: '/api/group/supplyInfo',
     data: {
-      id: this.form.domain_id,
+      id: this.domain_id, //域id
       limit: 10,
       page: this.cur_page
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
-                  console.log(111);
-                  console.log(res.data.message.length);
-                  console.log(res);
+                  // console.log(111);
+                  // console.log(res.data.message.length);
+                  // console.log(res);
                     this.tableData = res.data.message;
                      console.log(this.tableData );
-// for(var i=0;i<res.data.message.length;i++){
-//   this.trGroup.push({key:i+1,label:res.data.message[i].group_name});
-// }
-//  bus.$emit('trgroup', this.trGroup);
- //------------------------------
-  // //  bus接收
-  //                 bus.$on('trhmi', msg => {
-  //               this.dataGroupHmi = msg;
-                
-  //           })
-            //        bus.$on('truser', msg => {
-            //     this.dataUser = msg;
-                
-            // })
 			
                 })
 
@@ -397,6 +440,27 @@ this.$set(this.tableData, this.idx, this.form);
     },
     handleDelete(index, row) {
       this.idx = index;
+
+  const item = this.tableData[index];
+      this.form = {
+        // remark: item.remark,
+        // user_name: item.user_name,
+        // remark: item.remark,
+        // phone: item.phone,
+        // email: item.email,
+        // hmi: item.hmi,
+        // group:item.group,
+        // domain_id:this.domain_id,
+        // //用户id
+        // id:item.id
+
+        //    group_name: "",
+        // hmi_num: "",
+        // domain_id: this.domain_id,
+        id:item.id
+      };
+
+
       this.delVisible = true;
     },
     delAll() {
@@ -420,7 +484,22 @@ this.$set(this.tableData, this.idx, this.form);
     },
     // 确定删除
     deleteRow() {
+       this.$set(this.tableData, this.idx, this.form);
       this.tableData.splice(this.idx, 1);
+      // alert(this.form.id)
+       this.$http({
+        method: "post",
+        url: "/api/group/deleteGroup",
+         data: {
+         id: this.form.id,
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(333333333333333)
+        console.log(res);
+        //  this.tableData = res.data.message;
+      });
+
       this.$message.success("删除成功");
       this.delVisible = false;
     }

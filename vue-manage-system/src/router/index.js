@@ -21,6 +21,7 @@ export default new Router({
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                     // 面包屑的标题
                     meta: { title: '系统首页' }
+                    // meta: { title: '授权码管理' }
                 },
                 {
                     path: '/icon',
