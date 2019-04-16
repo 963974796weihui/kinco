@@ -102,7 +102,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="1000"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -137,6 +137,7 @@ export default {
   name: "basetable",
   data() {
     return {
+      total:'',
         form: {
         user_name: "",
         email: "",
@@ -210,6 +211,9 @@ this.$store.commit('saveDomainId',domain_id);
           page: this.cur_page
         }
       }).then(res => {
+        console.log(222222222222);
+        console.log(res)
+        this.total=res.data.total;
         // console.log(res.data.message[0].user_name)   输入h
         this.tableData = res.data.message;
       });
@@ -418,6 +422,7 @@ domain_id(){
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
+        this.total=res.data.total;
         this.tableData = res.data.message;
       });
       
