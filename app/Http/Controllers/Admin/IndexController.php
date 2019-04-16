@@ -123,23 +123,7 @@ class IndexController extends Controller
      */
     public function test()
     {
-        $online_id=array();
-        $filename = "./a.log";
-        $handle = file($filename);
-        $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
-        $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数
-        for($i=$start_line;$i<$end_line;$i++){
-            $array=explode(',',$handle[$i]);
-            $condition['virtual_address']=$array[0];
-            $condition['real_address']=$array[2];
-            $condition['hmi_status']=1;
-            DB::table('ki_admin_hmi')->where('cert_name',$array[1])->update($condition);//更新在线人机状态
-            $id=DB::table('ki_admin_hmi')->where('cert_name',$array[1])->select('id')->get()->toArray();//查找未在线人机
-            if($id){
-                $online_id[]=$id[0]->id;
-            }
-        }
-        DB::table('ki_admin_hmi')->whereNotIn('id',$online_id)->update(['hmi_status'=>0]);//更新未在线人机状态为0
-        echo "成功";
+        dd(phpinfo());
+        return view('emails.ceshi');
     }
 }

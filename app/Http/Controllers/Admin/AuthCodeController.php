@@ -31,6 +31,8 @@ class AuthCodeController extends Controller
         $sncode = $request->input('sncode');
         $limit = $request->input('limit');
         $result = $this->AuthCodeServicesController->codeInfo($limit, $sncode);
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+        $total=$result['total'];
+        unset($result['total']);
+        return response()->json(['status' => 'S', 'code' => '200', 'data' => $result,'total' =>$total]);
     }
 }
