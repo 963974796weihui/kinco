@@ -43,8 +43,9 @@ class SupplyController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * 禁用设备
      */
-    public function forbid($id)
+    public function forbid(Request $request)
     {
+        $id=$request->input('id');
         DB::table('ki_admin_hmi')->where('id', $id)->update(['cut_off' => 2]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
