@@ -3,15 +3,15 @@
 <br>
 有效期:90天
 <br>
-购买时间:<?php echo date('Y-m-d','{{$data[0]->buy_time}}');?>
+购买时间:2019-04-16
 <br>
 支付方式:支付宝
 <br>
-支付标题:{{$data[0]->subject}}}
+支付标题:{{$data[0]->subject}}
 <br>
-交易号:{{$data[0]->out_trade_no}}}
+交易号:{{$data[0]->out_trade_no}}
 <br>
-订单号:{{$data[0]->trade_no}}}
+订单号:{{$data[0]->trade_no}}
 <br>
-支付金额:{{$data[0]->total_amount}}}
+支付金额:{{$data[0]->total_amount}}
 <br>
