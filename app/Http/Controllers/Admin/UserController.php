@@ -28,11 +28,13 @@ class UserController extends Controller
         $user_name = $request->input('user_name');
         $limit = $request->input('limit');
         $result = $this->userServices->userInfo($domain_id,$user_name,$limit);//获得匹配组，人机，未分组人机
+        $total=$result['total'];
+        unset($result['total']);
         foreach ($result as $key => $value) {
             $result[$key]->group = count($value->group);
             $result[$key]->hmi = count($value->hmi);
         }
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $result,'total'=>$total]);
     }
 
     /**

@@ -20,6 +20,7 @@ class UserServicesController extends Controller
             ->select('id', 'user_name', 'remark', 'phone', 'email')
             ->paginate($limit)
             ->toArray();
+        $total=$result['total'];
         $result=$result['data'];
         foreach ($result as $key => $value) {//匹配设备组
             $res = DB::table('ki_admin_user_hmi_group')
@@ -63,6 +64,7 @@ class UserServicesController extends Controller
             }
             $result[$keys]->count = $count;
         }
+        $result['total']=$total;
         return $result;
     }
 
