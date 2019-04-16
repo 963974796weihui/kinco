@@ -68,7 +68,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="1000"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -116,6 +116,7 @@ import bus from '../common/bus';
         name: 'basetable',
         data() {
             return {
+              total:"",
          dialogTableVisible: false,
         dialogFormVisible: false,
         dialogEdit: false,
@@ -227,7 +228,6 @@ this.getData();
 this.idx = index;
           },
 //禁用选择框checkboxT
- 
 
 
 
@@ -277,9 +277,9 @@ this.idx = index;
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
-                  console.log(111);
+                  console.log(66666666666666666);
                   console.log(res);
-                  console.log(res.data.message.data)
+                  this.total=res.data.message.total
                     this.tableData = res.data.message.data;
                     //  console.log(this.tableData );
 

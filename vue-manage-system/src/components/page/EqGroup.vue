@@ -95,7 +95,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total=dot
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -143,7 +143,7 @@ export default {
   name: "basetable",
   data() {
     return {
-      dot:100,
+      total:'',
       //穿梭框
       value1:[],
       value2:[],
@@ -234,9 +234,10 @@ this.$store.commit('saveDomainId',domain_id);
   },
 }).then((res) => {
                   // console.log(res.data.message[0].user_name)   输入h  
-                  // console.log(111);
+                  console.log(11111111111111);
                   // console.log(res.data.message.length);
-                  // console.log(res);
+                  console.log(res);
+                  this.total=res.data.total;
                     this.tableData = res.data.message;
                      console.log(this.tableData );
 			
@@ -414,6 +415,7 @@ this.$set(this.tableData, this.idx, this.form);
                   // console.log(111);
                   // console.log(res.data.message.length);
                   // console.log(res);
+                  this.total=res.data.total;
                     this.tableData = res.data.message;
                      console.log(this.tableData );
 			
