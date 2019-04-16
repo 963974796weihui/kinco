@@ -46,7 +46,6 @@ class AlipayController extends Controller
 
     public function AliPayReturn()
     {
-dd(2);
         $data = Pay::alipay($this->config)->verify(); // 是的，验签就这么简单！
         $alidata=DB::table('ki_admin_code')->where('out_trade_no',$data->out_trade_no)->where('trade_no',$data->trade_no)->get()->toArray();
         if($alidata){
@@ -56,7 +55,8 @@ dd(2);
         }
         // 订单号：$data->out_trade_no
         // 支付宝交易号：$data->trade_no
-        // 订单总金额：$data->total_amount    }
+        // 订单总金额：$data->total_amount
+    }
 
     public function AliPayNotify()
     {
@@ -71,26 +71,26 @@ dd(2);
             // 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）；
             // 4、验证app_id是否为该商户本身。
             // 5、其它业务逻辑情况
-		
 
- 	    $date['gmt_payment'] = $data->gmt_payment;
-	    $date['subject'] = $data->subject;
-	    $date['out_trade_no'] = $data->out_trade_no;
-	    $date['total_amount'] = $data->total_amount;
-	    $date['trade_status'] = $data->trade_status;
-	    $date['trade_no'] = $data->trade_no;
-	    $date['auth_app_id'] = $data->auth_app_id;
-	    $date['receipt_amount'] = $data->receipt_amount;
-	    $date['app_id'] = $data->app_id;
-	    $date['buyer_pay_amount'] = $data->buyer_pay_amount;
-	    $date['seller_id'] = $data->seller_id;
+
+            $date['gmt_payment'] = $data->gmt_payment;
+            $date['subject'] = $data->subject;
+            $date['out_trade_no'] = $data->out_trade_no;
+            $date['total_amount'] = $data->total_amount;
+            $date['trade_status'] = $data->trade_status;
+            $date['trade_no'] = $data->trade_no;
+            $date['auth_app_id'] = $data->auth_app_id;
+            $date['receipt_amount'] = $data->receipt_amount;
+            $date['app_id'] = $data->app_id;
+            $date['buyer_pay_amount'] = $data->buyer_pay_amount;
+            $date['seller_id'] = $data->seller_id;
             $date['sncode'] =str_random(16);
             $date['administrtor_id'] =$this->id;
             $date['long'] ='90';
             $date['buy_time'] =time();
             $date['pay_type'] =1;
-        $res = DB::table('ki_admin_code')->insertGetId($date);
-        Log::debug('Alipay notify', $data->all());
+            $res = DB::table('ki_admin_code')->insertGetId($date);
+            Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             //$e->getMessage();
             //ceshi
