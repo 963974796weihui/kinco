@@ -156,6 +156,7 @@ export default {
       tableData: [],
       dataGroupHmi:[],
       dataUser:[],
+      shuzu:[],
       trGroup:[],
       cur_page: 1,
       multipleSelection: [],
@@ -463,15 +464,31 @@ this.$set(this.tableData, this.idx, this.form);
 
       this.delVisible = true;
     },
+    //批量删除
     delAll() {
       const length = this.multipleSelection.length;
       let str = "";
       this.del_list = this.del_list.concat(this.multipleSelection);
       for (let i = 0; i < length; i++) {
+         this.shuzu.push(this.multipleSelection[i].id);
         str += this.multipleSelection[i].group_name + " ";
       }
       this.$message.error("删除了" + str);
       this.multipleSelection = [];
+
+  this.$http({
+        method: "post",
+        url: "/api/group/deleteGroup",
+         data: {
+          id: this.shuzu,
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(333333333333333)
+        console.log(res);
+        //  this.tableData = res.data.message;
+      });
+
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
