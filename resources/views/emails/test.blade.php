@@ -22,11 +22,11 @@
 <br>
 <a href="https://www.easyaccess.cn/Privacy_Policy_of_EA_2_0_ENG.htm">隐私权条款</a>
 <br>
-<a href="http://39.104.56.173:9418/admin/confirm?id={{$content['id']}}&code={{$content['register_confirm_code']}}">  点击此处进行确认</a>
+<a href="http://39.104.56.173:8091/admin/confirm?id={{$content['id']}}&code={{$content['register_confirm_code']}}">  点击此处进行确认</a>
 </br>
 <br>
 若无法点击以上连结，请手动复制以下网址至浏览器：
-http://39.104.56.173:9418/admin/confirm?id={{$content['id']}}&code={{$content['register_confirm_code']}}
+http://39.104.56.173:8091/admin/confirm?id={{$content['id']}}&code={{$content['register_confirm_code']}}
 </br>
 您可以随时由以下连结检阅EdgeAccess使用条款和我们的隐私权条款:
 <br>
