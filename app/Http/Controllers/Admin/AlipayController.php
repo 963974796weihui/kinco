@@ -84,7 +84,7 @@ class AlipayController extends Controller
             $date['long'] ='90';
             $date['buy_time'] =time();
             $date['pay_type'] =1;
-        $res = DB::table('ai_admin_code')->insertGetId($date);
+        $res = DB::table('ki_admin_code')->insertGetId($date);
         Log::debug('Alipay notify', $data->all());
         } catch (\Exception $e) {
             //$e->getMessage();
