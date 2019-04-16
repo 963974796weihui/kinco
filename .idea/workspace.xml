@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="嵌入支付宝">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/emails/alipay.blade.php" afterPath="$PROJECT_DIR$/resources/views/emails/alipay.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,27 +18,25 @@
       <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="577">
-              <caret line="34" column="52" lean-forward="true" selection-start-line="34" selection-start-column="52" selection-end-line="34" selection-end-column="52" />
+            <state relative-caret-position="343">
+              <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="alipay.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="alipay.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/emails/alipay.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+            <state relative-caret-position="416">
+              <caret line="16" column="4" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
               <folding>
-                <marker date="1555400157328" expanded="true" signature="15:31" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="84:102" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="109:269" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="136:146" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="136:153" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="168:190" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="205:223" ph="..." />
-                <marker date="1555400157328" expanded="true" signature="239:261" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="15:31" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="94:111" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="125:147" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="161:179" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="194:216" ph="..." />
+                <marker date="1555400477757" expanded="true" signature="216:223" ph="..." />
               </folding>
             </state>
           </provider>
@@ -56,8 +55,18 @@
       <file leaf-file-name="AuthCodeController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AuthCodeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="28" column="46" lean-forward="false" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
+            <state relative-caret-position="462">
+              <caret line="32" column="57" lean-forward="false" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AuthCodeServicesController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/AuthCodeServicesController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="208">
+              <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -73,11 +82,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AlipayController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AlipayController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="51" column="63" lean-forward="true" selection-start-line="51" selection-start-column="63" selection-end-line="51" selection-end-column="63" />
+            <state relative-caret-position="566">
+              <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -156,12 +165,12 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AuthCodeController.php" />
         <option value="$PROJECT_DIR$/app/Http/Services/Admin/AuthCodeServicesController.php" />
         <option value="$PROJECT_DIR$/resources/views/emails/test.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" />
         <option value="$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php" />
         <option value="$PROJECT_DIR$/resources/views/emails/alipay.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php" />
       </list>
     </option>
   </component>
@@ -173,8 +182,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="771" />
-    <option name="y" value="187" />
+    <option name="x" value="81" />
+    <option name="y" value="41" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -717,7 +726,7 @@
       <workItem from="1555049347318" duration="4042000" />
       <workItem from="1555295736572" duration="11091000" />
       <workItem from="1555378477073" duration="11522000" />
-      <workItem from="1555397264533" duration="2808000" />
+      <workItem from="1555397264533" duration="3907000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -828,10 +837,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="309569000" />
+    <option name="totallyTimeSpent" value="310668000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="771" y="187" width="1936" height="1056" extended-state="0" />
+    <frame x="81" y="41" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18496802" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1077,13 +1086,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/AuthCodeServicesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="14" column="28" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/a.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1095,14 +1097,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AuthCodeController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="28" column="46" lean-forward="false" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1118,14 +1112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="4" column="7" lean-forward="false" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="75" column="30" lean-forward="true" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1163,10 +1149,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AuthCodeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="51" column="63" lean-forward="true" selection-start-line="51" selection-start-column="63" selection-end-line="51" selection-end-column="63" />
+        <state relative-caret-position="462">
+          <caret line="32" column="57" lean-forward="false" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/AuthCodeServicesController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -1179,28 +1173,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="34" column="52" lean-forward="true" selection-start-line="34" selection-start-column="52" selection-end-line="34" selection-end-column="52" />
+        <state relative-caret-position="915">
+          <caret line="75" column="30" lean-forward="true" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/emails/alipay.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="4" lean-forward="false" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
+        <state relative-caret-position="416">
+          <caret line="16" column="4" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
           <folding>
-            <marker date="1555400157328" expanded="true" signature="15:31" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="84:102" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="109:269" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="136:146" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="136:153" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="168:190" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="205:223" ph="..." />
-            <marker date="1555400157328" expanded="true" signature="239:261" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="15:31" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="94:111" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="125:147" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="161:179" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="194:216" ph="..." />
+            <marker date="1555400477757" expanded="true" signature="216:223" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AlipayController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="566">
+          <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="51" selection-end-line="92" selection-end-column="51" />
+          <folding />
         </state>
       </provider>
     </entry>

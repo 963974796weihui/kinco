@@ -85,7 +85,7 @@ class AlipayController extends Controller
             $date['buyer_pay_amount'] = $data->buyer_pay_amount;
             $date['seller_id'] = $data->seller_id;
             $date['sncode'] =str_random(16);
-            $date['administrtor_id'] =$this->id;
+            $date['user_id'] =$this->id;
             $date['long'] ='90';
             $date['buy_time'] =time();
             $date['pay_type'] =1;
