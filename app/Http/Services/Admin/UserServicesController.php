@@ -17,7 +17,7 @@ class UserServicesController extends Controller
             ->when($user_name, function ($query) use ($user_name) {
                 return $query->where('user_name', 'like', '%' . $user_name . '%');
             })
-            ->select('id', 'user_name', 'remark', 'phone', 'email')
+            ->select('id', 'user_name', 'remark', 'phone', 'email','cut_off')
             ->paginate($limit)
             ->toArray();
         $total=$result['total'];
