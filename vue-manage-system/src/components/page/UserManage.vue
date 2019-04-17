@@ -25,7 +25,6 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        
         <!-- 测试vuex -->
         <!-- <p>{{this.domain_id}}</p> -->
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
@@ -93,7 +92,7 @@
               class="red"
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
-            <el-button type="text" icon="el-icon-close" class="red" @click="aa= true">禁用</el-button>
+            <el-button type="text" icon="el-icon-close" class="red"   @click="ban(scope.$index, scope.row)">禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -323,13 +322,27 @@ domain_id(){
             }
         },
   methods: {
- checkboxT(row, rowIndex){
-        if(rowIndex==0){
-          return false;//禁用
-        }else{
-          return true;//不禁用
+     //禁用按钮
+    ban(index, row) {
+       this.idx = index;
+       const item = this.tableData[index];
+      this.form = {
+        //设备id
+        id:item.id
+      };
+ this.$http({
+        method: "post",
+        url: "/api/user/forbid",
+        params: {
+          id: this.form.id
         }
-      },
+      }).then(res => {
+      });
+
+    },
+ checkboxT(row) {
+      return row.cut_off!=2
+    },
 
 
     //穿梭框的hmigroupchange事件
@@ -489,9 +502,12 @@ domain_id(){
 
     //11111111111111111  编辑按钮
     handleEdit(index, row) {
+      alert(12)
         this.idx = index;
       // const item = this.tableData[index];
        const item = this.tableData[index];
+        console.log(4444444444);
+        console.log(item)
       this.form = {
         // remark: item.remark,
         user_name: item.user_name,
@@ -504,6 +520,7 @@ domain_id(){
         //用户id
         id:item.id
       };
+     
     this.editVisible = true;
     },
 //删除
