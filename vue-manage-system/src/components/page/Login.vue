@@ -119,6 +119,12 @@ export default {
             .then(res => {
               //  console.log( this.firstItem)
               if (res.data.status == "S") {
+   this.$notify.success({
+          title: '登录成功',
+          message: '欢迎进入EdgeAccess系统',
+          // position: 'bottom-left'
+        });
+
                 //                 console.log(res)
                 //                  var total=res.data.message.length
                 //              for(var i=0;i<total;i++){
@@ -155,6 +161,11 @@ export default {
                 //bus.$emit('firstitem', this.firstItem);
                 //    localStorage.setItem('hou', JSON.stringify(this.firstItem));
                 this.$router.push({ path: "/" });
+              }else if(res.data.status == "F"){
+                 this.$message({
+              message: "用户名或密码输入错误   !",
+              type: "warning"
+            });
               }
             })
             .catch(function(error) {
@@ -162,7 +173,10 @@ export default {
               console.log(error);
             });
         } else {
-          alert(34);
+            this.$message({
+              message: "请输入用户名或密码   !",
+              type: "warning"
+            });
           console.log("error submit!!");
           return false;
         }

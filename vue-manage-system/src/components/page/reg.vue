@@ -51,10 +51,9 @@
     </el-form-item>
     <el-form-item prop="interest">
       <el-checkbox-group v-model="formValidate.interest">
-        <a>隐私权政策</a>
-        <el-checkbox>同意</el-checkbox>
       </el-checkbox-group>
     </el-form-item>
+    <br> <br> <br>
     <el-form-item>
       <el-button
         type="primary"
@@ -171,6 +170,9 @@
 		 	  }
 		 },
 		 methods: {
+       aaa(){
+         alert(1)
+       },
 		 	onChangeProvince(a){
                this.formValidate.province=a.value;             
             },
@@ -204,6 +206,8 @@
          if(res.data.status=="S"){
            this.$message.success("注册成功");
         this.$router.push('/login');
+            }else if(res.data.status=="F"){
+              this.$message.error("请完善注册信息   !");
             }
      console.log(res);
       });
@@ -238,7 +242,7 @@
 	
 </script>
 
-<style>
+<style> 
 	.login-form {
   position: absolute;
   left: 0;
