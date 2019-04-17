@@ -14,10 +14,10 @@
           <el-form-item label="序列号" :label-width="formLabelWidth">
             <el-input v-model="form.sncode" autocomplete="off" prop="sncode"></el-input>
           </el-form-item>
-           <el-form-item label="授权码" :label-width="formLabelWidth">
+          <el-form-item label="授权码" :label-width="formLabelWidth">
             <el-input v-model="form.auth_code" autocomplete="off" prop="auth_code"></el-input>
           </el-form-item>
-             <el-form-item label="人机名" :label-width="formLabelWidth">
+          <el-form-item label="人机名" :label-width="formLabelWidth">
             <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
           </el-form-item>
         </el-form>
@@ -42,24 +42,23 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" :selectable='checkboxT' width="55" align="center"></el-table-column>
-         <el-table-column prop="hmi_name" label="设备名" width="170"></el-table-column>
-         <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
-         <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
-         <el-table-column prop="hmi_status" label="在线状态" width="120"></el-table-column>
-         <el-table-column prop="virtual" label="虚拟ip" width="150"></el-table-column>
-         <el-table-column prop="real" label="真实ip" width="150"></el-table-column>
-         <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
-          <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
-          <el-table-column label="相关操作" width="100" align="center">
+        <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
+        <el-table-column prop="hmi_name" label="设备名" width="170"></el-table-column>
+        <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
+        <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
+        <el-table-column prop="hmi_status" label="在线状态" width="120"></el-table-column>
+        <el-table-column prop="virtual" label="虚拟ip" width="150"></el-table-column>
+        <el-table-column prop="real" label="真实ip" width="150"></el-table-column>
+        <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
+        <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
+        <el-table-column label="相关操作" width="100" align="center">
           <template slot-scope="scope">
-             <el-button
+            <el-button
               type="text"
               icon="el-icon-close"
               class="red"
               @click="ban(scope.$index, scope.row)"
             >禁用</el-button>
-
           </template>
         </el-table-column>
       </el-table>
@@ -110,238 +109,253 @@
 </template>
 
 <script>
-import store from '../../store/store.js'
-import bus from '../common/bus';
-    export default {
-        name: 'basetable',
-        data() {
-            return {
-              total:"",
-         dialogTableVisible: false,
-        dialogFormVisible: false,
-        dialogEdit: false,
-        formLabelWidth: '120px',
-                // url: './static/vuetable.json',
-                tableData: [],
-                cur_page: 1,
-                multipleSelection: [],
-                select_cate: '',
-                trHmi:[],
-                select_word: '',
-                del_list: [],
-                is_search: false,
-                editVisible: false,
-                delVisible: false,
-                form: {
-                  auth_code:'',
-                  sncode:'',
-                     //计算属性
-                  domain_id:this.domain_id,
-                  // domain_id:1,
-                  hmi_name:'',
-                },
-                idx: -1
-            }
-        },
-        store,
-        // created() {
-        //   // alert(this.$store.state.domainId)
-        //     this.getData();
-        // },
+import store from "../../store/store.js";
+import bus from "../common/bus";
+export default {
+  name: "basetable",
+  data() {
+    return {
+      total: "",
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      dialogEdit: false,
+      formLabelWidth: "120px",
+      // url: './static/vuetable.json',
+      tableData: [],
+      cur_page: 1,
+      multipleSelection: [],
+      select_cate: "",
+      trHmi: [],
+      select_word: "",
+      del_list: [],
+      is_search: false,
+      editVisible: false,
+      delVisible: false,
+      form: {
+        auth_code: "",
+        sncode: "",
+        //计算属性
+        domain_id: this.domain_id,
+        // domain_id:1,
+        hmi_name: ""
+      },
+      idx: -1
+    };
+  },
+  store,
+  // created() {
+  //   // alert(this.$store.state.domainId)
+  //     this.getData();
+  // },
 
- created() {
-         this.$http({
+  created() {
+    this.$http({
       method: "post",
       url: "/api/admin/login",
       data: {
-        user_name:localStorage.getItem('ms_username'),
-        password:localStorage.getItem('ms_password')
+        user_name: localStorage.getItem("ms_username"),
+        password: localStorage.getItem("ms_password")
       }
     }).then(res => {
-        const domain_id=res.data.message[0].id;
-         const domain_name=res.data.message[0].domain_name;
-//如果此用户从没建过域
-if(!domain_id){
-    return;
-}
-//存入vuex中
-this.$store.commit('saveDomainId',domain_id);
-this.getData();
-//                        this.$http({
-//   method: 'post',
-//   url: '/api/supply/supplyInfo',
-//     params: {
-//       domain_id: this.domain_id,
-//       limit: 10,
-//       page: this.cur_page
-//   },
-// }).then((res) => {
-//                   // console.log(res.data.message[0].user_name)   输入h  
-//                   // console.log(111);
-//                   // console.log(res);
-//                     this.tableData = res.data.message.data;
-//                     //  console.log(this.tableData );
+      const domain_id = res.data.message[0].id;
+      const domain_name = res.data.message[0].domain_name;
+      //如果此用户从没建过域
+      if (!domain_id) {
+        return;
+      }
+      //存入vuex中
+      this.$store.commit("saveDomainId", domain_id);
+      this.getData();
+      //                        this.$http({
+      //   method: 'post',
+      //   url: '/api/supply/supplyInfo',
+      //     params: {
+      //       domain_id: this.domain_id,
+      //       limit: 10,
+      //       page: this.cur_page
+      //   },
+      // }).then((res) => {
+      //                   // console.log(res.data.message[0].user_name)   输入h
+      //                   // console.log(111);
+      //                   // console.log(res);
+      //                     this.tableData = res.data.message.data;
+      //                     //  console.log(this.tableData );
 
-// // for(var i=0;i<res.data.message.data.length;i++){
-// //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
-// // }
-// //  bus.$emit('trhmi', this.trHmi);
+      // // for(var i=0;i<res.data.message.data.length;i++){
+      // //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
+      // // }
+      // //  bus.$emit('trhmi', this.trHmi);
 
-
-//                 });
-
-
-
+      //                 });
     });
   },
 
-
-        mounted() {
-        },
-       computed: {
-         domain_id(){
-  return this.$store.state.domainId
-  },
-            data1() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.hmi_name === this.del_list[i].hmi_name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.hmi_name.indexOf(this.select_cate) > -1 &&
-                            (d.hmi_name.indexOf(this.select_word) > -1 ||
-                                d.hmi_name.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
-            }
-        },
-        methods: {
-          //禁用
-          ban(index, row){
-this.idx = index;
-          },
-//禁用选择框checkboxT
-
-
-
-            //添加序列号
-            addSerial(){
-          this.$http({
-  method: 'post',
-  url: '/api/supply/addSupply',
-    data: {
-      auth_code: this.form.auth_code,
-      sncode: this.form.sncode,
-      domain_id: this.domain_id,
-      hmi_name: this.form.hmi_name,
-  },
-}).then(res => {
-            console.log(res)
-            if(res.data.status=="S"){
-                   this.$message({
-          message: '新增设备成功',
-          type: 'success'
-        });
-        this.getData();
-        this.dialogFormVisible=false;
-            }else if(res.data.status=="F"){
- this.$message({
-          message: '该设备已存在',
-          type: 'warning'
-        });
-            }
-        })
-            },
-            // 分页导航
-            handleCurrentChange(val) {
-                this.cur_page = val;
-                this.getData();
-            },
-            // 获取 easy-mock 的模拟数据
-            getData() {
-              //  alert(this.$store.state.domainId)
-                       this.$http({
-  method: 'post',
-  url: '/api/supply/supplyInfo',
-    params: {
-      domain_id: this.domain_id,
-      limit: 10,
-      page: this.cur_page
-  },
-}).then((res) => {
-                  // console.log(res.data.message[0].user_name)   输入h  
-                  console.log(66666666666666666);
-                  console.log(res);
-                  this.total=res.data.message.total
-                    this.tableData = res.data.message.data;
-                    //  console.log(this.tableData );
-
-// for(var i=0;i<res.data.message.data.length;i++){
-//   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
-// }
-//  bus.$emit('trhmi', this.trHmi);
-
-
-                });
-            },
-            search() {
-                this.is_search = true;
-            },
-            formatter(row, column) {
-                return row.address;
-            },
-            filterTag(value, row) {
-                return row.tag === value;
-            },
-            handleEdit(index, row) {
-                this.idx = index;
-                const item = this.tableData[index];
-                this.form = {
-                    name: item.name,
-                    date: item.date,
-                    address: item.address
-                }
-                this.editVisible = true;
-            },
-            handleDelete(index, row) {
-                this.idx = index;
-                this.delVisible = true;
-            },
-            // delAll() {
-            //     const length = this.multipleSelection.length;
-            //     let str = '';
-            //     this.del_list = this.del_list.concat(this.multipleSelection);
-            //     for (let i = 0; i < length; i++) {
-            //         str += this.multipleSelection[i].hmi_name + ' ';
-            //     }
-            //     this.$message.error('删除了' + str);
-            //     this.multipleSelection = [];
-            // },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            // 保存编辑
-            saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx+1} 行成功`);
-            },
-            // 确定删除
-            deleteRow(){
-                this.tableData.splice(this.idx, 1);
-                this.$message.success('删除成功');
-                this.delVisible = false;
-            }
+  mounted() {},
+  computed: {
+    domain_id() {
+      return this.$store.state.domainId;
+    },
+    data1() {
+      return this.tableData.filter(d => {
+        let is_del = false;
+        for (let i = 0; i < this.del_list.length; i++) {
+          if (d.hmi_name === this.del_list[i].hmi_name) {
+            is_del = true;
+            break;
+          }
         }
+        if (!is_del) {
+          if (
+            d.hmi_name.indexOf(this.select_cate) > -1 &&
+            (d.hmi_name.indexOf(this.select_word) > -1 ||
+              d.hmi_name.indexOf(this.select_word) > -1)
+          ) {
+            return d;
+          }
+        }
+      });
     }
+  },
+  methods: {
+    //禁用按钮
+    ban(index, row) {
+       this.idx = index;
+       const item = this.tableData[index];
+      this.form = {
+        //设备id
+        id:item.id
+      };
+ this.$http({
+        method: "post",
+        url: "/api/supply/forbid",
+        params: {
+          id: this.form.id
+        }
+      }).then(res => {
+      });
 
+    },
+    //禁用选择框checkboxT
+    // checkboxT(row, rowIndex) {
+    //   if (rowIndex == this.idx) {
+
+    //     return false; //禁用
+    //   } else {
+    //     return true; //不禁用
+    //   }
+    // },
+ checkboxT(row) {
+      return row.cut_off!=2
+    },
+
+    //添加序列号
+    addSerial() {
+      this.$http({
+        method: "post",
+        url: "/api/supply/addSupply",
+        data: {
+          auth_code: this.form.auth_code,
+          sncode: this.form.sncode,
+          domain_id: this.domain_id,
+          hmi_name: this.form.hmi_name
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.data.status == "S") {
+          this.$message({
+            message: "新增设备成功",
+            type: "success"
+          });
+          this.getData();
+          this.dialogFormVisible = false;
+        } else if (res.data.status == "F") {
+          this.$message({
+            message: "该设备已存在",
+            type: "warning"
+          });
+        }
+      });
+    },
+    // 分页导航
+    handleCurrentChange(val) {
+      this.cur_page = val;
+      this.getData();
+    },
+    // 获取 easy-mock 的模拟数据
+    getData() {
+      //  alert(this.$store.state.domainId)
+      this.$http({
+        method: "post",
+        url: "/api/supply/supplyInfo",
+        params: {
+          domain_id: this.domain_id,
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(66666666666666666);
+        console.log(res);
+        this.total = res.data.message.total;
+        this.tableData = res.data.message.data;
+        //  console.log(this.tableData );
+
+        // for(var i=0;i<res.data.message.data.length;i++){
+        //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
+        // }
+        //  bus.$emit('trhmi', this.trHmi);
+      });
+    },
+    search() {
+      this.is_search = true;
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    handleEdit(index, row) {
+      this.idx = index;
+      const item = this.tableData[index];
+      this.form = {
+        name: item.name,
+        date: item.date,
+        address: item.address
+      };
+      this.editVisible = true;
+    },
+    handleDelete(index, row) {
+      this.idx = index;
+      this.delVisible = true;
+    },
+    // delAll() {
+    //     const length = this.multipleSelection.length;
+    //     let str = '';
+    //     this.del_list = this.del_list.concat(this.multipleSelection);
+    //     for (let i = 0; i < length; i++) {
+    //         str += this.multipleSelection[i].hmi_name + ' ';
+    //     }
+    //     this.$message.error('删除了' + str);
+    //     this.multipleSelection = [];
+    // },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 保存编辑
+    saveEdit() {
+      this.$set(this.tableData, this.idx, this.form);
+      this.editVisible = false;
+      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+    },
+    // 确定删除
+    deleteRow() {
+      this.tableData.splice(this.idx, 1);
+      this.$message.success("删除成功");
+      this.delVisible = false;
+    }
+  }
+};
 </script>
 
 <style scoped>

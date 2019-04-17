@@ -202,6 +202,7 @@
         }
       }).then(res => {
          if(res.data.status=="S"){
+           this.$message.success("注册成功");
         this.$router.push('/login');
             }
      console.log(res);

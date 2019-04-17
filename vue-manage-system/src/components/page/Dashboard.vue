@@ -1,7 +1,7 @@
 <template>
   <div class="table">
     <div class="crumbs">
-      <a  target="_blank" href="http://kinco.com/alipay" > <el-button
+      <a  target="_blank" href="http://39.104.56.173:8091/alipay" > <el-button
         class="add-user"
         icon="el-icon-plus"
         type="primary"
@@ -9,14 +9,6 @@
         @click="buyCode()"
       >购买授权码</el-button></a>
      
-      <!-- <el-dialog title="购买授权码" :visible.sync="dialogFormVisible" width="30%">
-        <h3>支付宝付款</h3>
-          <div class="two-div"><img class="two" src="static/img/two.jpg"></div>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addUser()">确 定</el-button>
-        </div>
-      </el-dialog> -->
     </div>
     <div class="container">
       <div class="handle-box">
@@ -27,16 +19,16 @@
         </div>
       </div>
       <el-table
-        :data="data1"
+        :data="tableData"
         border
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-         <el-table-column prop="name" label="授权码" width="170"></el-table-column>
-         <el-table-column prop="validity" label="有效期" width="170"></el-table-column>
-         <el-table-column prop="activate" label="激活时间" width="220"></el-table-column>
+         <el-table-column prop="sncode" label="授权码" width="170"></el-table-column>
+         <el-table-column prop="long" label="有效期" width="170"></el-table-column>
+         <el-table-column prop="activate_time" label="激活时间" width="220"></el-table-column>
          <el-table-column prop="bind" label="绑定情况" width="220"></el-table-column>
       </el-table>
       <div class="pagination">
@@ -44,7 +36,7 @@
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
-          :total="1000"
+          :total="total"
         ></el-pagination>
       </div>
     </div>
@@ -109,6 +101,7 @@
 //     }
 //      };
             return {
+              total:'',
          dialogTableVisible: false,
         // dialogFormVisible: false,
         form1: {
@@ -126,6 +119,7 @@
 //       },
         formLabelWidth: '120px',
                 // url: './static/vuetable.json',
+                // tableData1:[],
                 tableData: [],
                 cur_page: 1,
                 multipleSelection: [],
@@ -136,9 +130,9 @@
                 editVisible: false,
                 delVisible: false,
                 form: {
-                    name: '',
-                    validity:'',
-                    activate:'',
+                   sncode: '',
+                    long:'',
+                    activate_time:'',
                     bind:''
                 },
                 idx: -1
@@ -193,15 +187,32 @@ name:this.form1.user_name,
             },
             // 获取 easy-mock 的模拟数据
             getData() {
-                // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-                if (process.env.NODE_ENV === 'development') {
-                    this.url = '/ms/table/list';
-                };
-                this.$axios.post(this.url, {
-                    page: this.cur_page
-                }).then((res) => {
-                    this.tableData = res.data.list;
-                })
+               // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
+          //       if (process.env.NODE_ENV === 'development') {
+          //           this.url = '/ms/table/list';
+          //       };
+          //       this.$axios.post(this.url, {
+          //           page: this.cur_page
+          //       }).then((res) => {
+          //           this.tableData = res.data.list;
+          //       })
+          // alert(this.$store.state.domainId)
+                       this.$http({
+  method: 'post',
+  url: '/api/AuthCode/codeInfo',
+    data: {
+      limit: 10,
+      page: this.cur_page,
+      // user_id:164
+  },
+}).then((res) => {
+    // console.log(5555555555);
+    //               console.log(res);
+    //               console.log(res.data.message)
+    this.total=res.data.total;
+                   this.tableData = res.data.data;
+                });
+
             },
             search() {
                 this.is_search = true;
