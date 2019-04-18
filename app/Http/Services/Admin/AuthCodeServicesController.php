@@ -12,7 +12,7 @@ class AuthCodeServicesController extends Controller
     {
         $result = DB::table('ki_admin_code')
             ->where('cut_off', 0)
-            ->where('user_id', $this->id)
+            ->where('user_id', 165)
             ->when($sncode, function ($query) use ($sncode) {
                 return $query->where('sncode', 'like', '%' . $sncode . '%');
             })
