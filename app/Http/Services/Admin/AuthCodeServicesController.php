@@ -12,7 +12,7 @@ class AuthCodeServicesController extends Controller
     {
         $result = DB::table('ki_admin_code')
             ->where('cut_off', 0)
-            ->where('user_id', 165)
+            ->where('user_id', $this->id)
             ->when($sncode, function ($query) use ($sncode) {
                 return $query->where('sncode', 'like', '%' . $sncode . '%');
             })
@@ -20,11 +20,11 @@ class AuthCodeServicesController extends Controller
             ->toArray();
         $data = $result['data'];
         foreach ($data as $key => $val) {
-            if ($val->bind == 0) {
-                $data[$key]->bind = '未绑定';
-            } else {
+            if ($val->bind) {
                 $hmi_name = DB::table('ki_admin_hmi')->where('sncode', $val->bind)->get()->toArray();
                 $data[$key]->bind = $hmi_name[0]->hmi_name;
+            } else {
+                $data[$key]->bind = '未绑定';
             }
             if ($val->activate_time == null) {
                 $data[$key]->activate_time = '未激活';
