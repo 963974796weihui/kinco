@@ -59,11 +59,19 @@ class SupplyController extends Controller
     {
         $request = $request->all();
         $request['time'] = time();
-        $result = DB::table('ki_admin_hmi')->where('auth_code', $request['auth_code'])->get()->toArray();
-        if ($result) {
+        //授权码不存在
+        $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
+        if(!$bind){
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
+        }
+        if($bind[0]->bind!=0){
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码已被使用']);
         }
-        DB::table('ki_admin_hmi')->insertGetId($request);
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+        $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind'=>$request['sncode']]);
+        $res=DB::table('ki_admin_hmi')->insertGetId($request);
+        if($res&&$result){
+            return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+        }
+        return response()->json(['status' => 'S', 'code' => '501', 'message' => '服务器内部错误']);
     }
 }
