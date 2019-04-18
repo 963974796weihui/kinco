@@ -35,6 +35,9 @@ class SupplyController extends Controller
             })
             ->paginate($limit)
             ->toArray();
+        foreach ($result['data'] as $key=>$value){
+            $result['data'][$key]->time=date('Y-m-d H:i:s',$value->time);
+        }
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
     }
 
