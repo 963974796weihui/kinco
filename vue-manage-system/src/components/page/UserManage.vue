@@ -51,31 +51,45 @@
         <el-table-column prop="hmi" label="匹配设备" width="280"></el-table-column>
         <el-table-column label="相关操作" width="350" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-date" @click="handleHmi(scope.$index, scope.row)">设备管理</el-button>
-          
+            <el-button
+              type="text"
+              icon="el-icon-date"
+              @click="handleHmi(scope.$index, scope.row)"
+            >设备管理</el-button>
+
             <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="30%">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="设备组" name="first">
                   <div class="tr">
                     <!-- 穿梭框 -->
-                    <el-transfer v-model="value1" :data="dataGroup" filterable
-                    @change="hmiGroupChange"
+                    <el-transfer
+                      :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['所有设备组', '已绑定设备组']"
+                      v-model="value1"
+                      :data="dataGroup"
+                      filterable
+                      @change="hmiGroupChange"
                     ></el-transfer>
-                     <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-                <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
-              </div>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                      <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
+                    </div>
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="设备" name="second">
                   <div class="tr">
-                    <el-transfer v-model="value2" :data="dataHmi" filterable
-                    @change="hmiChange"
+                    <el-transfer
+                      :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['所有设备', '已绑定设备']"
+                      v-model="value2"
+                      :data="dataHmi"
+                      filterable
+                      @change="hmiChange"
                     ></el-transfer>
-                        <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-                <el-button type="primary" @click="saveHmi()">确 定</el-button>
-              </div>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                      <el-button type="primary" @click="saveHmi()">确 定</el-button>
+                    </div>
                   </div>
                 </el-tab-pane>
               </el-tabs>
@@ -92,7 +106,12 @@
               class="red"
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
-            <el-button type="text" icon="el-icon-close" class="red"   @click="ban(scope.$index, scope.row)">禁用</el-button>
+            <el-button
+              type="text"
+              icon="el-icon-close"
+              class="red"
+              @click="ban(scope.$index, scope.row)"
+            >禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -107,13 +126,13 @@
     </div>
 
     <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="editVisible" width="30%" >
-      <el-form ref="form" :model="form" label-width="50px" >
+    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
         <el-form-item label="备注">
           <el-input v-model="form.remark" @change="SomeJavaScriptCode"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer" >
+      <span slot="footer" class="dialog-footer">
         <el-button @click="editVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveEdit()">确 定</el-button>
       </span>
@@ -130,36 +149,38 @@
 </template>
 
 <script>
-import store from '../../store/store.js'
+import store from "../../store/store.js";
 // import bus from "../common/bus";
 export default {
   name: "basetable",
   data() {
     return {
-      total:'',
-        form: {
+      total: "",
+      form: {
         user_name: "",
         email: "",
         remark: "",
         phone: "",
         hmi: "",
-        group:"",
+        group: "",
         // domain_id:this.$store.state.domainId,
         //计算属性
         // domain_id:this.domain_id,
-        id:""
+        id: ""
       },
       // ccc:this.$store.state.domainId,
       // ccc:"小明",
-      userId:'',
+      // trArray:[],
+      userId: "",
       checked: true, //寄送新用户密码
       activeName: "first",
       dataGroup: [],
       dataHmi: [],
       //穿梭框
-      value1:[],
+      value1: [],
+      // v1:[{name:'小明'}],
       //  value1:[{key:22,label:"222"}],
-      value2:[],
+      value2: [],
       // item:"",
       receiveGroup: [],
       dialogFormVisible: false,
@@ -170,7 +191,7 @@ export default {
       tableData: [],
       cur_page: 1,
       multipleSelection: [],
-      shuzu:[],
+      shuzu: [],
       trUser: [],
       select_cate: "",
       select_word: "",
@@ -183,25 +204,26 @@ export default {
   },
   store,
   created() {
+    // this.$store.commit('savetrArray',this.value1);
     // alert("刷新")
-         this.$http({
+    this.$http({
       method: "post",
       url: "/api/admin/login",
       data: {
-        user_name:localStorage.getItem('ms_username'),
-        password:localStorage.getItem('ms_password')
+        user_name: localStorage.getItem("ms_username"),
+        password: localStorage.getItem("ms_password")
       }
     }).then(res => {
-        const domain_id=res.data.message[0].id;
-         const domain_name=res.data.message[0].domain_name;
-//如果此用户从没建过域
-if(!domain_id){
-    return;
-}
-//存入vuex中
-this.$store.commit('saveDomainId',domain_id);
+      const domain_id = res.data.message[0].id;
+      const domain_name = res.data.message[0].domain_name;
+      //如果此用户从没建过域
+      if (!domain_id) {
+        return;
+      }
+      //存入vuex中
+      this.$store.commit("saveDomainId", domain_id);
 
-  this.$http({
+      this.$http({
         method: "get",
         url: "/api/user/userInfo",
         params: {
@@ -211,61 +233,27 @@ this.$store.commit('saveDomainId',domain_id);
         }
       }).then(res => {
         console.log(222222222222);
-        console.log(res)
-        this.total=res.data.total;
+        console.log(res);
+        this.total = res.data.total;
         // console.log(res.data.message[0].user_name)   输入h
         this.tableData = res.data.message;
       });
- //调用获取所有设备组 接口
-this.$http({
-      method: "post",
-      url: "/api/user/supplyGroup",
-      data: {
-        id: this.domain_id
-      }
-    }).then(res => {
-      for (var i = 0; i < res.data.message.length; i++) {
-        this.dataGroup.push({
-          // key: i + 1,
-          key: res.data.message[i].id,
-          label: res.data.message[i].group_name,
-        });
-      }
-    });
 
-//调用获取所有设备 接口
-    this.$http({
-      method: "post",
-      url: "/api/user/hmiGroup",
-      data: {
-        id: this.domain_id
-      }
-    }).then(res => {
-      for (var i = 0; i < res.data.message.length; i++) {
-        this.dataHmi.push({ key: res.data.message[i].id, label: res.data.message[i].hmi_name });
-      }
-    });
-//设备组绑定接口
-this.$http({
-        method: "post",
-        url: "/api/user/supplyGroupBind",
-        data: {
-           domain_id: this.domain_id,
-          user_id: this.form.id,
-          id:this.value1
-        }
-      }).then(res => {
-       
-      })
-
-
-
+      //设备组绑定接口
+      // this.$http({
+      //   method: "post",
+      //   url: "/api/user/supplyGroupBind",
+      //   data: {
+      //     domain_id: this.domain_id,
+      //     user_id: this.form.id,
+      //     id: this.value1
+      //   }
+      // }).then(res => {});
     });
   },
   mounted() {
     // this.getData();
-      // alert( this.$store.state.domainId)
-
+    // alert( this.$store.state.domainId)
     // this.$http({
     //   method: "post",
     //   url: "/api/user/supplyGroup",
@@ -281,7 +269,6 @@ this.$http({
     //     });
     //   }
     // });
-
     //调用获取所有设备 接口
     // this.$http({
     //   method: "post",
@@ -294,73 +281,114 @@ this.$http({
     //     this.dataHmi.push({ key: res.data.message[i].id, label: res.data.message[i].hmi_name });
     //   }
     // });
+  },
+  computed: {
+    domain_id() {
+      return this.$store.state.domainId;
+    },
+    // trArray(){
+    //   console.log(55555555);
+    //   console.log(this.$store.state.trArray)
+    //     return this.$store.state.trArray
+    // },
 
+    data1() {
+      return this.tableData.filter(d => {
+        let is_del = false;
+        for (let i = 0; i < this.del_list.length; i++) {
+          if (d.user_name === this.del_list[i].user_name) {
+            is_del = true;
+            break;
+          }
+        }
+        if (!is_del) {
+          if (
+            d.user_name.indexOf(this.select_cate) > -1 &&
+            (d.user_name.indexOf(this.select_word) > -1 ||
+              d.user_name.indexOf(this.select_word) > -1)
+          ) {
+            return d;
+          }
+        }
+      });
+    }
   },
-       computed: {
-domain_id(){
-  return this.$store.state.domainId
-  },
-         
-            data1() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.user_name === this.del_list[i].user_name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.user_name.indexOf(this.select_cate) > -1 &&
-                            (d.user_name.indexOf(this.select_word) > -1 ||
-                                d.user_name.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
-            }
-        },
   methods: {
-     //禁用按钮
+    //获取所有设备组
+    getGroup() {
+      this.$http({
+        method: "post",
+        url: "/api/group/supplyInfo",
+        data: {
+          id: this.domain_id, //域id
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        this.dataGroup = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          this.dataGroup.push({
+            // key: i + 1,
+            key: res.data.message[i].id,
+            label: res.data.message[i].group_name
+          });
+        }
+      });
+    },
+    //获取所有设备
+    getHmi() {
+      this.$http({
+        method: "post",
+        url: "/api/supply/supplyInfo",
+        params: {
+          domain_id: this.domain_id,
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        this.dataHmi = [];
+        for (var i = 0; i < res.data.message.data.length; i++) {
+          this.dataHmi.push({
+            key: res.data.message.data[i].id,
+            label: res.data.message.data[i].hmi_name
+          });
+        }
+      });
+    },
+    //禁用按钮
     ban(index, row) {
-       this.idx = index;
-       const item = this.tableData[index];
+      this.idx = index;
+      const item = this.tableData[index];
       this.form = {
         //设备id
-        id:item.id
+        id: item.id
       };
- this.$http({
+      this.$http({
         method: "post",
         url: "/api/user/forbid",
         params: {
           id: this.form.id
         }
-      }).then(res => {
-      });
-
+      }).then(res => {});
     },
- checkboxT(row) {
-      return row.cut_off!=2
+    checkboxT(row) {
+      return row.cut_off != 2;
     },
-
 
     //穿梭框的hmigroupchange事件
-    hmiGroupChange(){
+    hmiGroupChange() {
       this.$http({
         method: "post",
         url: "/api/user/supplyGroupBind",
         data: {
-           domain_id: this.domain_id,
+          domain_id: this.domain_id,
           user_id: this.form.id,
-          id:this.value1
+          id: this.value1
         }
-      }).then(res => {
-       
-      })
+      }).then(res => {});
     },
     //穿梭框的hmichange事件
-    hmiChange(){
+    hmiChange() {
       // console.log("777");
       // console.log(this.form.domain_id);
       // console.log(this.form.id);
@@ -368,27 +396,23 @@ domain_id(){
         method: "post",
         url: "/api/user/hmiGroupBind",
         data: {
-           domain_id: this.domain_id,
+          domain_id: this.domain_id,
           user_id: this.form.id,
-          id:this.value2
+          id: this.value2
         }
-      }).then(res => {
-       
-      })
+      }).then(res => {});
     },
     // 编辑的change事件
-    SomeJavaScriptCode(){
-        this.$http({
+    SomeJavaScriptCode() {
+      this.$http({
         method: "post",
         url: "/api/user/updateInfo",
         data: {
-          id:this.form.id,
+          id: this.form.id,
           email: this.form.email,
           remark: this.form.remark
         }
-      }).then(res => {
-       
-      })
+      }).then(res => {});
     },
     addUser() {
       this.$http
@@ -435,10 +459,9 @@ domain_id(){
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
-        this.total=res.data.total;
+        this.total = res.data.total;
         this.tableData = res.data.message;
       });
-      
     },
 
     search() {
@@ -451,10 +474,17 @@ domain_id(){
       return row.tag === value;
     },
     //设备管理按钮
-     handleHmi(index, row) {
-        this.idx = index;
+    handleHmi(index, row) {
+      //     if (localStorage.getItem("tr1") == null) {
+      //    this.value1=[];
+      // }else{
+      //  this.value1 = JSON.parse(localStorage.getItem('tr1'));
+      // }
+      this.getGroup();
+      this.getHmi();
+      this.idx = index;
       // const item = this.tableData[index];
-       const item = this.tableData[index];
+      const item = this.tableData[index];
       this.form = {
         // remark: item.remark,
         user_name: item.user_name,
@@ -462,52 +492,84 @@ domain_id(){
         phone: item.phone,
         email: item.email,
         hmi: item.hmi,
-        group:item.group,
-        domain_id:this.domain_id,
+        group: item.group,
+        domain_id: this.domain_id,
         //用户id
-        id:item.id
+        id: item.id
       };
-      //从用户界面获取所有添加的设备组
-  // this.$http({
-  //     method: "post",
-  //     url: "/api/user/supplyGroup",
-  //     data: {
-  //       id: this.domain_id
-  //     }
-  //   }).then(res => {
-  //     for (var i = 0; i < res.data.message.length; i++) {
-  //       this.dataGroup.push({
-  //         // key: i + 1,
-  //         key: res.data.message[i].id,
-  //         label: res.data.message[i].group_name,
-  //       });
-  //     }
-  //   });
-//从用户界面获取所有添加的设备
-//  this.$http({
-//       method: "post",
-//       url: "/api/user/hmiGroup",
-//       data: {
-//         id: this.domain_id
-//       }
-//     }).then(res => {
-//       for (var i = 0; i < res.data.message.length; i++) {
-//         this.dataHmi=[{ key: res.data.message[i].id, label: res.data.message[i].hmi_name }];
-//       }
-//     });
+      //获取已绑定设备组
+      this.$http({
+        method: "post",
+        url: "/api/user/supplyGroup",
+        data: {
+          id: this.domain_id, //域id
+          user_id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+      });
+      //获取已绑定设备
+      this.$http({
+        method: "post",
+        url: "/api/user/hmiGroup",
+        data: {
+          id: this.domain_id, //域id
+          user_id: this.form.id
+        }
+      }).then(res => {
+        this.value2 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value2.push(res.data.message[i].id);
+          }
+        }
+      });
 
-    this.dialogFormVisible1 = true;
-  
+      //从用户界面获取所有添加的设备组
+      // this.$http({
+      //     method: "post",
+      //     url: "/api/user/supplyGroup",
+      //     data: {
+      //       id: this.domain_id
+      //     }
+      //   }).then(res => {
+      //     for (var i = 0; i < res.data.message.length; i++) {
+      //       this.dataGroup.push({
+      //         // key: i + 1,
+      //         key: res.data.message[i].id,
+      //         label: res.data.message[i].group_name,
+      //       });
+      //     }
+      //   });
+      //从用户界面获取所有添加的设备
+      //  this.$http({
+      //       method: "post",
+      //       url: "/api/user/hmiGroup",
+      //       data: {
+      //         id: this.domain_id
+      //       }
+      //     }).then(res => {
+      //       for (var i = 0; i < res.data.message.length; i++) {
+      //         this.dataHmi=[{ key: res.data.message[i].id, label: res.data.message[i].hmi_name }];
+      //       }
+      //     });
+
+      this.dialogFormVisible1 = true;
     },
 
     //11111111111111111  编辑按钮
     handleEdit(index, row) {
-      alert(12)
-        this.idx = index;
+      // alert(12);
+      this.idx = index;
       // const item = this.tableData[index];
-       const item = this.tableData[index];
-        console.log(4444444444);
-        console.log(item)
+      const item = this.tableData[index];
+      console.log(4444444444);
+      console.log(item);
       this.form = {
         // remark: item.remark,
         user_name: item.user_name,
@@ -515,30 +577,30 @@ domain_id(){
         phone: item.phone,
         email: item.email,
         hmi: item.hmi,
-        group:item.group,
-        domain_id:this.domain_id,
+        group: item.group,
+        domain_id: this.domain_id,
         //用户id
-        id:item.id
+        id: item.id
       };
-     
-    this.editVisible = true;
+
+      this.editVisible = true;
     },
-//删除
+    //删除
     handleDelete(index, row) {
       this.idx = index;
 
-       const item = this.tableData[index];
-        this.form = {
+      const item = this.tableData[index];
+      this.form = {
         // remark: item.remark,
         user_name: item.user_name,
         remark: item.remark,
         phone: item.phone,
         email: item.email,
         hmi: item.hmi,
-        group:item.group,
-        domain_id:this.domain_id,
+        group: item.group,
+        domain_id: this.domain_id,
         //用户id
-        id:item.id
+        id: item.id
       };
 
       this.delVisible = true;
@@ -547,7 +609,7 @@ domain_id(){
     delAll() {
       const length = this.multipleSelection.length;
       console.log(33333333333333);
-      console.log(this.multipleSelection[0].id)
+      console.log(this.multipleSelection[0].id);
       let str = "";
       this.del_list = this.del_list.concat(this.multipleSelection);
       for (let i = 0; i < length; i++) {
@@ -558,34 +620,36 @@ domain_id(){
       this.$message.error("删除了" + str);
       this.multipleSelection = [];
 
-  this.$http({
+      this.$http({
         method: "get",
         url: "/api/user/delete",
-         params: {
-          user_id: this.shuzu,
+        params: {
+          user_id: this.shuzu
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333)
+        console.log(333333333333333);
         console.log(res);
         //  this.tableData = res.data.message;
       });
-
-
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     //保存设备组管理
-    saveHmiGroup(){
-     this.$set(this.tableData, this.idx, this.form);
+    saveHmiGroup() {
+      //  alert(this.value1)
+      // this.$store.commit('savetrArray',this.value1);
+      // alert(this.value1.length)
+      this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
+      // localStorage.setItem('tr1',JSON.stringify(this.value1));
     },
     //保存设备管理
-    saveHmi(){
-     this.$set(this.tableData, this.idx, this.form);
+    saveHmi() {
+      this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
@@ -598,19 +662,19 @@ domain_id(){
     },
     // 确定删除
     deleteRow() {
-this.$set(this.tableData, this.idx, this.form);
+      this.$set(this.tableData, this.idx, this.form);
       this.tableData.splice(this.idx, 1);
       // const a=this.form.id;
       // alert(this.form.id)
       this.$http({
         method: "get",
         url: "/api/user/delete",
-         params: {
-          user_id: [this.form.id],
+        params: {
+          user_id: [this.form.id]
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333)
+        console.log(333333333333333);
         console.log(res);
         //  this.tableData = res.data.message;
       });

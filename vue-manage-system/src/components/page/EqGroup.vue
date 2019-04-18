@@ -44,7 +44,10 @@
 
             <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="30%">
               <div class="tr">
-                <el-transfer v-model="value1" :data="dataGroupHmi" filterable
+                <el-transfer 
+                 :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['所有设备', '已绑定设备']"
+                v-model="value1" :data="dataGroupHmi" filterable
                 @change="handleChange"
                 ></el-transfer>
               </div>
@@ -58,7 +61,10 @@
             <el-button type="text" icon="el-icon-lx-people" class="red" @click="handleGroupUser(scope.$index, scope.row)">绑定用户</el-button>
     <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="30%">
               <div class="tr">
-                <el-transfer v-model="value2" :data="dataUser" filterable
+                <el-transfer
+                 :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['所有用户', '已绑定用户']"
+                 v-model="value2" :data="dataUser" filterable
                 @change="handleChange2"
                 ></el-transfer>
               </div>
@@ -198,32 +204,7 @@ if(!domain_id){
 //存入vuex中
 this.$store.commit('saveDomainId',domain_id);
 
-  //调用 管理组成员 接口
-              this.$http({
-  method: 'post',
-  url: '/api/group/hmiInfo',
-    data: {
-      domain_id: this.domain_id,
-  },
-}).then((res) => {
-  			for(var i=0;i<res.data.message.length;i++){
-  this.dataGroupHmi.push({key:res.data.message[i].id,label:res.data.message[i].hmi_name});
-}
-                })
-//调用 绑定用户 接口
-                  this.$http({
-  method: 'post',
-  url: '/api/group/addUser',
-    data: {
-      domain_id: this.domain_id,
-  },
-}).then((res) => {
-  			for(var i=0;i<res.data.message.length;i++){
-  this.dataUser.push({key:res.data.message[i].id,label:res.data.message[i].user_name});
-}
-                })
-
-
+//获取所有组信息
          this.$http({
   method: 'post',
   url: '/api/group/supplyInfo',
@@ -298,9 +279,51 @@ this.$store.commit('saveDomainId',domain_id);
             }
         },
   methods: {
+     //获取所有设备
+    getHmi() {
+      this.$http({
+        method: "post",
+        url: "/api/supply/supplyInfo",
+        params: {
+          domain_id: this.domain_id,
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        this.dataGroupHmi = [];
+        for (var i = 0; i < res.data.message.data.length; i++) {
+          this.dataGroupHmi.push({
+            key: res.data.message.data[i].id,
+            label: res.data.message.data[i].hmi_name
+          });
+        }
+      });
+    },
+    //获取所有用户
+    getUser(){
+        this.$http({
+        method: "get",
+        url: "/api/user/userInfo",
+        params: {
+          domain_id: this.domain_id,
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+       this.dataUser = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          this.dataUser.push({
+            key: res.data.message[i].id,
+            label: res.data.message[i].user_name
+          });
+        }
+      });
 
+    },
   //管理组成员按钮事件
      handleGroupHmi(index, row) {
+       this.getHmi();
+       
         this.idx = index;
       // const item = this.tableData[index];
        const item = this.tableData[index];
@@ -311,10 +334,28 @@ this.$store.commit('saveDomainId',domain_id);
         //设备id
         id:item.id
       };
+  //获取已绑定组成员
+      this.$http({
+        method: "post",
+        url: "/api/group/hmiInfo",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+      });
+
     this.dialogManagerMember = true;
     },
       //绑定用户按钮事件
     handleGroupUser(index, row) {
+      this.getUser();
         this.idx = index;
       // const item = this.tableData[index];
        const item = this.tableData[index];
@@ -325,6 +366,22 @@ this.$store.commit('saveDomainId',domain_id);
         //设备id
         id:item.id
       };
+       //获取已绑定用户
+      this.$http({
+        method: "post",
+        url: "/api/group/addUser",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        this.value2 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value2.push(res.data.message[i].id);
+          }
+        }
+      });
     this.dialogBindUser = true;
     },
 
@@ -510,7 +567,7 @@ this.$set(this.tableData, this.idx, this.form);
         method: "post",
         url: "/api/group/deleteGroup",
          data: {
-         id: this.form.id,
+         id: [this.form.id],
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
@@ -518,7 +575,6 @@ this.$set(this.tableData, this.idx, this.form);
         console.log(res);
         //  this.tableData = res.data.message;
       });
-
       this.$message.success("删除成功");
       this.delVisible = false;
     }
