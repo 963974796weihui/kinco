@@ -67,7 +67,7 @@ class SupplyController extends Controller
         if($bind[0]->bind!=0){
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码已被使用']);
         }
-        $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind'=>$request['sncode']]);
+        $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind'=>$request['sncode'],'activate_time'=>$request['time']]);
         $res=DB::table('ki_admin_hmi')->insertGetId($request);
         if($res&&$result){
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
