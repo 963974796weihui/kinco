@@ -219,21 +219,19 @@ export default {
   methods: {
     //禁用按钮
     ban(index, row) {
-       this.idx = index;
-       const item = this.tableData[index];
+      this.idx = index;
+      const item = this.tableData[index];
       this.form = {
         //设备id
-        id:item.id
+        id: item.id
       };
- this.$http({
+      this.$http({
         method: "post",
         url: "/api/supply/forbid",
         params: {
           id: this.form.id
         }
-      }).then(res => {
-      });
-
+      }).then(res => {});
     },
     //禁用选择框checkboxT
     // checkboxT(row, rowIndex) {
@@ -244,8 +242,8 @@ export default {
     //     return true; //不禁用
     //   }
     // },
- checkboxT(row) {
-      return row.cut_off!=2
+    checkboxT(row) {
+      return row.cut_off != 2;
     },
 
     //添加序列号

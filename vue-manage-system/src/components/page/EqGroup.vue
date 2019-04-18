@@ -40,15 +40,21 @@
         <el-table-column prop="hmi_num" label="组成员" width="280"></el-table-column>
         <el-table-column label="相关操作" width="500" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-date" @click="handleGroupHmi(scope.$index, scope.row)">管理组成员</el-button>
+            <el-button
+              type="text"
+              icon="el-icon-date"
+              @click="handleGroupHmi(scope.$index, scope.row)"
+            >管理组成员</el-button>
 
             <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="30%">
               <div class="tr">
-                <el-transfer 
-                 :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['所有设备', '已绑定设备']"
-                v-model="value1" :data="dataGroupHmi" filterable
-                @change="handleChange"
+                <el-transfer
+                  :button-texts="['进行解绑', '进行绑定']"
+                  :titles="['所有设备', '已绑定设备']"
+                  v-model="value1"
+                  :data="dataGroupHmi"
+                  filterable
+                  @change="handleChange"
                 ></el-transfer>
               </div>
 
@@ -58,14 +64,21 @@
               </div>
             </el-dialog>
 
-            <el-button type="text" icon="el-icon-lx-people" class="red" @click="handleGroupUser(scope.$index, scope.row)">绑定用户</el-button>
-    <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="30%">
+            <el-button
+              type="text"
+              icon="el-icon-lx-people"
+              class="red"
+              @click="handleGroupUser(scope.$index, scope.row)"
+            >绑定用户</el-button>
+            <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="30%">
               <div class="tr">
                 <el-transfer
-                 :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['所有用户', '已绑定用户']"
-                 v-model="value2" :data="dataUser" filterable
-                @change="handleChange2"
+                  :button-texts="['进行解绑', '进行绑定']"
+                  :titles="['所有用户', '已绑定用户']"
+                  v-model="value2"
+                  :data="dataUser"
+                  filterable
+                  @change="handleChange2"
                 ></el-transfer>
               </div>
               <div slot="footer" class="dialog-footer">
@@ -73,20 +86,31 @@
                 <el-button type="primary" @click="saveGroupUser()">确 定</el-button>
               </div>
             </el-dialog>
-            <el-button type="text" icon="el-icon-document" @click="dialogGroupName = true">更改组名</el-button>
- <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
-   
- <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="组名" :label-width="formLabelWidth">
-            <el-input v-model="form.GroupName" autocomplete="off" prop="remark"></el-input>
-          </el-form-item>
-        </el-form>
-        
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogGroupName = false">取 消</el-button>
-          <el-button type="primary">确 定</el-button>
-        </div>
-      </el-dialog>
+            <el-button type="text" icon="el-icon-document" @click="handleEdit(scope.$index, scope.row)">更改组名</el-button>
+            <!-- <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
+              <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
+                <el-form-item label="组名" :label-width="formLabelWidth">
+                  <el-input v-model="form.GroupName" autocomplete="off" prop="remark"></el-input>
+                </el-form-item>
+              </el-form>
+
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogGroupName = false">取 消</el-button>
+                <el-button type="primary">确 定</el-button>
+              </div>
+            </el-dialog> -->
+            <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" :visible.sync="dialogGroupName" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="组名">
+          <el-input v-model="form.group_name" @change="SomeJavaScriptCode"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogGroupName = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit()">确 定</el-button>
+      </span>
+    </el-dialog>
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -106,30 +130,6 @@
       </div>
     </div>
 
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-      <el-form ref="form" :model="form" label-width="50px">
-        <el-form-item label="日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            v-model="form.date"
-            value-format="yyyy-MM-dd"
-            style="width: 100%;"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label="姓名">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="form.address"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveEdit">确 定</el-button>
-      </span>
-    </el-dialog>
 
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
@@ -143,16 +143,16 @@
 </template>
 
 <script>
-import store from '../../store/store.js'
+import store from "../../store/store.js";
 //  import bus from '../common/bus';
 export default {
   name: "basetable",
   data() {
     return {
-      total:'',
+      total: "",
       //穿梭框
-      value1:[],
-      value2:[],
+      value1: [],
+      value2: [],
       dialogFormVisible: false,
       dialogEdit1: false,
       dialogManagerMember: false,
@@ -160,10 +160,10 @@ export default {
       dialogGroupName: false,
       formLabelWidth: "120px",
       tableData: [],
-      dataGroupHmi:[],
-      dataUser:[],
-      shuzu:[],
-      trGroup:[],
+      dataGroupHmi: [],
+      dataUser: [],
+      shuzu: [],
+      trGroup: [],
       cur_page: 1,
       multipleSelection: [],
       select_cate: "",
@@ -176,110 +176,118 @@ export default {
         group_name: "",
         hmi_num: "",
         domain_id: this.domain_id,
-        id:""
+        id: ""
       },
       idx: -1
     };
   },
-   store,
+  store,
   // created() {
   //   this.getData();
   // },
 
- created() {
-         this.$http({
+  created() {
+    this.$http({
       method: "post",
       url: "/api/admin/login",
       data: {
-        user_name:localStorage.getItem('ms_username'),
-        password:localStorage.getItem('ms_password')
+        user_name: localStorage.getItem("ms_username"),
+        password: localStorage.getItem("ms_password")
       }
     }).then(res => {
-        const domain_id=res.data.message[0].id;
-         const domain_name=res.data.message[0].domain_name;
-//如果此用户从没建过域
-if(!domain_id){
-    return;
-}
-//存入vuex中
-this.$store.commit('saveDomainId',domain_id);
+      const domain_id = res.data.message[0].id;
+      const domain_name = res.data.message[0].domain_name;
+      //如果此用户从没建过域
+      if (!domain_id) {
+        return;
+      }
+      //存入vuex中
+      this.$store.commit("saveDomainId", domain_id);
 
-//获取所有组信息
-         this.$http({
-  method: 'post',
-  url: '/api/group/supplyInfo',
-    data: {
-      id: this.domain_id, //域id
-      limit: 10,
-      page: this.cur_page
-  },
-}).then((res) => {
-                  // console.log(res.data.message[0].user_name)   输入h  
-                  console.log(11111111111111);
-                  // console.log(res.data.message.length);
-                  console.log(res);
-                  this.total=res.data.total;
-                    this.tableData = res.data.message;
-                     console.log(this.tableData );
-			
-                })
+      //获取所有组信息
+      this.$http({
+        method: "post",
+        url: "/api/group/supplyInfo",
+        data: {
+          id: this.domain_id, //域id
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(11111111111111);
+        // console.log(res.data.message.length);
+        console.log(res);
+        this.total = res.data.total;
+        this.tableData = res.data.message;
+        console.log(this.tableData);
+      });
     });
   },
 
   mounted() {
-  
-//     //调用 管理组成员 接口
-//               this.$http({
-//   method: 'post',
-//   url: '/api/group/hmiInfo',
-//     data: {
-//       domain_id: this.domain_id,
-//   },
-// }).then((res) => {
-//   			for(var i=0;i<res.data.message.length;i++){
-//   this.dataGroupHmi.push({key:res.data.message[i].id,label:res.data.message[i].hmi_name});
-// }
-//                 })
-
-//调用 绑定用户 接口
-//    this.$http({
-//   method: 'post',
-//   url: '/api/group/addUser',
-//     data: {
-//       domain_id: this.domain_id,
-//   },
-// }).then((res) => {
-//   			for(var i=0;i<res.data.message.length;i++){
-//   this.dataUser.push({key:res.data.message[i].id,label:res.data.message[i].user_name});
-// }
-//                 })
+    //     //调用 管理组成员 接口
+    //               this.$http({
+    //   method: 'post',
+    //   url: '/api/group/hmiInfo',
+    //     data: {
+    //       domain_id: this.domain_id,
+    //   },
+    // }).then((res) => {
+    //   			for(var i=0;i<res.data.message.length;i++){
+    //   this.dataGroupHmi.push({key:res.data.message[i].id,label:res.data.message[i].hmi_name});
+    // }
+    //                 })
+    //调用 绑定用户 接口
+    //    this.$http({
+    //   method: 'post',
+    //   url: '/api/group/addUser',
+    //     data: {
+    //       domain_id: this.domain_id,
+    //   },
+    // }).then((res) => {
+    //   			for(var i=0;i<res.data.message.length;i++){
+    //   this.dataUser.push({key:res.data.message[i].id,label:res.data.message[i].user_name});
+    // }
+    //                 })
   },
   computed: {
-    domain_id(){
-  return this.$store.state.domainId
+    domain_id() {
+      return this.$store.state.domainId;
+    },
+    data1() {
+      return this.tableData.filter(d => {
+        let is_del = false;
+        for (let i = 0; i < this.del_list.length; i++) {
+          if (d.group_name === this.del_list[i].group_name) {
+            is_del = true;
+            break;
+          }
+        }
+        if (!is_del) {
+          if (
+            d.group_name.indexOf(this.select_cate) > -1 &&
+            (d.group_name.indexOf(this.select_word) > -1 ||
+              d.group_name.indexOf(this.select_word) > -1)
+          ) {
+            return d;
+          }
+        }
+      });
+    }
   },
-            data1() {
-                return this.tableData.filter((d) => {
-                    let is_del = false;
-                    for (let i = 0; i < this.del_list.length; i++) {
-                        if (d.group_name === this.del_list[i].group_name) {
-                            is_del = true;
-                            break;
-                        }
-                    }
-                    if (!is_del) {
-                        if (d.group_name.indexOf(this.select_cate) > -1 &&
-                            (d.group_name.indexOf(this.select_word) > -1 ||
-                                d.group_name.indexOf(this.select_word) > -1)
-                        ) {
-                            return d;
-                        }
-                    }
-                })
-            }
-        },
   methods: {
-     //获取所有设备
+    SomeJavaScriptCode(){
+        this.$http({
+        method: "post",
+        url: "/api/group/updateGroup",
+        data: {
+          id: this.form.id,
+          group_name:this.form.group_name
+        }
+      }).then(res => {});
+    },
+    //获取所有设备
     getHmi() {
       this.$http({
         method: "post",
@@ -300,8 +308,8 @@ this.$store.commit('saveDomainId',domain_id);
       });
     },
     //获取所有用户
-    getUser(){
-        this.$http({
+    getUser() {
+      this.$http({
         method: "get",
         url: "/api/user/userInfo",
         params: {
@@ -310,7 +318,7 @@ this.$store.commit('saveDomainId',domain_id);
           page: this.cur_page
         }
       }).then(res => {
-       this.dataUser = [];
+        this.dataUser = [];
         for (var i = 0; i < res.data.message.length; i++) {
           this.dataUser.push({
             key: res.data.message[i].id,
@@ -318,23 +326,22 @@ this.$store.commit('saveDomainId',domain_id);
           });
         }
       });
-
     },
-  //管理组成员按钮事件
-     handleGroupHmi(index, row) {
-       this.getHmi();
-       
-        this.idx = index;
+    //管理组成员按钮事件
+    handleGroupHmi(index, row) {
+      this.getHmi();
+
+      this.idx = index;
       // const item = this.tableData[index];
-       const item = this.tableData[index];
+      const item = this.tableData[index];
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:this.domain_id,
+        domain_id: this.domain_id,
         //设备id
-        id:item.id
+        id: item.id
       };
-  //获取已绑定组成员
+      //获取已绑定组成员
       this.$http({
         method: "post",
         url: "/api/group/hmiInfo",
@@ -351,22 +358,22 @@ this.$store.commit('saveDomainId',domain_id);
         }
       });
 
-    this.dialogManagerMember = true;
+      this.dialogManagerMember = true;
     },
-      //绑定用户按钮事件
+    //绑定用户按钮事件
     handleGroupUser(index, row) {
       this.getUser();
-        this.idx = index;
+      this.idx = index;
       // const item = this.tableData[index];
-       const item = this.tableData[index];
+      const item = this.tableData[index];
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id:this.domain_id,
+        domain_id: this.domain_id,
         //设备id
-        id:item.id
+        id: item.id
       };
-       //获取已绑定用户
+      //获取已绑定用户
       this.$http({
         method: "post",
         url: "/api/group/addUser",
@@ -382,73 +389,69 @@ this.$store.commit('saveDomainId',domain_id);
           }
         }
       });
-    this.dialogBindUser = true;
+      this.dialogBindUser = true;
     },
 
-  //穿梭框的change事件
-    handleChange(){
+    //穿梭框的change事件
+    handleChange() {
       this.$http({
         method: "post",
         url: "/api/group/hmiInfoBind",
         data: {
-           domain_id: this.domain_id,
+          domain_id: this.domain_id,
           group_id: this.form.id,
-          id:this.value1
+          id: this.value1
         }
-      }).then(res => {
-       
-      })
+      }).then(res => {});
     },
-    handleChange2(){
+    handleChange2() {
       this.$http({
         method: "post",
         url: "/api/group/addUserBind",
         data: {
-           domain_id: this.domain_id,
+          domain_id: this.domain_id,
           group_id: this.form.id,
-          id:this.value2
+          id: this.value2
         }
-      }).then(res => {
-       
-      })
+      }).then(res => {});
     },
 
     //添加设备群组
     addGroup() {
       this.$http({
-  method: 'post',
-  url: '/api/group/addGroup',
-    data: {
-      domain_id: this.domain_id, //域id
-      group_name: this.form.group_name
-  },
-}).then(res => {
-            console.log(res)
-            if(res.data.status=="S"){
-                   this.$message({
-          message: '新增设备组成功',
-          type: 'success'
-        });
-        this.getData();
-        this.dialogFormVisible=false;
-            }else if(res.data.status=="F"){
- this.$message({
-          message: '该设备组已存在',
-          type: 'warning'
-        });
-            }
-        })
+        method: "post",
+        url: "/api/group/addGroup",
+        data: {
+          domain_id: this.domain_id, //域id
+          group_name: this.form.group_name
+        }
+      }).then(res => {
+        console.log(res);
+        if (res.data.status == "S") {
+          this.$message({
+            message: "新增设备组成功",
+            type: "success"
+          });
+          this.getData();
+          this.dialogFormVisible = false;
+        } else if (res.data.status == "F") {
+          this.$message({
+            message: "该设备组已存在",
+            type: "warning"
+          });
+        }
+      });
     },
     //保存管理组成员按钮
-    saveGroupHmi(){
-this.$set(this.tableData, this.idx, this.form);
+    saveGroupHmi() {
+      this.$set(this.tableData, this.idx, this.form);
       this.dialogManagerMember = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     //保存绑定用户按钮
-    saveGroupUser(){
-this.$set(this.tableData, this.idx, this.form);
+    saveGroupUser() {
+      this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
@@ -459,25 +462,23 @@ this.$set(this.tableData, this.idx, this.form);
       this.getData();
     },
     getData() {
-           this.$http({
-  method: 'post',
-  url: '/api/group/supplyInfo',
-    data: {
-      id: this.domain_id, //域id
-      limit: 10,
-      page: this.cur_page
-  },
-}).then((res) => {
-                  // console.log(res.data.message[0].user_name)   输入h  
-                  // console.log(111);
-                  // console.log(res.data.message.length);
-                  // console.log(res);
-                  this.total=res.data.total;
-                    this.tableData = res.data.message;
-                     console.log(this.tableData );
-			
-                })
-
+      this.$http({
+        method: "post",
+        url: "/api/group/supplyInfo",
+        data: {
+          id: this.domain_id, //域id
+          limit: 10,
+          page: this.cur_page
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        // console.log(111);
+        // console.log(res.data.message.length);
+        // console.log(res);
+        this.total = res.data.total;
+        this.tableData = res.data.message;
+        console.log(this.tableData);
+      });
     },
     search() {
       this.is_search = true;
@@ -488,20 +489,22 @@ this.$set(this.tableData, this.idx, this.form);
     filterTag(value, row) {
       return row.tag === value;
     },
+    //更改组名点击事件
     handleEdit(index, row) {
       this.idx = index;
       const item = this.tableData[index];
       this.form = {
-        name: item.name,
-        date: item.date,
-        address: item.address
+        group_name: item.group_name,
+        hmi_num: item.hmi_num,
+        domain_id: item.domain_id,
+        id:item.id
       };
-      this.editVisible = true;
+      this.dialogGroupName = true;
     },
     handleDelete(index, row) {
       this.idx = index;
 
-  const item = this.tableData[index];
+      const item = this.tableData[index];
       this.form = {
         // remark: item.remark,
         // user_name: item.user_name,
@@ -517,9 +520,8 @@ this.$set(this.tableData, this.idx, this.form);
         //    group_name: "",
         // hmi_num: "",
         // domain_id: this.domain_id,
-        id:item.id
+        id: item.id
       };
-
 
       this.delVisible = true;
     },
@@ -529,25 +531,24 @@ this.$set(this.tableData, this.idx, this.form);
       let str = "";
       this.del_list = this.del_list.concat(this.multipleSelection);
       for (let i = 0; i < length; i++) {
-         this.shuzu.push(this.multipleSelection[i].id);
+        this.shuzu.push(this.multipleSelection[i].id);
         str += this.multipleSelection[i].group_name + " ";
       }
       this.$message.error("删除了" + str);
       this.multipleSelection = [];
 
-  this.$http({
+      this.$http({
         method: "post",
         url: "/api/group/deleteGroup",
-         data: {
-          id: this.shuzu,
+        data: {
+          id: this.shuzu
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333)
+        console.log(333333333333333);
         console.log(res);
         //  this.tableData = res.data.message;
       });
-
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -555,23 +556,23 @@ this.$set(this.tableData, this.idx, this.form);
     // 保存编辑
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
-      this.editVisible = false;
+      this.dialogGroupName = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     // 确定删除
     deleteRow() {
-       this.$set(this.tableData, this.idx, this.form);
+      this.$set(this.tableData, this.idx, this.form);
       this.tableData.splice(this.idx, 1);
       // alert(this.form.id)
-       this.$http({
+      this.$http({
         method: "post",
         url: "/api/group/deleteGroup",
-         data: {
-         id: [this.form.id],
+        data: {
+          id: [this.form.id]
         }
       }).then(res => {
         // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333)
+        console.log(333333333333333);
         console.log(res);
         //  this.tableData = res.data.message;
       });
