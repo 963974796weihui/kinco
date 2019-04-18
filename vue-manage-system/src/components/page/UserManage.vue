@@ -35,7 +35,9 @@
       </div>
       <!-- :data="data1" -->
       <!-- :header-cell-style="{background:'#20a0ff',color:'#92ff00'}" -->
+         <!-- :row-class-name="tableRowClassName" -->
       <el-table
+        :header-cell-style="tableHeaderColor"
         :data="data1"
         border
         class="table"
@@ -43,8 +45,13 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="user_name" label="用户名" width="100"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="100"></el-table-column>
+        <el-table-column prop="user_name" label="用户名" width="100">
+   <!-- <template slot-scope="scope">
+            <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
+          </template> -->
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" width="100">
+        </el-table-column>
         <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
         <el-table-column prop="email" label="邮箱号" width="200"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" width="280"></el-table-column>
@@ -54,6 +61,7 @@
             <el-button
               type="text"
               icon="el-icon-date"
+              :disabled="scope.row.cut_off==2"
               @click="handleHmi(scope.$index, scope.row)"
             >设备管理</el-button>
 
@@ -96,17 +104,20 @@
             </el-dialog>
 
             <el-button
+              :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
             <el-button
+              :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-delete"
               class="red"
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
+              :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-close"
               class="red"
@@ -314,6 +325,24 @@ export default {
     }
   },
   methods: {
+    //表头样式
+     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+  //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
+  // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
+      if (rowIndex === 0) {
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;' 
+      }
+    },
+//  tableRowClassName({row, rowIndex}) {
+//         if (rowIndex === 1) {
+//           return 'warning-row';
+//         } else if (rowIndex === 3) {
+//           return 'success-row';
+//         }
+//         return '';
+//       },
+
+
     //获取所有设备组
     getGroup() {
       this.$http({
@@ -321,8 +350,8 @@ export default {
         url: "/api/group/supplyInfo",
         data: {
           id: this.domain_id, //域id
-          limit: 10,
-          page: this.cur_page
+          limit: 10000,
+          page: 1
         }
       }).then(res => {
         this.dataGroup = [];
@@ -342,8 +371,8 @@ export default {
         url: "/api/supply/supplyInfo",
         params: {
           domain_id: this.domain_id,
-          limit: 10,
-          page: this.cur_page
+          limit: 10000,
+          page: 1
         }
       }).then(res => {
         this.dataHmi = [];
@@ -360,7 +389,7 @@ export default {
       this.idx = index;
       const item = this.tableData[index];
       this.form = {
-        //设备id
+        //用户id
         id: item.id
       };
       this.$http({
@@ -369,8 +398,13 @@ export default {
         params: {
           id: this.form.id
         }
-      }).then(res => {});
+      }).then(res => {
+ this.getData();
+
+
+      });
     },
+    //禁用多选框
     checkboxT(row) {
       return row.cut_off != 2;
     },
@@ -686,6 +720,9 @@ export default {
 </script>
 
 <style >
+.one {
+      background:#f56c6c;
+    }
 .search {
   float: right;
 }
@@ -707,7 +744,7 @@ export default {
 }
 .table {
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
 }
 .red {
   color: #ff0000;

@@ -198,7 +198,8 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  /*background-image: url(../../assets/login-bg.jpg);*/
+  /* background: #da2020; */
+  background-image: url(../../assets/bg1.jpg);
   background-size: 100%;
 }
 .ms-title {
@@ -217,7 +218,7 @@ export default {
   height: 300px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(16, 100, 168, 0.144);
   overflow: hidden;
 }
 .ms-content {

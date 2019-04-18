@@ -29,6 +29,7 @@
         </div>
       </div>
       <el-table
+        :header-cell-style="tableHeaderColor"
         :data="data1"
         border
         class="table"
@@ -277,6 +278,12 @@ export default {
     }
   },
   methods: {
+    //表头样式
+     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+      }
+    },
     SomeJavaScriptCode(){
         this.$http({
         method: "post",
@@ -294,8 +301,8 @@ export default {
         url: "/api/supply/supplyInfo",
         params: {
           domain_id: this.domain_id,
-          limit: 10,
-          page: this.cur_page
+          limit: 10000,
+          page: 1
         }
       }).then(res => {
         this.dataGroupHmi = [];
@@ -314,8 +321,8 @@ export default {
         url: "/api/user/userInfo",
         params: {
           domain_id: this.domain_id,
-          limit: 10,
-          page: this.cur_page
+          limit: 10000,
+          page: 1
         }
       }).then(res => {
         this.dataUser = [];
@@ -605,7 +612,7 @@ export default {
 }
 .table {
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
 }
 .red {
   color: #ff0000;

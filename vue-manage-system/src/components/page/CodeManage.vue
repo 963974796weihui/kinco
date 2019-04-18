@@ -27,6 +27,7 @@
         </div>
       </div>
       <el-table
+        :header-cell-style="tableHeaderColor"
         :data="tableData"
         border
         class="table"
@@ -171,6 +172,12 @@
             }
         },
         methods: {
+            //表头样式
+     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+      }
+    },
           buyCode(){
 
           },
@@ -297,12 +304,10 @@ name:this.form1.user_name,
 }
 .table {
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
 }
 .red {
   color: #ff0000;
-}
-.two-div{
 }
 .two{
   width: 200px;

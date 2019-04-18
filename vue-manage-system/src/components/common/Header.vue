@@ -1,10 +1,13 @@
 <template>
     <div class="header">
         <!-- 折叠按钮 -->
+          <el-tooltip class="item" effect="dark" content="进行缩放" placement="top-start">
         <div class="collapse-btn" @click="collapseChage">
             <i class="el-icon-menu"></i>
         </div>
-        <div class="logo">EdgeAccess</div>
+    </el-tooltip>
+      
+        <p class="logo">EdgeAccess</p>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
         <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
@@ -273,6 +276,7 @@ this.$http({
         line-height: 70px;
     }
     .header .logo{
+        font-size:30px;
         float: left;
         width:250px;
         line-height: 70px;

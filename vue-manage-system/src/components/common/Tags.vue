@@ -10,7 +10,7 @@
         </ul>
         <div class="tags-close-box">
             <el-dropdown @command="handleTags">
-                <el-button size="mini" type="primary">
+                <el-button size="mini" type="danger">
                     标签选项<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu size="small" slot="dropdown">
@@ -102,7 +102,7 @@
         overflow: hidden;
         background: #fff;
         padding-right: 120px;
-        box-shadow: 0 5px 10px #ddd;
+        box-shadow: 0 1px 80px #324157;
     }
 
     .tags ul {

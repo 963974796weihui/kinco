@@ -36,6 +36,7 @@
         </div>
       </div>
       <el-table
+        :header-cell-style="tableHeaderColor"
         :data="data1"
         border
         class="table"
@@ -54,6 +55,7 @@
         <el-table-column label="相关操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button
+              disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-close"
               class="red"
@@ -217,6 +219,12 @@ export default {
     }
   },
   methods: {
+    //表头样式
+     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+      }
+    },
     //禁用按钮
     ban(index, row) {
       this.idx = index;
@@ -231,7 +239,9 @@ export default {
         params: {
           id: this.form.id
         }
-      }).then(res => {});
+      }).then(res => {
+        this.getData();
+      });
     },
     //禁用选择框checkboxT
     // checkboxT(row, rowIndex) {
@@ -378,9 +388,22 @@ export default {
 }
 .table {
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
 }
 .red {
   color: #ff0000;
+}
+
+.tr {
+  text-align: left;
+}
+
+.el-table td,
+.el-table th.is-leaf {
+  border-bottom: 1px solid #dcdee2;
+}
+
+.el-table--border td {
+  border-right: 1px solid #dcdee2;
 }
 </style>
