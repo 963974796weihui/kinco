@@ -48,8 +48,8 @@
         <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
         <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
         <el-table-column prop="hmi_status" label="在线状态" width="120"></el-table-column>
-        <el-table-column prop="virtual" label="虚拟ip" width="150"></el-table-column>
-        <el-table-column prop="real" label="真实ip" width="150"></el-table-column>
+        <el-table-column prop="virtual_address" label="虚拟ip" width="150"></el-table-column>
+        <el-table-column prop="real_address" label="真实ip" width="150"></el-table-column>
         <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
         <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
         <el-table-column label="相关操作" width="100" align="center">

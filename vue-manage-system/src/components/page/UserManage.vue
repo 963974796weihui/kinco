@@ -13,6 +13,9 @@
           <el-form-item label="用户名" :label-width="formLabelWidth">
             <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
           </el-form-item>
+             <el-form-item label="手机号" :label-width="formLabelWidth">
+            <el-input v-model="form.phone" autocomplete="off" prop="phone"></el-input>
+          </el-form-item>
           <el-form-item label="用户个人Email" :label-width="formLabelWidth">
             <el-input v-model="form.email" autocomplete="off" prop="email"></el-input>
           </el-form-item>
@@ -453,7 +456,8 @@ export default {
         .post("/api/user/addUser", {
           user_name: this.form.user_name,
           email: this.form.email,
-          domain_id: this.domain_id //域id
+          domain_id: this.domain_id, //域id
+          phone:this.form.phone
         })
         .then(res => {
           console.log(res);

@@ -199,7 +199,7 @@ export default {
   width: 100%;
   height: 100%;
   /* background: #da2020; */
-  background-image: url(../../assets/bg1.jpg);
+  /* background-image: url(../../assets/bg1.jpg); */
   background-size: 100%;
 }
 .ms-title {
@@ -218,7 +218,7 @@ export default {
   height: 300px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(16, 100, 168, 0.144);
+  background: rgba(255,255,255, 0.3);
   overflow: hidden;
 }
 .ms-content {
