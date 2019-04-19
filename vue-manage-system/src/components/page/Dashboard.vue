@@ -9,6 +9,14 @@
         @click="buyCode()"
       >购买授权码</el-button></a>
      
+      <!-- <el-dialog title="购买授权码" :visible.sync="dialogFormVisible" width="30%">
+        <h3>支付宝付款</h3>
+          <div class="two-div"><img class="two" src="static/img/two.jpg"></div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addUser()">确 定</el-button>
+        </div>
+      </el-dialog> -->
     </div>
     <div class="container">
       <div class="handle-box">
@@ -19,6 +27,7 @@
         </div>
       </div>
       <el-table
+        :header-cell-style="tableHeaderColor"
         :data="tableData"
         border
         class="table"
@@ -163,6 +172,12 @@
             }
         },
         methods: {
+            //表头样式
+     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+      }
+    },
           buyCode(){
 
           },
@@ -289,12 +304,10 @@ name:this.form1.user_name,
 }
 .table {
   width: 100%;
-  font-size: 14px;
+  font-size: 18px;
 }
 .red {
   color: #ff0000;
-}
-.two-div{
 }
 .two{
   width: 200px;

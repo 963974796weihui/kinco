@@ -6,9 +6,9 @@
         icon="el-icon-plus"
         type="primary"
         round
-        @click="dialogFormVisible = true"
+        @click="addHmiForm()"
       >添加设备</el-button>
-
+<!-- dialogFormVisible = true -->
       <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="序列号" :label-width="formLabelWidth">
@@ -219,6 +219,10 @@ export default {
     }
   },
   methods: {
+    addHmiForm(){
+      this.form=[];
+      this.dialogFormVisible = true;
+    },
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
