@@ -281,7 +281,7 @@ export default {
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 10;'
       }
     },
     SomeJavaScriptCode(){

@@ -21,12 +21,12 @@
       <el-input type="password" v-model="formValidate.passwdCheck"></el-input>
     </el-form-item> -->
     <el-form-item label="姓名" prop="first_name">
-      <el-input type="text" v-model="formValidate.first_name"></el-input>
+      <el-input type="text" v-model="formValidate.first_name" placeholder="请输入真实姓名"></el-input>
     </el-form-item>
     <el-form-item label="电子邮箱" prop="email">
       <el-input v-model="formValidate.email" placeholder="我们将发送确认注册邮件至您的邮箱"></el-input>
     </el-form-item>
-    <el-form-item label="手机号">
+    <el-form-item label="手机号" prop="phone">
       <el-input v-model="formValidate.phone" placeholder="Enter your phone"></el-input>
     </el-form-item>
     
@@ -70,6 +70,7 @@
 		 data() {
 		 	   //手机号校验
     const validatephone=(rule, value, callback)=>{
+     
        if (value && (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11)) {
       callback(new Error('手机号码不符合规范'))
     } else {
@@ -78,6 +79,7 @@
     };
      //邮箱校验
     const validatemail=(rule, value, callback)=>{
+      
         let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
     let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/
     if (value && (!(temp).test(value))) {
@@ -145,9 +147,11 @@
         phone: [
            {required: true, message: '请输入电话号码', trigger: 'blur'},
           { validator: validatephone, trigger: "blur" }],
+
            email: [
            {required: true, message: '请输入电子邮箱', trigger: 'blur'},
           { validator: validatemail, trigger: "blur" }],
+          
         user_name: [{ required: true, message: "账号名不能为空", trigger: "blur" },
           { validator: validatename, trigger: "blur" }],
         city: [
@@ -207,7 +211,7 @@
            this.$message.success("注册成功");
         this.$router.push('/login');
             }else if(res.data.status=="F"){
-              this.$message.error("请完善注册信息   !");
+              this.$message.error("请正确输入注册信息   !");
             }
      console.log(res);
       });

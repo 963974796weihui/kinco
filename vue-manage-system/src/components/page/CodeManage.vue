@@ -39,6 +39,15 @@
          <el-table-column prop="long" label="有效期" width="170"></el-table-column>
          <el-table-column prop="activate_time" label="激活时间" width="220"></el-table-column>
          <el-table-column prop="bind" label="绑定情况" width="220"></el-table-column>
+          <el-table-column label="相关操作" width="350" align="center">
+              <template slot-scope="scope">
+            <el-button
+              type="text"
+              icon="el-icon-date"
+              @click="bindHmi(scope.$index, scope.row)"
+            >绑定设备</el-button>
+            </template>
+            </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
@@ -175,7 +184,7 @@
             //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight:10;'
       }
     },
           buyCode(){

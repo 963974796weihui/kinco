@@ -158,6 +158,12 @@ this.$http({
         password:localStorage.getItem('ms_password')
       }
     }).then(res => {
+        if (res.data.status == "S") {
+                  this.$message({
+              message: "新建域成功   !",
+              type: "success"
+            });
+        }
         const domain_id=res.data.message[0].id;
          const domain_name=res.data.message[0].domain_name;
 // console.log(res.data.message[0].domain_name)

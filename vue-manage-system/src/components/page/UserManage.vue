@@ -13,16 +13,16 @@
           <el-form-item label="用户名" :label-width="formLabelWidth">
             <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
           </el-form-item>
-             <el-form-item label="手机号" :label-width="formLabelWidth">
-            <el-input v-model="form.phone" autocomplete="off" prop="phone"></el-input>
+             <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+            <el-input v-model="form.phone" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="用户个人Email" :label-width="formLabelWidth">
-            <el-input v-model="form.email" autocomplete="off" prop="email"></el-input>
+          <el-form-item label="用户个人Email" :label-width="formLabelWidth" prop="email">
+            <el-input v-model="form.email" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addUser()">确 定</el-button>
+          <el-button type="primary" @click="addUser('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -168,7 +168,38 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
+    	 	   //手机号校验
+    const validatephone=(rule, value, callback)=>{
+     
+       if (value && (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11)) {
+      callback(new Error('手机号码不符合规范'))
+    } else {
+      callback()
+    }
+    };
+     //邮箱校验
+    const validatemail=(rule, value, callback)=>{
+      
+        let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
+    let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/
+    if (value && (!(temp).test(value))) {
+      callback(new Error('邮箱格式不符合规范'))
+    } else {
+      callback()
+    }
+    };
     return {
+         //匹配校验器
+      ruleValidate: {
+        phone: [
+          
+           {required: true, message: '请输入电话号码', trigger: 'blur'},
+          { validator: validatephone, trigger: "blur" }],
+
+           email: [
+           {required: true, message: '请输入电子邮箱', trigger: 'blur'},
+          { validator: validatemail, trigger: "blur" }],
+      },
       total: "",
       form: {
         user_name: "",
@@ -333,7 +364,7 @@ export default {
   //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
   // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;' 
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight:10;' 
       }
     },
 //  tableRowClassName({row, rowIndex}) {
@@ -451,8 +482,10 @@ export default {
         }
       }).then(res => {});
     },
-    addUser() {
-      this.$http
+    addUser(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+               this.$http
         .post("/api/user/addUser", {
           user_name: this.form.user_name,
           email: this.form.email,
@@ -468,16 +501,11 @@ export default {
             });
             this.getData();
             this.dialogFormVisible = false;
-          } else if (res.data.status == "F") {
-            this.$message({
-              message: "该用户已存在",
-              type: "warning"
-            });
-          }
+          } 
         })
-        .catch(function(error) {
-          alert(axios错误回调);
-          console.log(error);
+          } else {
+            this.$message.error("请正确输入用户信息   !");
+          }
         });
     },
     // 分页导航

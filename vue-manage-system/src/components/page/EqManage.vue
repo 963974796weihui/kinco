@@ -55,7 +55,7 @@
         <el-table-column label="相关操作" width="100" align="center">
           <template slot-scope="scope">
             <el-button
-              disabled="scope.row.cut_off==2"
+            :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-close"
               class="red"
@@ -226,7 +226,7 @@ export default {
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 1000;'
+        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 10;'
       }
     },
     //禁用按钮
@@ -282,7 +282,7 @@ export default {
           this.dialogFormVisible = false;
         } else if (res.data.status == "F") {
           this.$message({
-            message: "该设备已存在",
+            message: "授权码不存在",
             type: "warning"
           });
         }
