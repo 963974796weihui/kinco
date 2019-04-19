@@ -172,7 +172,29 @@ class UserServicesController extends Controller
         $request['register_confirm_code'] = str_random(32);
         $request['time'] = time();
         $id = DB::table('ki_admin_user')->insertGetId($request);
+        //查找域名
+        $domain_name=DB::table('ki_admin_domain')->where('id',$request['domain_id'])->select('domain_name')->get()->toArray();
+        $domain_name=$domain_name[0]->domain_name;
+        //邮件发送
+        $registerCode['id'] = $id;
+        $registerCode['email'] = $request['email'];
+        $registerCode['user_name'] = $domain_name;//域名
+        $registerCode['first_name'] = $request['user_name'];//用户名
+        $registerCode['password'] = $request['password'];
+        $registerCode['register_confirm_code'] = $request['register_confirm_code'];
+        $mail = $this->mailSend($registerCode);//发送邮件
         return $id;
+    }
+    public function mailSend($registerCode){
+        $to =$registerCode['email'];//接收人
+        $subject = 'EdgeAccess Domain 用户注册确认信';//主题
+        Mail::send(
+            'emails.user',//邮件发送的模板文件
+            ['content' => $registerCode],//生成的模板文件变量 数组形式
+            function ($message) use ($to, $subject) {
+                $res=$message->to($to)->subject($subject);
+            }
+        );
     }
 
     public function updateInfo($request)
@@ -197,5 +219,20 @@ class UserServicesController extends Controller
             return $result;
         }
 
+    }
+    public function user_cert(){
+        $hmi_cert=DB::table('ki_user_hmi_cert')->select('user_cert')->where('hmi_cert','=','')->orderby('id','desc')->limit(1)->get()->toArray();
+        if(!$hmi_cert){
+            $hmi_cert='usr_1001';
+            $res=DB::table('ki_user_hmi_cert')->insertGetId(['user_cert'=>$hmi_cert]);
+            return $hmi_cert;
+        }
+        else{
+            $hmi_cert=$hmi_cert[0]->user_cert;
+            $code=substr($hmi_cert,4,strlen($hmi_cert)-4)+1;
+            $hmi_cert='usr_'.$code;
+            $res=DB::table('ki_user_hmi_cert')->insertGetId(['user_cert'=>$hmi_cert]);
+            return $hmi_cert;
+        }
     }
 }

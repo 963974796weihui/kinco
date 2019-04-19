@@ -63,16 +63,20 @@ class SupplyController extends Controller
         $request = $request->all();
         $request['time'] = time();
         //授权码不存在
-        $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
-        if(!$bind){
-            return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
+        if($request['auth_code']) {
+            $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
+            if (!$bind) {
+                return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
+            }
+            if ($bind[0]->bind != 0) {
+                return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码已被使用']);
+            }
+            $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind' => $request['sncode'], 'activate_time' => $request['time']]);
         }
-        if($bind[0]->bind!=0){
-            return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码已被使用']);
-        }
-        $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind'=>$request['sncode'],'activate_time'=>$request['time']]);
+        $hmi_cert=$this->supplyServicesController->hmi_cert();//生成虚拟人机证书
+        $request['cert_name']=$hmi_cert;
         $res=DB::table('ki_admin_hmi')->insertGetId($request);
-        if($res&&$result){
+        if($res){
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
         }
         return response()->json(['status' => 'S', 'code' => '501', 'message' => '服务器内部错误']);

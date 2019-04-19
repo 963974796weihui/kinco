@@ -98,6 +98,8 @@ class UserController extends Controller
     public function addUser(Request $request)
     {
         $request = $request->all();
+        $user_cert=$this->userServices->user_cert();
+        $request['cert_name']=$user_cert;
         $result = $this->userServices->addUser($request);
         if ($result) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户添加成功']);

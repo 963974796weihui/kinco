@@ -91,7 +91,7 @@ class IndexController extends Controller
         if ($result) {
             return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
         }
-        return response()->json(['status' => 'F', 'code' => '201', 'message' => '该域已存在']);
+        return response()->json(['status' => 'F', 'code' => '201', 'message' => '该域名已被占用']);
     }
 
     /**
@@ -115,6 +115,18 @@ class IndexController extends Controller
         $id = $request->input('id');
         $register_confirm_code = $request->input('code');
         $res = DB::table('ki_admin_administrtor')->where('id', $id)->where('register_confirm_code', $register_confirm_code)->update(['status' => 1]);
+        return view('emails.confirm');
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 激活邮箱
+     */
+    public function confirmer(Request $request)
+    {
+        $id = $request->input('id');
+        $register_confirm_code = $request->input('code');
+        $res = DB::table('ki_admin_user')->where('id', $id)->where('register_confirm_code', $register_confirm_code)->update(['status' => 1]);
         return view('emails.confirm');
     }
 
