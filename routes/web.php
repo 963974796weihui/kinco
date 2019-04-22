@@ -45,6 +45,8 @@ Route::post('/group/addUser','Admin\GroupController@addUser');//绑定用户
 Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定用户确认
 //授权码模块
 Route::post('/AuthCode/codeInfo','Admin\AuthCodeController@codeInfo');//授权码信息
+Route::post('/AuthCode/allhmi','Admin\AuthCodeController@allhmi');//授权码信息
+Route::post('/AuthCode/bind','Admin\AuthCodeController@bind');//授权码信息
 
 //支付宝支付处理路由
 Route::get('alipay','Admin\AlipayController@Alipay');  // 发起支付请求

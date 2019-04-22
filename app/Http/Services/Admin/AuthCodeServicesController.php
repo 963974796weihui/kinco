@@ -37,4 +37,8 @@ class AuthCodeServicesController extends Controller
         $data['total'] = $result['total'];
         return $data;
     }
+    public function allhmi($domain_id){
+        $allhmi=DB::table('ki_admin_hmi')->where('auth_code','=','0')->where('domain_id',$domain_id)->where('cut_off','0')->get();
+        return $allhmi;
+    }
 }
