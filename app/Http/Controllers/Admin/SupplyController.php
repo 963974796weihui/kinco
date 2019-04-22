@@ -71,7 +71,12 @@ class SupplyController extends Controller
             if ($bind[0]->bind != 0) {
                 return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码已被使用']);
             }
-            $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind' => $request['sncode'], 'activate_time' => $request['time']]);
+            $activate_time = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('activate_time')->get()->toArray();
+            if($activate_time[0]->activate_time){
+                $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind' => $request['sncode']]);
+            }else {
+                $result = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->update(['bind' => $request['sncode'], 'activate_time' => $request['time']]);
+            }
         }
         $hmi_cert=$this->supplyServicesController->hmi_cert();//生成虚拟人机证书
         $request['cert_name']=$hmi_cert;
