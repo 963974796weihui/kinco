@@ -63,6 +63,10 @@ class SupplyController extends Controller
         $request = $request->all();
         $request['time'] = time();
         //授权码不存在
+        $sncode=DB::table('ki_admin_hmi')->where('sncode',$request['sncode'])->first();
+        if($sncode){
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '该序列号已存在']);
+        }
         if($request['auth_code']) {
             $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
             if (!$bind) {

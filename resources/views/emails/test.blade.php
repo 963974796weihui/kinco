@@ -8,7 +8,7 @@
 </br>
 中国地区服务器 – (https://www.edgeaccess.cn)
 <br>
-域 (Domain) 名称： {{$content['user_name']}}
+账号名： {{$content['user_name']}}
 <br>
 使用者名称：{{$content['first_name']}}
 <br>
