@@ -35,11 +35,23 @@ class AuthCodeController extends Controller
         unset($result['total']);
         return response()->json(['status' => 'S', 'code' => '200', 'data' => $result,'total' =>$total]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 查找全部未绑定人机
+     */
     public function allHmi(Request $request){
         $domain_id=$request->input('domain_id');
         $allhmi=$this->AuthCodeServicesController->allhmi($domain_id);//全部未绑定人机
         return response()->json(['status' => 'S', 'code' => '200', 'data' => $allhmi]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 绑定人机操作
+     */
     public function bind(Request $request){
         $request = $request->all();
         $request['time'] = time();
@@ -61,5 +73,25 @@ class AuthCodeController extends Controller
         }
         $res=DB::table('ki_admin_hmi')->where('id',$request['id'])->update(['auth_code'=>$request['auth_code']]);
         return response()->json(['status' => 'S', 'code' => '200', 'data' => '绑定成功']);
+    }
+
+    /**
+     * @param Request $request
+     * 解绑
+     */
+    public function unbind(Request $request){
+        $id=$request->input('id');
+        $codeid=DB::table('ki_admin_code')
+            ->leftJoin('ki_admin_hmi', 'ki_admin_code.sncode', '=', 'ki_admin_hmi.auth_code')
+            ->where('ki_admin_code.id',$id)
+            ->select('ki_admin_hmi.id')
+            ->first();
+        try{
+            DB::table('ki_admin_hmi')->where('id',$codeid->id)->update(['auth_code'=>'0']);
+            DB::table('ki_admin_code')->where('id',$id)->update(['bind'=>0]);
+        }catch (\Exception $e){
+            $e->getMessage();
+        }
+        return response()->json(['status' => 'S', 'code' => '200', 'data' => '解绑成功']);
     }
 }

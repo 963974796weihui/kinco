@@ -47,6 +47,7 @@ Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定�
 Route::post('/AuthCode/codeInfo','Admin\AuthCodeController@codeInfo');//授权码信息
 Route::post('/AuthCode/allhmi','Admin\AuthCodeController@allhmi');//授权码信息
 Route::post('/AuthCode/bind','Admin\AuthCodeController@bind');//授权码信息
+Route::post('/AuthCode/unbind','Admin\AuthCodeController@unbind');//授权码信息
 
 //支付宝支付处理路由
 Route::get('alipay','Admin\AlipayController@Alipay');  // 发起支付请求
