@@ -6,7 +6,17 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+//     try {
+//        system("sudo /var/www/html/kinco/authority_alloc.sh client_tmp -add client10 2>&1");
+//
+//     } catch (Exception $e){
+//echo 22;
+//         echo $e->getMessage();
+//     }
+//die;
+//system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh client_tmp -add client10");
+//die;
+//system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh client_tmp -del client10");
 define('LARAVEL_START', microtime(true));
 
 /*
