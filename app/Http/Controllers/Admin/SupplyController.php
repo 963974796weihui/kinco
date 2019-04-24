@@ -71,7 +71,7 @@ class SupplyController extends Controller
         if($sncode){
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '该序列号已存在']);
         }
-        if($request['auth_code']) {
+        if(isset($request['auth_code'])) {
             $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
             if (!$bind) {
                 return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
