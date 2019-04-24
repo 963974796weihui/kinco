@@ -78,14 +78,15 @@ class IndexServicesController extends Controller
             if($status[0]==0){//未通过邮箱确认
                 return $status[0];
             }
-            DB::table('ki_admin_administrtor')->where($condition)->update(['last_time' => time()]);//更新最后一次登录时间
             Cache::put('loginId', $result, 3600);//缓存登录ip
             $domain_name = DB::table('ki_admin_administrtor')
                 ->leftjoin('ki_admin_domain', 'ki_admin_administrtor.id', '=', 'ki_admin_domain.uid')
                 ->where('ki_admin_administrtor.id', '=', $result[0])
-                ->select('ki_admin_domain.id as id', 'domain_name')
+                ->select('ki_admin_domain.id as id', 'domain_name','last_time')
                 ->get()
                 ->toArray();
+            $domain_name[0]->last_time=date('Y-m-d H:i:s',$domain_name[0]->last_time+8*60*60);
+            DB::table('ki_admin_administrtor')->where($condition)->update(['last_time' => time()]);//更新最后一次登录时间
             return $domain_name;
         } else {
             return false;
