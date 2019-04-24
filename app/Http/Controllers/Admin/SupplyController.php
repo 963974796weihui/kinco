@@ -117,7 +117,7 @@ class SupplyController extends Controller
                 return response()->json(['status' => 'F', 'code' => '201', 'message' => $result->hmi_name.'不允许删除']);
             }
         }
-        DB::table('ki_admin_supply')->whereIn('id', $id)->update(['cut_off' => 1]);
+        DB::table('ki_admin_hmi')->whereIn('id', $id)->update(['cut_off' => 1]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
 }

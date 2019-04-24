@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="嵌入支付宝">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Services/Admin/IndexServicesController.php" afterPath="$PROJECT_DIR$/app/Http/Services/Admin/IndexServicesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,7 +18,7 @@
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="489">
-              <caret line="119" column="34" lean-forward="false" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="34" />
+              <caret line="119" column="31" lean-forward="false" selection-start-line="119" selection-start-column="31" selection-end-line="119" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -706,7 +704,7 @@
       <workItem from="1555637844890" duration="12570000" />
       <workItem from="1555900156957" duration="12069000" />
       <workItem from="1555992885229" duration="16104000" />
-      <workItem from="1556069983954" duration="5750000" />
+      <workItem from="1556069983954" duration="5794000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -817,7 +815,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="382829000" />
+    <option name="totallyTimeSpent" value="382873000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1936" height="1056" extended-state="0" />
@@ -1201,7 +1199,7 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="489">
-          <caret line="119" column="34" lean-forward="false" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="34" />
+          <caret line="119" column="31" lean-forward="false" selection-start-line="119" selection-start-column="31" selection-end-line="119" selection-end-column="31" />
           <folding />
         </state>
       </provider>
