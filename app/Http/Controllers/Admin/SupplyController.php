@@ -47,7 +47,7 @@ class SupplyController extends Controller
             if($result['data'][$key]->hmi_status==1){
                 $result['data'][$key]->hmi_status='在线';
             }
-            if($result['data'][$key]->auth_code==0){
+            if(empty($result['data'][$key]->auth_code)){
                 $result['data'][$key]->auth_code='';
             }
         }
