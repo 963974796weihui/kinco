@@ -103,4 +103,21 @@ class SupplyController extends Controller
         }
         return response()->json(['status' => 'S', 'code' => '501', 'message' => '服务器内部错误']);
     }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 删除设备
+     */
+    public function deleteSupply(Request $request)
+    {
+        $id = $request->input('id');
+        foreach($id as $key=>$value){
+            $result=DB::table('ki_admin_hmi')->where('id',$value)->select('auth_code','hmi_name')->first();
+            if($result->auth_code){
+                return response()->json(['status' => 'F', 'code' => '201', 'message' => $result->hmi_name.'不允许删除']);
+            }
+        }
+        DB::table('ki_admin_group')->whereIn('id', $id)->update(['cut_off' => 1]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+    }
 }

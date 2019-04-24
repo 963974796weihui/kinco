@@ -34,6 +34,7 @@ Route::post('/user/forbid','Admin\UserController@forbid');//禁用用户
 Route::post('/supply/supplyInfo','Admin\SupplyController@supplyInfo');//搜索设备
 Route::post('/supply/forbid','Admin\SupplyController@forbid');//禁用设备
 Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//新增设备
+Route::post('/supply/deleteSupply','Admin\SupplyController@deleteSupply');//新增设备
 //设备组模块
 Route::post('/group/addGroup','Admin\GroupController@addGroup');//新增设备组
 Route::post('/group/supplyInfo','Admin\GroupController@supplyInfo');//域下设备组信息
