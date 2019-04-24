@@ -210,10 +210,11 @@ class UserServicesController extends Controller
         $request['password'] = str_random(6);
         $request['register_confirm_code'] = str_random(32);
         $request['time'] = time();
-        $id = DB::table('ki_admin_user')->insertGetId($request);
         //查找域名
         $domain_name=DB::table('ki_admin_domain')->where('id',$request['domain_id'])->select('domain_name')->get()->toArray();
         $domain_name=$domain_name[0]->domain_name;
+        $request['domain_name']=$domain_name;
+        $id = DB::table('ki_admin_user')->insertGetId($request);
         //邮件发送
         $registerCode['id'] = $id;
         $registerCode['email'] = $request['email'];
@@ -227,13 +228,18 @@ class UserServicesController extends Controller
     public function mailSend($registerCode){
         $to =$registerCode['email'];//接收人
         $subject = 'EdgeAccess Domain 用户注册确认信';//主题
-        Mail::send(
-            'emails.user',//邮件发送的模板文件
-            ['content' => $registerCode],//生成的模板文件变量 数组形式
-            function ($message) use ($to, $subject) {
-                $res=$message->to($to)->subject($subject);
-            }
-        );
+        try {
+            Mail::send(
+                'emails.user',//邮件发送的模板文件
+                ['content' => $registerCode],//生成的模板文件变量 数组形式
+                function ($message) use ($to, $subject) {
+                    $res=$message->to($to)->subject($subject);
+                }
+            );
+        } catch (Exception $e) {
+            print $e->getMessage();
+            exit();
+        }
     }
 
     public function updateInfo($request)
