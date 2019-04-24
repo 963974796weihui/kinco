@@ -6,7 +6,10 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-
+//$user_cert_name='usr_1010';
+//$value='vir_1012';
+//system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-del'.' '.$value);
+//die;
 define('LARAVEL_START', microtime(true));
 
 /*
