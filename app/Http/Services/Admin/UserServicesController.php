@@ -178,12 +178,12 @@ class UserServicesController extends Controller
         foreach($result as $key=>$value){
             $hmi_cert_name[]=$value->cert_name;
         }
-        $this->systemShell($user_cert_name,$hmi_cert_name);//调用shell脚本
+        $this->unsystemShell($user_cert_name,$hmi_cert_name);//调用shell脚本
     }
     public function unsystemShell($user_cert_name,$hmi_cert_name){
         foreach ($hmi_cert_name as $key=>$value){
-            system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh" .$user_cert_name. "-del".$value);
-            system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh" .$value. "-del".$user_cert_name);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-del'.' '.$value);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$value.' '.'-del'.' '.$user_cert_name);
         }
     }
     public function hmiAddShell($user_id,$id){
@@ -197,8 +197,8 @@ class UserServicesController extends Controller
     }
     public function systemShell($user_cert_name,$hmi_cert_name){
         foreach ($hmi_cert_name as $key=>$value){
-            system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh" .$user_cert_name. "-add".$value);
-            system("/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh" .$value. "-add".$user_cert_name);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-add'.' '.$value);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$value.' '.'-add'.' '.$user_cert_name);
         }
     }
     public function addUser($request)
