@@ -16,7 +16,7 @@
              <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
             <el-input v-model="form.phone" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="用户个人Email" :label-width="formLabelWidth" prop="email">
+          <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
             <el-input v-model="form.email" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
@@ -42,7 +42,8 @@
       <el-table
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        border
+        stripe
+        :row-style="selectedHighlight"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
@@ -53,13 +54,13 @@
             <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
           </template> -->
         </el-table-column>
-        <el-table-column prop="remark" label="备注" width="100">
+        <el-table-column prop="remark" label="备注" width="200">
         </el-table-column>
-        <el-table-column prop="phone" label="手机号" width="150"></el-table-column>
-        <el-table-column prop="email" label="邮箱号" width="200"></el-table-column>
-        <el-table-column prop="group" label="匹配设备组" width="280"></el-table-column>
-        <el-table-column prop="hmi" label="匹配设备" width="280"></el-table-column>
-        <el-table-column label="相关操作" width="350" align="center">
+        <el-table-column prop="phone" label="手机号" width="180"></el-table-column>
+        <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
+        <el-table-column prop="group" label="匹配设备组" width="120"></el-table-column>
+        <el-table-column prop="hmi" label="匹配设备" width="120"></el-table-column>
+        <el-table-column label="相关操作" width="450" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -68,7 +69,7 @@
               @click="handleHmi(scope.$index, scope.row)"
             >设备管理</el-button>
 
-            <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="30%">
+            <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="40%">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="设备组" name="first">
                   <div class="tr">
@@ -140,10 +141,10 @@
     </div>
 
     <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+    <el-dialog title="编辑" :visible.sync="editVisible" width="20%">
       <el-form ref="form" :model="form" label-width="50px">
         <el-form-item label="备注">
-          <el-input v-model="form.remark" @change="SomeJavaScriptCode"></el-input>
+          <el-input v-model="form.remark" maxlength="20" @change="SomeJavaScriptCode"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -192,10 +193,8 @@ export default {
          //匹配校验器
       ruleValidate: {
         phone: [
-          
            {required: true, message: '请输入电话号码', trigger: 'blur'},
           { validator: validatephone, trigger: "blur" }],
-
            email: [
            {required: true, message: '请输入电子邮箱', trigger: 'blur'},
           { validator: validatemail, trigger: "blur" }],
@@ -359,12 +358,20 @@ export default {
     }
   },
   methods: {
+    // selectedHighlight(row) {
+    //   if ( row.is==true  ) {
+    //     return {
+    //       "background-color": "black"
+    //     };
+    //     return {}
+    //   }
+    // },
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
   //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
   // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight:10;' 
+        return 'background-color: #00b5f9;color: #f0f0f0;font-weight:10;' 
       }
     },
 //  tableRowClassName({row, rowIndex}) {
@@ -439,7 +446,7 @@ export default {
       });
     },
     //禁用多选框
-    checkboxT(row) {
+    checkboxT(row,rows) {
       return row.cut_off != 2;
     },
 
@@ -501,7 +508,12 @@ export default {
             });
             this.getData();
             this.dialogFormVisible = false;
-          } 
+          } else if(res.data.status == "F"){
+                this.$message({
+              message: "用户名已存在   !",
+              type: "warning"
+            });
+          }
         })
           } else {
             this.$message.error("请正确输入用户信息   !");
@@ -524,6 +536,7 @@ export default {
           page: this.cur_page
         }
       }).then(res => {
+       
         // console.log(res.data.message[0].user_name)   输入h
         this.total = res.data.total;
         this.tableData = res.data.message;
@@ -634,8 +647,6 @@ export default {
       this.idx = index;
       // const item = this.tableData[index];
       const item = this.tableData[index];
-      console.log(4444444444);
-      console.log(item);
       this.form = {
         // remark: item.remark,
         user_name: item.user_name,
@@ -792,5 +803,10 @@ export default {
 
 .el-table--border td {
   border-right: 1px solid #dcdee2;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+  background-color: #fdf3ea;
+  color: #f19944;
 }
 </style>

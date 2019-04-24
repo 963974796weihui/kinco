@@ -199,7 +199,7 @@ export default {
   width: 100%;
   height: 100%;
   /* background: #da2020; */
-  /* background-image: url(../../assets/bg1.jpg); */
+  background-image: url(../../assets/login.jpg);
   background-size: 100%;
 }
 .ms-title {
@@ -242,5 +242,9 @@ export default {
   position: absolute;
   top: 20px;
   left: 20px;
+}
+/* tab导航栏样式 */
+.el-tabs__item{
+  color: #fff
 }
 </style>

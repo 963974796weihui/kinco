@@ -38,7 +38,7 @@
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
         <el-table-column prop="group_name" label="设备组名" width="170"></el-table-column>
-        <el-table-column prop="hmi_num" label="组成员" width="280"></el-table-column>
+        <el-table-column prop="hmi_num" label="组成员" width="100"></el-table-column>
         <el-table-column label="相关操作" width="500" align="center">
           <template slot-scope="scope">
             <el-button
@@ -47,7 +47,7 @@
               @click="handleGroupHmi(scope.$index, scope.row)"
             >管理组成员</el-button>
 
-            <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="30%">
+            <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="40%">
               <div class="tr">
                 <el-transfer
                   :button-texts="['进行解绑', '进行绑定']"
@@ -71,7 +71,7 @@
               class="red"
               @click="handleGroupUser(scope.$index, scope.row)"
             >绑定用户</el-button>
-            <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="30%">
+            <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="40%">
               <div class="tr">
                 <el-transfer
                   :button-texts="['进行解绑', '进行绑定']"
