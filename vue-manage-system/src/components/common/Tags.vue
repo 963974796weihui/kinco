@@ -100,7 +100,7 @@
         position: relative;
         height: 30px;
         overflow: hidden;
-        background: #fff;
+        background: #b0b5bc;
         padding-right: 120px;
         box-shadow: 0 1px 80px #324157;
     }

@@ -31,9 +31,10 @@
       <el-table
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        border
         class="table"
         ref="multipleTable"
+        :row-class-name="tableRowClassName"
+        :row-style="rowClass"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -54,7 +55,7 @@
               icon="el-icon-date"
               @click="bindRelieve(scope.$index, scope.row)"
             >解除绑定</el-button>
-            <el-dialog title="绑定设备" :visible.sync="dialogCode" width="30%">
+            <el-dialog title="未绑定授权码设备" :visible.sync="dialogCode" width="20%">
               <!-- <input type="radio" name="test" v-for="item in dataCode" :key="item.id" :value="item.label" v-model="checkedValue"> -->
               <el-radio-group v-model="radio" @change="onRadioChange()">
                 <el-radio
@@ -151,6 +152,8 @@ export default {
     //     }
     //      };
     return {
+      selectRow:[],
+      selectData:[],
       radio: "",
       radioId:'',
       radioxlh:'',
@@ -239,7 +242,31 @@ export default {
       });
     }
   },
+  watch: {
+    selectData(data) {
+      this.selectRow = [];
+      if (data.length > 0) {  
+        data.forEach((item, index) => {
+          this.selectRow.push(this.tableData.indexOf(item));
+        });
+      }
+    }
+  },
   methods: {
+    // 多选高亮选中行
+    rowClass({row, rowIndex}){
+      if(this.selectRow.includes(rowIndex)){
+        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+      }
+    },
+    tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
     //解除绑定
     saveRelieve(){
        this.dialogRelieve = false;
@@ -344,7 +371,7 @@ this.getData();
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return "background-color: #9cba64;color: #f0f0f0;font-weight:10;";
+        return "background-color: #00b5f9;color: #f0f0f0;font-weight:10;";
       }
     },
     buyCode() {},
@@ -429,6 +456,7 @@ this.getData();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.selectData = val;
     },
     // 保存编辑
     saveEdit() {
@@ -478,4 +506,11 @@ this.getData();
   height: 200px;
   margin-left: 200px;
 }
+.el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>
