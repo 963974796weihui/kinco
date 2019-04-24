@@ -65,7 +65,17 @@ class SupplyController extends Controller
         DB::table('ki_admin_hmi')->where('id', $id)->update(['cut_off' => 2]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 解禁设备
+     */
+    public function unforbid(Request $request)
+    {
+        $id=$request->input('id');
+        DB::table('ki_admin_hmi')->where('id', $id)->update(['cut_off' => 2]);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
+    }
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
