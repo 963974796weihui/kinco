@@ -86,8 +86,8 @@ class UserController extends Controller
         $id = $request->input('id');
         $user_id = $request->input('user_id');
         $domain_id = $request->input('domain_id');
-        $this->userServices->hmiGroupBind($domain_id, $user_id, $id);
         $this->userServices->unhmiAddShell($user_id,$id);//先解绑
+        $this->userServices->hmiGroupBind($domain_id, $user_id, $id);
         $this->userServices->hmiAddShell($user_id,$id);//在添加绑定
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户绑定成功']);
     }
