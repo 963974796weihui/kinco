@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="嵌入支付宝">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +17,8 @@
       <file leaf-file-name="SupplyController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="75" column="75" lean-forward="false" selection-start-line="75" selection-start-column="75" selection-end-line="75" selection-end-column="75" />
+            <state relative-caret-position="449">
+              <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -92,8 +91,8 @@
       <file leaf-file-name="UserController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="153" column="34" lean-forward="true" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
+            <state relative-caret-position="397">
+              <caret line="161" column="7" lean-forward="true" selection-start-line="161" selection-start-column="7" selection-end-line="161" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -155,8 +154,8 @@
       <find>addsu</find>
       <find>hmiGroupBind</find>
       <find>supplyinfo</find>
-      <find>forbid</find>
       <find>auth_code</find>
+      <find>forbid</find>
       <find>forbi</find>
     </findStrings>
   </component>
@@ -203,8 +202,8 @@
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/app/Http/Services/Admin/IndexServicesController.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
       </list>
     </option>
   </component>
@@ -705,7 +704,7 @@
       <workItem from="1555637844890" duration="12570000" />
       <workItem from="1555900156957" duration="12069000" />
       <workItem from="1555992885229" duration="16104000" />
-      <workItem from="1556069983954" duration="8935000" />
+      <workItem from="1556069983954" duration="9097000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -816,7 +815,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="386014000" />
+    <option name="totallyTimeSpent" value="386176000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1936" height="1056" extended-state="0" />
@@ -1191,16 +1190,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="75" column="75" lean-forward="false" selection-start-line="75" selection-start-column="75" selection-end-line="75" selection-end-column="75" />
+        <state relative-caret-position="449">
+          <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="153" column="34" lean-forward="true" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
+        <state relative-caret-position="397">
+          <caret line="161" column="7" lean-forward="true" selection-start-line="161" selection-start-column="7" selection-end-line="161" selection-end-column="7" />
           <folding />
         </state>
       </provider>

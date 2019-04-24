@@ -152,7 +152,7 @@ class UserController extends Controller
     public function forbid(Request $request)
     {
         $id=$request->input('id');
-        DB::table('ki_admin_user')->where('id', $id)->update(['cut_off' => 0]);
+        DB::table('ki_admin_user')->where('id', $id)->update(['cut_off' => 2]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
     /**
@@ -163,7 +163,7 @@ class UserController extends Controller
     public function unforbid(Request $request)
     {
         $id=$request->input('id');
-        DB::table('ki_admin_user')->where('id', $id)->update(['cut_off' => 2]);
+        DB::table('ki_admin_user')->where('id', $id)->update(['cut_off' => 0]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
 }
