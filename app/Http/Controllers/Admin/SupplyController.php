@@ -42,13 +42,13 @@ class SupplyController extends Controller
                 $result['data'][$key]->end_time = date('Y-m-d H:i:s', $codeinfo->activate_time + $codeinfo->long * 24 * 60 * 60 + 8 * 60 * 60);
             }
             if($result['data'][$key]->hmi_status==0){
-                $result['data'][$key]->hmi_status=='未在线';
+                $result['data'][$key]->hmi_status='未在线';
             }
             if($result['data'][$key]->hmi_status==1){
-                $result['data'][$key]->hmi_status=='在线';
+                $result['data'][$key]->hmi_status='在线';
             }
             if($result['data'][$key]->auth_code==0){
-                $result['data'][$key]->auth_code=='';
+                $result['data'][$key]->auth_code='';
             }
         }
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
