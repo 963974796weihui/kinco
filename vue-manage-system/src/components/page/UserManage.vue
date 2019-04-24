@@ -16,7 +16,7 @@
              <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
             <el-input v-model="form.phone" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+          <el-form-item label="电子邮箱" :label-width="formLabelWidth" prop="email">
             <el-input v-model="form.email" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
