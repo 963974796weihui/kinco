@@ -30,9 +30,11 @@ Route::get('/user/info/{id}','Admin\UserController@info');//获得用户信息
 Route::post('/user/updateInfo','Admin\UserController@updateInfo');//编辑用户信息
 Route::get('/user/delete','Admin\UserController@delete');//删除用户
 Route::post('/user/forbid','Admin\UserController@forbid');//禁用用户
+Route::post('/user/unforbid','Admin\UserController@unforbid');//解禁用户
 //设备模块
 Route::post('/supply/supplyInfo','Admin\SupplyController@supplyInfo');//搜索设备
 Route::post('/supply/forbid','Admin\SupplyController@forbid');//禁用设备
+Route::post('/supply/unforbid','Admin\SupplyController@unforbid');//解禁设备
 Route::post('/supply/addSupply','Admin\SupplyController@addSupply');//新增设备
 Route::post('/supply/deleteSupply','Admin\SupplyController@deleteSupply');//新增设备
 //设备组模块
