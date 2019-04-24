@@ -38,7 +38,7 @@ class SupplyController extends Controller
         foreach ($result['data'] as $key=>$value){
             $result['data'][$key]->time=date('Y-m-d H:i:s',$value->time);
             $codeinfo=DB::table('ki_admin_code')->where('sncode',$value->auth_code)->select('activate_time','long')->first();
-            if($codeinfo->activate_time) {
+            if($codeinfo) {
                 $result['data'][$key]->end_time = date('Y-m-d H:i:s', $codeinfo->activate_time + $codeinfo->long * 24 * 60 * 60 + 8 * 60 * 60);
             }
         }
