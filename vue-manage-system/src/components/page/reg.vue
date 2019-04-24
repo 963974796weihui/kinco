@@ -1,25 +1,19 @@
-<template>
-
+<template >
+<div class="login-wrap">
+  <div class="ms-login">
 <el-form 
 	class="card-box login-form"
 	 ref="formValidate"
     :model="formValidate"
     :rules="ruleValidate">
     <router-link to="/login">
-    <i class="el-icon-back"></i>
+    <i class="el-icon-back icon"></i>
        </router-link>
-	   <h1 class="reg-adm">注册管理员</h1>
+	   <span class="reg-adm">注册管理员</span>
     <br>
     <el-form-item label="账号名" prop="user_name">
       <el-input type="text" v-model="formValidate.user_name" placeholder="包括中文字、英文字母、数字和下划线"></el-input>
     </el-form-item>
-
-    <!-- <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="formValidate.password" placeholder="数字,小写字母,大写字母,特殊符号至少包含三种,长度为 8 - 30位"></el-input>
-    </el-form-item>
-    <el-form-item label="确认密码" prop="passwdCheck">
-      <el-input type="password" v-model="formValidate.passwdCheck"></el-input>
-    </el-form-item> -->
     <el-form-item label="姓名" prop="first_name">
       <el-input type="text" v-model="formValidate.first_name" placeholder="请输入真实姓名"></el-input>
     </el-form-item>
@@ -53,16 +47,17 @@
       <el-checkbox-group v-model="formValidate.interest">
       </el-checkbox-group>
     </el-form-item>
-    <br> <br> <br>
     <el-form-item>
       <el-button
-        type="primary"
+        type="success"
         @click="reg()"
-        style="margin-left: 350px;width:100px"
+        style="margin-left: 550px;width:150px"
       >注册</el-button>
       <!-- <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button> -->
     </el-form-item>
 </el-form>
+</div>
+</div>
 </template>
 <script>
 	import VDistpicker from "v-distpicker";
@@ -70,7 +65,6 @@
 		 data() {
 		 	   //手机号校验
     const validatephone=(rule, value, callback)=>{
-     
        if (value && (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11)) {
       callback(new Error('手机号码不符合规范'))
     } else {
@@ -264,9 +258,34 @@ float: left;
 margin-left: -70px;
 }
 .reg-adm{
+  font-size: 40px;
+  color: #fff
+}
+.icon{
+  color: #fff;
+  font-size: 40px;
+  margin-top: 7px;
 }
 /* tab导航字体颜色 */
 .el-tabs__item{
   color: #fff
+}
+.ms-login {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 850px;
+  height: 800px;
+  margin: -470px 0 0 -375px;
+  border-radius: 5px;
+  /* background: rgba(255,255,255, 0.3); */
+  overflow: hidden;
+}
+.login-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url(../../assets/login.jpg);
+  background-size: 100%;
 }
 </style>

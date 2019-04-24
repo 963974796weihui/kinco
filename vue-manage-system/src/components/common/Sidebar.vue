@@ -2,7 +2,7 @@
     <div class="sidebar"> 
         <!-- 侧边栏    头-->
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
-            text-color="#bfcbd9" active-text-color="#20a0ff" router>
+            text-color="#bfcbd9" active-text-color="#ffffff" router>
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
@@ -214,4 +214,8 @@ this.$store.commit('saveDomainId',domain_id)
     .sidebar > ul {
         height:100%;
     }
+/* 选中颜色 */
+.el-menu-item.is-active {
+   background-color: #00b5f9 !important;
+}
 </style>

@@ -8,14 +8,14 @@
         round
         @click="addHmiForm()"
       >添加设备</el-button>
-<!-- dialogFormVisible = true -->
+      <!-- dialogFormVisible = true -->
       <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="序列号" :label-width="formLabelWidth">
-            <el-input v-model="form.sncode" autocomplete="off" prop="sncode"></el-input>
+          <el-form-item label="序列号" :label-width="formLabelWidth" prop="sncode">
+            <el-input v-model="form.sncode" autocomplete="off" ></el-input>
           </el-form-item>
-          <el-form-item label="授权码" :label-width="formLabelWidth">
-            <el-input v-model="form.auth_code" autocomplete="off" prop="auth_code"></el-input>
+          <el-form-item label="授权码" :label-width="formLabelWidth" prop="auth_code">
+            <el-input v-model="form.auth_code" autocomplete="off" ></el-input>
           </el-form-item>
           <el-form-item label="人机名" :label-width="formLabelWidth">
             <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
@@ -44,18 +44,17 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="hmi_name" label="设备名" width="170"></el-table-column>
-        <el-table-column prop="type1" label="设备型号" width="170"></el-table-column>
-        <el-table-column prop="sncode" label="序列号" width="220"></el-table-column>
-        <el-table-column prop="hmi_status" label="在线状态" width="120"></el-table-column>
-        <el-table-column prop="virtual_address" label="虚拟ip" width="150"></el-table-column>
-        <el-table-column prop="real_address" label="真实ip" width="150"></el-table-column>
-        <el-table-column prop="auth_code" label="授权码绑定情况" width="180"></el-table-column>
-        <el-table-column prop="time" label="开通日期" width="250"></el-table-column>
-        <el-table-column label="相关操作" width="100" align="center">
+        <el-table-column prop="hmi_name" label="设备名" width="180"></el-table-column>
+        <el-table-column prop="hmi_status" label="在线状态" width="100"></el-table-column>
+        <el-table-column prop="type1" label="设备型号" width="200"></el-table-column>
+        <el-table-column prop="virtual_address" label="虚拟ip" width="180"></el-table-column>
+        <el-table-column prop="real_address" label="真实ip" width="180"></el-table-column>
+        <el-table-column prop="auth_code" label="授权码绑定情况" width="150"></el-table-column>
+        <el-table-column prop="time" label="开通日期" width="230"></el-table-column>
+        <el-table-column label="相关操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button
-            :disabled="scope.row.cut_off==2"
+              :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-close"
               class="red"
@@ -116,7 +115,25 @@ import bus from "../common/bus";
 export default {
   name: "basetable",
   data() {
+    //只能输入英文或者数字
+    const enOrnunText = (rule, value, callback) => {
+      if (value && !/^[A-Za-z0-9]+$/.test(value)) {
+        callback(new Error("只能填写英文或者数字"));
+      } else {
+        callback();
+      }
+    };
     return {
+      ruleValidate: {
+        sncode: [
+          { required: true, message: '请输入序列号', trigger: "blur" },
+          { validator: enOrnunText, trigger: "blur" }
+        ],
+         auth_code: [
+          { required: true, message: '请输入授权码', trigger: "blur" },
+          { validator: enOrnunText, trigger: "blur" }
+        ],
+      },
       total: "",
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -219,14 +236,14 @@ export default {
     }
   },
   methods: {
-    addHmiForm(){
-      this.form=[];
+    addHmiForm() {
+      this.form = [];
       this.dialogFormVisible = true;
     },
     //表头样式
-     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #9cba64;color: #f0f0f0;font-weight: 10;'
+        return "background-color: #9cba64;color: #f0f0f0;font-weight: 10;";
       }
     },
     //禁用按钮

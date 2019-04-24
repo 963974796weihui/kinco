@@ -268,6 +268,7 @@ this.$http({
     margin-top: 15px;
 }
     .header {
+        background-color: #5e99e9;
         position: relative;
         box-sizing: border-box;
         width: 100%;
