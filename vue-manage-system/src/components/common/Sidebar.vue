@@ -1,8 +1,8 @@
 <template>
     <div class="sidebar"> 
         <!-- 侧边栏    头-->
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
-            text-color="#bfcbd9" active-text-color="#ffffff" router>
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#015db4"
+            text-color="#ffffff" active-text-color="#ffffff" router>
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-submenu :index="item.index" :key="item.index">
@@ -54,19 +54,7 @@ import store from '../../store/store.js'
                         index: 'codemanage',
                         title: '授权码管理'
                     },
-
-
-
-
-
-
-
-
-
-
-                    
                  ],
-               
                 // 左侧边栏数组
                 // items: [
                 //     {
@@ -201,7 +189,7 @@ this.$store.commit('saveDomainId',domain_id)
         display: block;
         position: absolute;
         left: 0;
-        top: 60px;
+        top: 70px;
         bottom:0;
         overflow-y: scroll;
     }
@@ -216,6 +204,6 @@ this.$store.commit('saveDomainId',domain_id)
     }
 /* 选中颜色 */
 .el-menu-item.is-active {
-   background-color: #00b5f9 !important;
+   background-color: #2798ff !important;
 }
 </style>

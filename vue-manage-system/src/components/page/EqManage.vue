@@ -39,8 +39,8 @@
         :row-style="rowClass"
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        :row-class-name="tableRowClassName"
         class="table"
+        :stripe= "test"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
@@ -138,6 +138,7 @@ export default {
     return {
          selectRow:[],
         selectData:[],
+        test:true,
       ruleValidate: {
         sncode: [
           { required: true, message: '请输入序列号', trigger: "blur" },
@@ -261,20 +262,23 @@ export default {
     }
   },
   methods: {
+
+    
+
     // 多选高亮选中行
     rowClass({row, rowIndex}){
       if(this.selectRow.includes(rowIndex)){
         return { "background-color": "rgba(185, 221, 249, 0.75)" }
       }
     },
-    tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
+    // tableRowClassName({row, rowIndex}) {
+    //     if (rowIndex === 1) {
+    //       return 'warning-row';
+    //     } else if (rowIndex === 3) {
+    //       return 'success-row';
+    //     }
+    //     return '';
+    //   },
     addHmiForm() {
       this.form = [];
       this.dialogFormVisible = true;
@@ -442,9 +446,15 @@ export default {
         //  this.tableData = res.data.message;
       });
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
-        this.selectData = val;
+          if(val.length > 0){
+          this.test = false;
+        }else{
+          this.test = true;
+        }
+        this.selectData = val
     },
     // 保存编辑
     saveEdit() {
@@ -521,11 +531,11 @@ this.$message.success("删除成功");
 .el-table--border td {
   border-right: 1px solid #dcdee2;
 }
-.el-table .warning-row {
+/* .el-table .warning-row {
     background: oldlace;
   }
 
   .el-table .success-row {
     background: #f0f9eb;
-  }
+  } */
 </style>

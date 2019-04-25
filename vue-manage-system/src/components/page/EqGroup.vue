@@ -31,8 +31,8 @@
       <el-table
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        :row-class-name="tableRowClassName"
         :row-style="rowClass"
+        :stripe= "test"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
@@ -151,8 +151,10 @@ export default {
   name: "basetable",
   data() {
     return {
-        selectRow:[],
-        selectData:[],
+      shuzu3:[],
+      selectRow:[],
+      selectData:[],
+      test:true,
       total: "",
       //穿梭框
       value1: [],
@@ -167,6 +169,7 @@ export default {
       dataGroupHmi: [],
       dataUser: [],
       shuzu: [],
+      shuzu2: [],
       trGroup: [],
       cur_page: 1,
       multipleSelection: [],
@@ -291,20 +294,19 @@ export default {
     }
 },
   methods: {
+    //数组去重
+    getArrDifference(arr1, arr2) {
+    return arr1.concat(arr2).filter(function(v, i, arr) {
+      return arr.indexOf(v) === arr.lastIndexOf(v);
+    });
+   
+  },
     // 多选高亮选中行
     rowClass({row, rowIndex}){
       if(this.selectRow.includes(rowIndex)){
         return { "background-color": "rgba(185, 221, 249, 0.75)" }
       }
     },
-    tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
@@ -391,12 +393,30 @@ export default {
           }
         }
       });
-
       this.dialogManagerMember = true;
     },
     //绑定用户按钮事件
     handleGroupUser(index, row) {
-      this.getUser();
+      // this.shuzu2=this.dataGroupHmi;
+      // this.getUser();
+       this.$http({
+        method: "get",
+        url: "/api/user/userInfo",
+        params: {
+          domain_id: this.domain_id,
+          limit: 10000,
+          page: 1
+        }
+      }).then(res => {
+        this.dataUser = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          this.dataUser.push({
+            key: res.data.message[i].id,
+            label: res.data.message[i].user_name
+          });
+        }
+   
+      });
       this.idx = index;
       // const item = this.tableData[index];
       const item = this.tableData[index];
@@ -416,12 +436,18 @@ export default {
           id: this.form.id
         }
       }).then(res => {
+        console.log(6666666);
+        console.log(res);
         this.value2 = [];
+        // this.shuzu2=[];
         for (var i = 0; i < res.data.message.length; i++) {
           if (res.data.message[i].status == 1) {
             this.value2.push(res.data.message[i].id);
+   
           }
         }
+      this.shuzu2=this.value2;
+      
       });
       this.dialogBindUser = true;
     },
@@ -439,15 +465,14 @@ export default {
       }).then(res => {});
     },
     handleChange2() {
-      this.$http({
-        method: "post",
-        url: "/api/group/addUserBind",
-        data: {
-          domain_id: this.domain_id,
-          group_id: this.form.id,
-          id: this.value2
-        }
-      }).then(res => {});
+      console.log(5757575);
+      // this.b=this.getArrDifference(this.value2,this.shuzu2);
+      // console.log(this.value2);
+      // console.log(this.shuzu2);
+      // alert(this.getArrDifference(this.value2,this.shuzu2))
+      this.shuzu3=this.getArrDifference(this.value2,this.shuzu2);
+      // alert(this.shuzu3);
+        // console.log(this.value2)
     },
 
     //添加设备群组
@@ -485,6 +510,17 @@ export default {
     },
     //保存绑定用户按钮
     saveGroupUser() {
+this.$http({
+method: "post",
+url: "/api/group/addUserBind",
+data: {
+domain_id: this.domain_id,
+group_id: this.form.id,
+id: this.shuzu3
+}
+}).then(res => {
+});
+
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -586,7 +622,12 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.selectData = val;
+      if(val.length > 0){
+          this.test = false;
+        }else{
+          this.test = true;
+        }
+        this.selectData = val
     },
     // 保存编辑
     saveEdit() {
@@ -648,11 +689,4 @@ export default {
 .tr {
   text-align: left;
 }
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
 </style>
