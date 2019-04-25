@@ -65,13 +65,13 @@
               icon="el-icon-close"
               class="red"
               @click="ban(scope.$index, scope.row)"
-            >禁用</el-button>
-             <el-button
+            >{{scope.row.cut_off==2? "解禁":"禁用"}}</el-button>
+             <!-- <el-button
               type="text"
               icon="el-icon-close"
               class="green"
               @click="reban(scope.$index, scope.row)"
-            >解禁</el-button>
+            >解禁</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -136,6 +136,7 @@ export default {
       }
     };
     return {
+      flag:0,
          selectRow:[],
         selectData:[],
         test:true,
@@ -325,19 +326,9 @@ export default {
         this.getData();
       });
     },
-    //禁用选择框checkboxT
-    // checkboxT(row, rowIndex) {
-    //   if (rowIndex == this.idx) {
-
-    //     return false; //禁用
-    //   } else {
-    //     return true; //不禁用
-    //   }
-    // },
     checkboxT(row) {
       return row.cut_off != 2;
     },
-
     //添加序列号
     addSerial() {
       this.$http({

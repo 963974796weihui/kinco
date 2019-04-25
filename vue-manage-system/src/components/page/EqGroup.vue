@@ -521,6 +521,17 @@ id: this.shuzu3
 }).then(res => {
 });
 
+this.$http({
+method: "post",
+url: "/api/group/unaddUserBind",
+data: {
+domain_id: this.domain_id,
+group_id: this.form.id,
+id: this.shuzu3
+}
+}).then(res => {
+});
+
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
