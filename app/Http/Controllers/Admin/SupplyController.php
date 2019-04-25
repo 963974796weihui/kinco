@@ -40,6 +40,8 @@ class SupplyController extends Controller
             $codeinfo=DB::table('ki_admin_code')->where('sncode',$value->auth_code)->select('activate_time','long')->first();
             if($codeinfo) {
                 $result['data'][$key]->end_time = date('Y-m-d H:i:s', $codeinfo->activate_time + $codeinfo->long * 24 * 60 * 60 + 8 * 60 * 60);
+            }else{
+                $result['data'][$key]->end_time='';
             }
             if($result['data'][$key]->hmi_status==0){
                 $result['data'][$key]->hmi_status='未在线';
