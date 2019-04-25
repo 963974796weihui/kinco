@@ -117,8 +117,8 @@ export default {
               password: this.ruleForm.password
             })
             .then(res => {
-              //  console.log( this.firstItem)
               if (res.data.status == "S") {
+                localStorage.setItem("last_time", res.data.message[0].last_time);
    this.$notify.success({
           title: '登录成功',
           message: '欢迎进入EdgeAccess系统',
@@ -244,7 +244,7 @@ export default {
   left: 20px;
 }
 /* tab导航栏样式 */
-.el-tabs__item{
+/* .el-tabs__item{
   color: #fff
-}
+} */
 </style>

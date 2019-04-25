@@ -8,16 +8,16 @@
         round
         @click="dialogFormVisible = true"
       >新增用户</el-button>
-      <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="用户名" :label-width="formLabelWidth">
             <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
           </el-form-item>
-             <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
+          <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
             <el-input v-model="form.phone" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="电子邮箱" :label-width="formLabelWidth" prop="email">
-            <el-input v-model="form.email" autocomplete="off" ></el-input>
+            <el-input v-model="form.email" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -38,24 +38,23 @@
       </div>
       <!-- :data="data1" -->
       <!-- :header-cell-style="{background:'#20a0ff',color:'#92ff00'}" -->
-         <!-- :row-class-name="tableRowClassName" -->
+      <!-- :row-class-name="tableRowClassName" -->
       <el-table
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        stripe
-        :row-style="selectedHighlight"
+        :row-style="rowClass"
+        :row-class-name="tableRowClassName"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
         <el-table-column prop="user_name" label="用户名" width="100">
-   <!-- <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
-          </template> -->
+          </template>-->
         </el-table-column>
-        <el-table-column prop="remark" label="备注" width="200">
-        </el-table-column>
+        <el-table-column prop="remark" label="备注" width="200"></el-table-column>
         <el-table-column prop="phone" label="手机号" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" width="120"></el-table-column>
@@ -121,12 +120,17 @@
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
-              :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-close"
               class="red"
               @click="ban(scope.$index, scope.row)"
             >禁用</el-button>
+            <el-button
+              type="text"
+              icon="el-icon-close"
+              class="green"
+              @click="reban(scope.$index, scope.row)"
+            >解禁</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -169,35 +173,40 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
-    	 	   //手机号校验
-    const validatephone=(rule, value, callback)=>{
-     
-       if (value && (!(/^[1][34578]\d{9}$/).test(value) || !(/^[1-9]\d*$/).test(value) || value.length !== 11)) {
-      callback(new Error('手机号码不符合规范'))
-    } else {
-      callback()
-    }
+    //手机号校验
+    const validatephone = (rule, value, callback) => {
+      if (
+        value &&
+        (!/^[1][34578]\d{9}$/.test(value) ||
+          !/^[1-9]\d*$/.test(value) ||
+          value.length !== 11)
+      ) {
+        callback(new Error("手机号码不符合规范"));
+      } else {
+        callback();
+      }
     };
-     //邮箱校验
-    const validatemail=(rule, value, callback)=>{
-      
-        let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/
-    let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/
-    if (value && (!(temp).test(value))) {
-      callback(new Error('邮箱格式不符合规范'))
-    } else {
-      callback()
-    }
+    //邮箱校验
+    const validatemail = (rule, value, callback) => {
+      let temp = /^[\w.\-]+@(?:[a-z0-9]+(?:-[a-z0-9]+)*\.)+[a-z]{2,3}$/;
+      let tempOne = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+      if (value && !temp.test(value)) {
+        callback(new Error("邮箱格式不符合规范"));
+      } else {
+        callback();
+      }
     };
     return {
-         //匹配校验器
+      //匹配校验器
       ruleValidate: {
         phone: [
-           {required: true, message: '请输入电话号码', trigger: 'blur'},
-          { validator: validatephone, trigger: "blur" }],
-           email: [
-           {required: true, message: '请输入电子邮箱', trigger: 'blur'},
-          { validator: validatemail, trigger: "blur" }],
+          { required: true, message: "请输入电话号码", trigger: "blur" },
+          { validator: validatephone, trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "请输入电子邮箱", trigger: "blur" },
+          { validator: validatemail, trigger: "blur" }
+        ]
       },
       total: "",
       form: {
@@ -235,6 +244,8 @@ export default {
       tableData: [],
       cur_page: 1,
       multipleSelection: [],
+      selectRow: [],
+      selectData: [],
       shuzu: [],
       trUser: [],
       select_cate: "",
@@ -357,7 +368,30 @@ export default {
       });
     }
   },
+  watch: {
+    selectData(data) {
+      this.selectRow = [];
+      if (data.length > 0) {
+        data.forEach((item, index) => {
+          this.selectRow.push(this.tableData.indexOf(item));
+        });
+      }
+    }
+  },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
+    rowClass({ row, rowIndex }) {
+      if (this.selectRow.includes(rowIndex)) {
+        return { "background-color": "rgba(185, 221, 249, 0.75)" };
+      }
+    },
     // selectedHighlight(row) {
     //   if ( row.is==true  ) {
     //     return {
@@ -367,22 +401,21 @@ export default {
     //   }
     // },
     //表头样式
-     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
-  //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
-  // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
+    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
+      // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
       if (rowIndex === 0) {
-        return 'background-color: #00b5f9;color: #f0f0f0;font-weight:10;' 
+        return "background-color: #00b5f9;color: #f0f0f0;font-weight:10;";
       }
     },
-//  tableRowClassName({row, rowIndex}) {
-//         if (rowIndex === 1) {
-//           return 'warning-row';
-//         } else if (rowIndex === 3) {
-//           return 'success-row';
-//         }
-//         return '';
-//       },
-
+    //  tableRowClassName({row, rowIndex}) {
+    //         if (rowIndex === 1) {
+    //           return 'warning-row';
+    //         } else if (rowIndex === 3) {
+    //           return 'success-row';
+    //         }
+    //         return '';
+    //       },
 
     //获取所有设备组
     getGroup() {
@@ -427,7 +460,7 @@ export default {
     },
     //禁用按钮
     ban(index, row) {
-      this.idx = index;
+      // this.idx = index;
       const item = this.tableData[index];
       this.form = {
         //用户id
@@ -440,13 +473,29 @@ export default {
           id: this.form.id
         }
       }).then(res => {
- this.getData();
-
-
+        this.getData();
+      });
+    },
+    //解禁按钮
+    reban(index, row) {
+      this.idx = index;
+      const item = this.tableData[index];
+      this.form = {
+        //用户id
+        id: item.id
+      };
+      this.$http({
+        method: "post",
+        url: "/api/user/unforbid",
+        params: {
+          id: this.form.id
+        }
+      }).then(res => {
+        this.getData();
       });
     },
     //禁用多选框
-    checkboxT(row,rows) {
+    checkboxT(row, rows) {
       return row.cut_off != 2;
     },
 
@@ -490,35 +539,35 @@ export default {
       }).then(res => {});
     },
     addUser(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-               this.$http
-        .post("/api/user/addUser", {
-          user_name: this.form.user_name,
-          email: this.form.email,
-          domain_id: this.domain_id, //域id
-          phone:this.form.phone
-        })
-        .then(res => {
-          console.log(res);
-          if (res.data.status == "S") {
-            this.$message({
-              message: "新增用户成功",
-              type: "success"
-            });
-            this.getData();
-            this.dialogFormVisible = false;
-          } else if(res.data.status == "F"){
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http
+            .post("/api/user/addUser", {
+              user_name: this.form.user_name,
+              email: this.form.email,
+              domain_id: this.domain_id, //域id
+              phone: this.form.phone
+            })
+            .then(res => {
+              console.log(res);
+              if (res.data.status == "S") {
                 this.$message({
-              message: "用户名已存在   !",
-              type: "warning"
+                  message: "新增用户成功",
+                  type: "success"
+                });
+                this.getData();
+                this.dialogFormVisible = false;
+              } else if (res.data.status == "F") {
+                this.$message({
+                  message: "用户名已存在   !",
+                  type: "warning"
+                });
+              }
             });
-          }
-        })
-          } else {
-            this.$message.error("请正确输入用户信息   !");
-          }
-        });
+        } else {
+          this.$message.error("请正确输入用户信息   !");
+        }
+      });
     },
     // 分页导航
     handleCurrentChange(val) {
@@ -536,7 +585,6 @@ export default {
           page: this.cur_page
         }
       }).then(res => {
-       
         // console.log(res.data.message[0].user_name)   输入h
         this.total = res.data.total;
         this.tableData = res.data.message;
@@ -712,6 +760,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.selectData = val;
     },
     //保存设备组管理
     saveHmiGroup() {
@@ -764,8 +813,8 @@ export default {
 
 <style >
 .one {
-      background:#f56c6c;
-    }
+  background: #f56c6c;
+}
 .search {
   float: right;
 }
@@ -792,6 +841,9 @@ export default {
 .red {
   color: #ff0000;
 }
+.green {
+  color: #31c453;
+}
 .tr {
   text-align: left;
 }
@@ -805,8 +857,15 @@ export default {
   border-right: 1px solid #dcdee2;
 }
 
-.el-table--enable-row-hover .el-table__body tr:hover>td {
-  background-color: #fdf3ea;
-  color: #f19944;
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #e8e9ea;
+  /* color: #5bcf01; */
 }
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

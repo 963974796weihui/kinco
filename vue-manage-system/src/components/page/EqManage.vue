@@ -9,7 +9,7 @@
         @click="addHmiForm()"
       >添加设备</el-button>
       <!-- dialogFormVisible = true -->
-      <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="25%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="序列号" :label-width="formLabelWidth" prop="sncode">
             <el-input v-model="form.sncode" autocomplete="off" ></el-input>
@@ -29,16 +29,17 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
+        <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
           <el-button type="primary" icon="search" @click="search">搜索</el-button>
         </div>
       </div>
       <el-table
+        :row-style="rowClass"
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        border
+        :row-class-name="tableRowClassName"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
@@ -51,15 +52,26 @@
         <el-table-column prop="real_address" label="真实ip" width="180"></el-table-column>
         <el-table-column prop="auth_code" label="授权码绑定情况" width="150"></el-table-column>
         <el-table-column prop="time" label="开通日期" width="230"></el-table-column>
-        <el-table-column label="相关操作" width="120" align="center">
+        <el-table-column label="相关操作" width="220" align="center">
           <template slot-scope="scope">
             <el-button
               :disabled="scope.row.cut_off==2"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.$index, scope.row)"
+            >删除</el-button>
+            <el-button
               type="text"
               icon="el-icon-close"
               class="red"
               @click="ban(scope.$index, scope.row)"
             >禁用</el-button>
+             <el-button
+              type="text"
+              icon="el-icon-close"
+              class="green"
+              @click="reban(scope.$index, scope.row)"
+            >解禁</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -124,13 +136,15 @@ export default {
       }
     };
     return {
+         selectRow:[],
+        selectData:[],
       ruleValidate: {
         sncode: [
           { required: true, message: '请输入序列号', trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
         ],
          auth_code: [
-          { required: true, message: '请输入授权码', trigger: "blur" },
+          // { required: true, message: '请输入授权码', trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
         ],
       },
@@ -145,6 +159,7 @@ export default {
       multipleSelection: [],
       select_cate: "",
       trHmi: [],
+      shuzu: [],
       select_word: "",
       del_list: [],
       is_search: false,
@@ -235,7 +250,31 @@ export default {
       });
     }
   },
+  watch: {
+    selectData(data) {
+      this.selectRow = [];
+      if (data.length > 0) {  
+        data.forEach((item, index) => {
+          this.selectRow.push(this.tableData.indexOf(item));
+        });
+      }
+    }
+  },
   methods: {
+    // 多选高亮选中行
+    rowClass({row, rowIndex}){
+      if(this.selectRow.includes(rowIndex)){
+        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+      }
+    },
+    tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
     addHmiForm() {
       this.form = [];
       this.dialogFormVisible = true;
@@ -243,7 +282,7 @@ export default {
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return "background-color: #9cba64;color: #f0f0f0;font-weight: 10;";
+        return "background-color: #00b5f9;color: #f0f0f0;font-weight: 10;";
       }
     },
     //禁用按钮
@@ -257,6 +296,24 @@ export default {
       this.$http({
         method: "post",
         url: "/api/supply/forbid",
+        params: {
+          id: this.form.id
+        }
+      }).then(res => {
+        this.getData();
+      });
+    },
+    //解禁按钮
+     reban(index, row) {
+      this.idx = index;
+      const item = this.tableData[index];
+      this.form = {
+        //设备id
+        id: item.id
+      };
+      this.$http({
+        method: "post",
+        url: "/api/supply/unforbid",
         params: {
           id: this.form.id
         }
@@ -356,20 +413,38 @@ export default {
     },
     handleDelete(index, row) {
       this.idx = index;
+       const item = this.tableData[index];
+      this.form = {
+        //设备id
+        id: item.id
+      };
       this.delVisible = true;
     },
-    // delAll() {
-    //     const length = this.multipleSelection.length;
-    //     let str = '';
-    //     this.del_list = this.del_list.concat(this.multipleSelection);
-    //     for (let i = 0; i < length; i++) {
-    //         str += this.multipleSelection[i].hmi_name + ' ';
-    //     }
-    //     this.$message.error('删除了' + str);
-    //     this.multipleSelection = [];
-    // },
+    delAll() {
+        const length = this.multipleSelection.length;
+        let str = '';
+        this.del_list = this.del_list.concat(this.multipleSelection);
+        for (let i = 0; i < length; i++) {
+          this.shuzu.push(this.multipleSelection[i].id);
+            str += this.multipleSelection[i].hmi_name + ' ';
+        }
+        this.$message.error('删除了' + str);
+        this.multipleSelection = [];
+
+        this.$http({
+        method: "post",
+        url: "/api/supply/deleteSupply",
+        data: {
+          id: this.shuzu
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        //  this.tableData = res.data.message;
+      });
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+        this.selectData = val;
     },
     // 保存编辑
     saveEdit() {
@@ -380,8 +455,24 @@ export default {
     // 确定删除
     deleteRow() {
       this.tableData.splice(this.idx, 1);
-      this.$message.success("删除成功");
       this.delVisible = false;
+      //删除设备接口
+      this.$http({
+        method: "post",
+        url: "/api/supply/deleteSupply",
+        data: {
+          id: [this.form.id]
+        }
+      }).then(res => {
+        if(res.data.status == "S"){
+this.$message.success("删除成功");
+        }else if(res.data.status == "F"){
+                 this.$message({
+              message: "已绑定授权码，不能删除   !",
+              type: "warning"
+            });
+        }
+      });
     }
   }
 };
@@ -414,6 +505,9 @@ export default {
 .red {
   color: #ff0000;
 }
+.green{
+  color: #31c453
+}
 
 .tr {
   text-align: left;
@@ -427,4 +521,11 @@ export default {
 .el-table--border td {
   border-right: 1px solid #dcdee2;
 }
+.el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

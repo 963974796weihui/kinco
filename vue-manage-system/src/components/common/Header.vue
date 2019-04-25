@@ -10,7 +10,7 @@
         <p class="logo">EdgeAccess</p>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
         <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
-        <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="30%">
+        <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="formRegion">
           <el-form-item label="域名" :label-width="formLabelWidth">
             <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
@@ -26,16 +26,16 @@
           <el-button type="primary" :plain="true" @click="addRegion()">确 定</el-button>
         </div>
       </el-dialog>
-
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
-                    <h6>全屏</h6>
-                <div class="btn-fullscreen" @click="handleFullScreen">
+                    <h6 >全屏</h6>
+                <div class="btn-fullscreen quan" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
                         <i class="el-icon-rank"></i>
                     </el-tooltip>
                 </div>
+                 <span class="time">上次登录:{{this.time}}</span>
                 <!-- 消息中心 -->
                 <!-- <div class="btn-bell">
                     <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
@@ -62,6 +62,7 @@
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+                
             </div>
         </div>
     </div>
@@ -82,6 +83,7 @@ import store from '../../store/store.js'
                 fullscreen: false,
                 name: '无名氏',
                 message: 2,
+                time:'',
                 num1:0,
                 num2:1,
                 itemRegion:[],
@@ -89,6 +91,7 @@ import store from '../../store/store.js'
         },
         store,
     created(){
+        this.time = localStorage.getItem('last_time');
 // this.$store.commit('saveMenuList',this.itemRegion)
         //   alert(111111111)
         },
@@ -272,7 +275,7 @@ this.$http({
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 70px;
+        height: 60px;
         font-size: 22px;
         color: #fff;
     }
@@ -290,11 +293,11 @@ this.$http({
     }
     .header-right{
         float: right;
-        padding-right: 50px;
+        padding-right: 20px;
     }
     .header-user-con{
         display: flex;
-        height: 70px;
+        height: 60px;
         align-items: center;
     }
     .btn-fullscreen{
@@ -327,7 +330,7 @@ this.$http({
         margin-left: 10px;
     }
     .user-avator{
-        margin-left: 20px;
+        margin-left: 3px;
     }
     .user-avator img{
         display: block;
@@ -341,5 +344,12 @@ this.$http({
     }
     .el-dropdown-menu__item{
         text-align: center;
+    }
+    .quan{
+        margin-right: 15px;
+    }
+    .time{
+        margin-top: 30px;
+        font-size: 1px;
     }
 </style>

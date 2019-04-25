@@ -6,9 +6,9 @@
 	 ref="formValidate"
     :model="formValidate"
     :rules="ruleValidate">
-    <router-link to="/login">
+    <!-- <router-link to="/login">
     <i class="el-icon-back icon"></i>
-       </router-link>
+       </router-link> -->
 	   <span class="reg-adm">注册管理员</span>
     <br>
     <el-form-item label="账号名" prop="user_name">
@@ -47,14 +47,20 @@
       <el-checkbox-group v-model="formValidate.interest">
       </el-checkbox-group>
     </el-form-item>
-    <el-form-item>
+      <el-row>
+         <el-button
+         class="back"
+        type="danger"
+        @click="back()"
+      >返回</el-button>
       <el-button
-        type="success"
+        type="primary"
+        class="reg"
         @click="reg()"
-        style="margin-left: 550px;width:150px"
       >注册</el-button>
+</el-row>
+      
       <!-- <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button> -->
-    </el-form-item>
 </el-form>
 </div>
 </div>
@@ -168,9 +174,9 @@
 		 	  }
 		 },
 		 methods: {
-       aaa(){
-         alert(1)
-       },
+     back(){
+       this.$router.push({ path: "/login" });
+     },
 		 	onChangeProvince(a){
                this.formValidate.province=a.value;             
             },
@@ -240,7 +246,7 @@
 	
 </script>
 
-<style> 
+<style > 
 	.login-form {
   position: absolute;
   left: 0;
@@ -250,6 +256,14 @@
   padding: 0px 35px 15px 35px;
   margin: 50px auto;
 }
+/* input边框颜色 */
+.el-input__inner{
+  border: 1px solid #3a8ee6;
+}
+/* 详细地址边颜色 */
+.distpicker-address-wrapper select{
+   border: 1px solid #3a8ee6;
+}
 .el-icon-back{
   font-size: 38px;
   color: #409eff;
@@ -258,8 +272,9 @@ float: left;
 margin-left: -70px;
 }
 .reg-adm{
+  margin-left: 250px;
   font-size: 40px;
-  color: #fff
+  color: #6195ea;
 }
 .icon{
   color: #fff;
@@ -273,12 +288,11 @@ margin-left: -70px;
 .ms-login {
   position: absolute;
   left: 50%;
-  top: 50%;
   width: 850px;
-  height: 800px;
-  margin: -470px 0 0 -375px;
+  height: 730px;
+  margin: 10px 0 0 -375px;
   border-radius: 5px;
-  /* background: rgba(255,255,255, 0.3); */
+  background: #fff;
   overflow: hidden;
 }
 .login-wrap {
@@ -287,5 +301,14 @@ margin-left: -70px;
   height: 100%;
   background-image: url(../../assets/login.jpg);
   background-size: 100%;
+}
+.back{
+   width:150px;
+    margin-left: 100px;
+}
+.reg{
+  width:150px;
+  float: right;
+  margin-right: 100px;
 }
 </style>
