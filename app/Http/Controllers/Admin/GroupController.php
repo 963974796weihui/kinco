@@ -140,6 +140,6 @@ class GroupController extends Controller
         $domain_id = $request->input('domain_id');//域id
         $this->groupServices->GunhmiAddShell($group_id,$id);//先解绑
         $result = $this->groupServices->unaddUserBind($domain_id, $group_id, $id);
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定用户成功']);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '解绑成功']);
     }
 }

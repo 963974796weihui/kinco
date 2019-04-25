@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fecc4b73-77e2-42c9-b95d-47aeb70b18ab" name="Default" comment="嵌入支付宝">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php" afterPath="$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php" afterPath="$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,21 +36,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GroupController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GroupController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="127" column="52" lean-forward="false" selection-start-line="127" selection-start-column="43" selection-end-line="127" selection-end-column="52" />
+            <state relative-caret-position="484">
+              <caret line="143" column="5" lean-forward="true" selection-start-line="143" selection-start-column="5" selection-end-line="143" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GroupServicesController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GroupServicesController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="591">
-              <caret line="230" column="13" lean-forward="true" selection-start-line="230" selection-start-column="13" selection-end-line="230" selection-end-column="13" />
+            <state relative-caret-position="222">
+              <caret line="195" column="29" lean-forward="false" selection-start-line="195" selection-start-column="23" selection-end-line="195" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -122,13 +118,13 @@
       <find>forbid</find>
       <find>forbi</find>
       <find>supplyGroupBind</find>
-      <find>system</find>
       <find>hmiAddShell</find>
       <find>hmiGroupBind</find>
       <find>addus</find>
       <find>hmiinfobi</find>
       <find>addUser</find>
       <find>GhmiAddShell</find>
+      <find>system</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -173,9 +169,9 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SupplyController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" />
         <option value="$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php" />
         <option value="$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" />
       </list>
     </option>
   </component>
@@ -677,7 +673,7 @@
       <workItem from="1555900156957" duration="12069000" />
       <workItem from="1555992885229" duration="16104000" />
       <workItem from="1556069983954" duration="19924000" />
-      <workItem from="1556156868319" duration="12024000" />
+      <workItem from="1556156868319" duration="12941000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -788,7 +784,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="409027000" />
+    <option name="totallyTimeSpent" value="409944000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1936" height="1056" extended-state="0" />
@@ -1142,18 +1138,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
-          <caret line="127" column="52" lean-forward="false" selection-start-line="127" selection-start-column="43" selection-end-line="127" selection-end-column="52" />
+          <caret line="195" column="29" lean-forward="false" selection-start-line="195" selection-start-column="23" selection-end-line="195" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/GroupServicesController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
-          <caret line="230" column="13" lean-forward="true" selection-start-line="230" selection-start-column="13" selection-end-line="230" selection-end-column="13" />
+        <state relative-caret-position="484">
+          <caret line="143" column="5" lean-forward="true" selection-start-line="143" selection-start-column="5" selection-end-line="143" selection-end-column="5" />
           <folding />
         </state>
       </provider>
