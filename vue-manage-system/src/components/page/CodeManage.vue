@@ -32,8 +32,8 @@
         :header-cell-style="tableHeaderColor"
         :data="data1"
         class="table"
+        :stripe= "test"
         ref="multipleTable"
-        :row-class-name="tableRowClassName"
         :row-style="rowClass"
         @selection-change="handleSelectionChange"
       >
@@ -152,6 +152,7 @@ export default {
     //     }
     //      };
     return {
+      test:true,
       selectRow:[],
       selectData:[],
       radio: "",
@@ -253,20 +254,14 @@ export default {
     }
   },
   methods: {
+    
+      
     // 多选高亮选中行
     rowClass({row, rowIndex}){
       if(this.selectRow.includes(rowIndex)){
         return { "background-color": "rgba(185, 221, 249, 0.75)" }
       }
     },
-    tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
     //解除绑定
     saveRelieve(){
        this.dialogRelieve = false;
@@ -444,6 +439,10 @@ this.getData();
       this.idx = index;
       this.delVisible = true;
     },
+
+
+
+
     delAll() {
       const length = this.multipleSelection.length;
       let str = "";
@@ -456,8 +455,15 @@ this.getData();
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.selectData = val;
+       if(val.length > 0){
+          this.test = false;
+        }else{
+          this.test = true;
+        }
+        this.selectData = val
     },
+
+       
     // 保存编辑
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
@@ -506,11 +512,11 @@ this.getData();
   height: 200px;
   margin-left: 200px;
 }
-.el-table .warning-row {
+/* .el-table .warning-row {
     background: oldlace;
   }
 
   .el-table .success-row {
     background: #f0f9eb;
-  }
+  } */
 </style>

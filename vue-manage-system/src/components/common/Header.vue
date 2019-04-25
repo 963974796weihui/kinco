@@ -1,15 +1,15 @@
 <template>
-    <div class="header">
+    <div class="header b-white">
         <!-- 折叠按钮 -->
           <el-tooltip class="item" effect="dark" content="进行缩放" placement="top-start">
         <div class="collapse-btn" @click="collapseChage">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-menu blue"></i>
         </div>
     </el-tooltip>
       
-        <p class="logo">EdgeAccess</p>
+        <p class="logo red">EdgeAccess</p>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
-        <el-button class="create-region" icon="el-icon-plus" size="medium" type="danger" @click="dialogFormVisible = true">新建域</el-button>
+       
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="formRegion">
           <el-form-item label="域名" :label-width="formLabelWidth">
@@ -26,45 +26,30 @@
           <el-button type="primary" :plain="true" @click="addRegion()">确 定</el-button>
         </div>
       </el-dialog>
+
         <div class="header-right">
             <div class="header-user-con">
-                <!-- 全屏显示 -->
-                    <h6 >全屏</h6>
-                <div class="btn-fullscreen quan" @click="handleFullScreen">
-                    <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
-                    </el-tooltip>
-                </div>
-                 <span class="time">上次登录:{{this.time}}</span>
-                <!-- 消息中心 -->
-                <!-- <div class="btn-bell">
-                    <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
-                        <router-link to="/tabs">
-                            <i class="el-icon-bell"></i>
-                        </router-link>
-                    </el-tooltip>
-                    <span class="btn-bell-badge" v-if="message"></span>
-                </div> -->
+ <el-button class="create-region b-red" icon="el-icon-plus" size="medium" @click="dialogFormVisible = true">新建域</el-button>
+                 <span class="time blue">上次登录:{{this.time}}</span>
                 <!-- 用户头像 -->
                 <div class="user-avator"><img src="static/img/img.jpg"></div>
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link">
+                    <span class="el-dropdown-link blue">
                         {{username}} <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <!-- <a href="http://blog.gdfengshuo.com/about/" target="_blank">
-                            <el-dropdown-item>关于作者</el-dropdown-item>
-                        </a>
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a> -->
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                
+                  <div class="btn-fullscreen" @click="handleFullScreen">
+                    <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
+                        <i class="el-icon-rank blue"></i>
+                    </el-tooltip>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 <script>
@@ -268,14 +253,16 @@ this.$http({
 </script>
 <style scoped>
 .create-region{
-    margin-top: 15px;
+    margin-right: 20px;
+    color: #fff;
+    border: 0px;
+    
 }
     .header {
-        background-color: #5e99e9;
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 60px;
+        height: 70px;
         font-size: 22px;
         color: #fff;
     }
@@ -287,28 +274,30 @@ this.$http({
     }
     .header .logo{
         font-size:30px;
+        font-weight:bold;
         float: left;
         width:250px;
+        height: 70px;
         line-height: 70px;
     }
     .header-right{
         float: right;
-        padding-right: 20px;
+        padding-right: 45px;
     }
     .header-user-con{
         display: flex;
-        height: 60px;
+        height: 70px;
         align-items: center;
     }
     .btn-fullscreen{
         transform: rotate(45deg);
         margin-right: 5px;
-        font-size: 24px;
+        font-size: 40px;
     }
     .btn-bell, .btn-fullscreen{
         position: relative;
-        width: 30px;
-        height: 30px;
+        width: 45px;
+        height: 40px;
         text-align: center;
         border-radius: 15px;
         cursor: pointer;
@@ -339,17 +328,25 @@ this.$http({
         border-radius: 50%;
     }
     .el-dropdown-link{
-        color: #fff;
         cursor: pointer;
     }
     .el-dropdown-menu__item{
         text-align: center;
     }
-    .quan{
-        margin-right: 15px;
-    }
     .time{
-        margin-top: 30px;
         font-size: 1px;
+        margin-right: 20px;
+    }
+    .blue{
+        color: #2798ff;
+    }
+    .b-white{
+        background-color: #ffffff;
+    }
+    .b-red{
+background-color: #ff3333;
+    }
+    .red{
+        color: #ff3333;
     }
 </style>

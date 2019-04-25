@@ -3,7 +3,7 @@
         <v-head></v-head>
         <v-sidebar></v-sidebar>
         <div class="content-box" :class="{'content-collapse':collapse}">
-            <v-tags></v-tags>
+            <!-- <v-tags></v-tags> -->
             <div class="content">
                 <transition name="move" mode="out-in">
                     <!-- <keep-alive :include="tagsList"> -->
@@ -90,3 +90,9 @@
         }
     }
 </script>
+<style>
+.content {
+    box-shadow: 0 20px 35px -5px #bac2ce inset;
+    background-color: #e5effe;
+}
+</style>

@@ -2,10 +2,8 @@
   <div class="table">
     <div class="crumbs">
       <el-button
-        class="add-user"
+        class="add-user b-red white"
         icon="el-icon-plus"
-        type="primary"
-        round
         @click="dialogFormVisible = true"
       >新增用户</el-button>
       <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="20%">
@@ -40,16 +38,16 @@
       <!-- :header-cell-style="{background:'#20a0ff',color:'#92ff00'}" -->
       <!-- :row-class-name="tableRowClassName" -->
       <el-table
+        :stripe="test"
         :header-cell-style="tableHeaderColor"
         :data="data1"
         :row-style="rowClass"
-        :row-class-name="tableRowClassName"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="user_name" label="用户名" width="100">
+        <el-table-column prop="user_name" label="用户名" width="200">
           <!-- <template slot-scope="scope">
             <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
           </template>-->
@@ -57,9 +55,9 @@
         <el-table-column prop="remark" label="备注" width="200"></el-table-column>
         <el-table-column prop="phone" label="手机号" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
-        <el-table-column prop="group" label="匹配设备组" width="120"></el-table-column>
-        <el-table-column prop="hmi" label="匹配设备" width="120"></el-table-column>
-        <el-table-column label="相关操作" width="450" align="center">
+        <el-table-column prop="group" label="匹配设备组" width="130"></el-table-column>
+        <el-table-column prop="hmi" label="匹配设备" width="130"></el-table-column>
+        <el-table-column label="相关操作" width="500" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -67,7 +65,6 @@
               :disabled="scope.row.cut_off==2"
               @click="handleHmi(scope.$index, scope.row)"
             >设备管理</el-button>
-
             <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="40%">
               <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="设备组" name="first">
@@ -109,6 +106,7 @@
             <el-button
               :disabled="scope.row.cut_off==2"
               type="text"
+              class="editbtn"
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
@@ -116,7 +114,7 @@
               :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-delete"
-              class="red"
+              class="red deletebtn"
               @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
             <el-button
@@ -124,13 +122,7 @@
               icon="el-icon-close"
               class="red"
               @click="ban(scope.$index, scope.row)"
-            >禁用</el-button>
-            <el-button
-              type="text"
-              icon="el-icon-close"
-              class="green"
-              @click="reban(scope.$index, scope.row)"
-            >解禁</el-button>
+            >{{scope.row.cut_off==2? "解禁":"禁用"}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -197,6 +189,8 @@ export default {
       }
     };
     return {
+      flag: 0,
+      banText: "禁用",
       //匹配校验器
       ruleValidate: {
         phone: [
@@ -246,6 +240,7 @@ export default {
       multipleSelection: [],
       selectRow: [],
       selectData: [],
+      test: true,
       shuzu: [],
       trUser: [],
       select_cate: "",
@@ -254,7 +249,7 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
-      idx: -1
+      idx: -1,
     };
   },
   store,
@@ -379,14 +374,22 @@ export default {
     }
   },
   methods: {
-    tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
+    // 表格选中行的颜色
+    // 多选高亮选中行
+    rowClass({ row, rowIndex }) {
+      if (this.selectRow.includes(rowIndex)) {
+        return { "background-color": "rgba(185, 221, 249, 0.75)" };
+      }
+    },
+
+    // tableRowClassName({row, rowIndex}) {
+    //     if (rowIndex === 1) {
+    //       return 'warning-row';
+    //     } else if (rowIndex === 3) {
+    //       return 'success-row';
+    //     }
+    //     return '';
+    //   },
     rowClass({ row, rowIndex }) {
       if (this.selectRow.includes(rowIndex)) {
         return { "background-color": "rgba(185, 221, 249, 0.75)" };
@@ -405,7 +408,7 @@ export default {
       //       background: -webkit-linear-gradient(top left, #007acc 0%, #563516 100%);
       // background: linear-gradient(to bottom right, #007acc 0%, #563516 100%);
       if (rowIndex === 0) {
-        return "background-color: #00b5f9;color: #f0f0f0;font-weight:10;";
+        return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     //  tableRowClassName({row, rowIndex}) {
@@ -458,41 +461,40 @@ export default {
         }
       });
     },
-    //禁用按钮
+    //禁用-解禁按钮
     ban(index, row) {
-      // this.idx = index;
-      const item = this.tableData[index];
-      this.form = {
-        //用户id
-        id: item.id
-      };
-      this.$http({
-        method: "post",
-        url: "/api/user/forbid",
-        params: {
-          id: this.form.id
-        }
-      }).then(res => {
-        this.getData();
-      });
-    },
-    //解禁按钮
-    reban(index, row) {
       this.idx = index;
       const item = this.tableData[index];
       this.form = {
         //用户id
         id: item.id
       };
-      this.$http({
-        method: "post",
-        url: "/api/user/unforbid",
-        params: {
-          id: this.form.id
-        }
-      }).then(res => {
-        this.getData();
-      });
+      if (this.flag == 0) {
+        // this.idx = index;
+        this.$http({
+          method: "post",
+          url: "/api/user/forbid",
+          params: {
+            id: this.form.id
+          }
+        }).then(res => {
+          this.getData();
+        });
+        this.flag = this.flag + 1;
+        // this.banText = "解禁";
+      } else if (this.flag == 1) {
+        this.$http({
+          method: "post",
+          url: "/api/user/unforbid",
+          params: {
+            id: this.form.id
+          }
+        }).then(res => {
+          this.getData();
+        });
+        this.flag = this.flag - 1;
+        // this.banText = "禁用";
+      }
     },
     //禁用多选框
     checkboxT(row, rows) {
@@ -760,6 +762,11 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      if (val.length > 0) {
+        this.test = false;
+      } else {
+        this.test = true;
+      }
       this.selectData = val;
     },
     //保存设备组管理
@@ -819,7 +826,7 @@ export default {
   float: right;
 }
 .handle-box {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .handle-select {
@@ -839,15 +846,21 @@ export default {
   font-size: 18px;
 }
 .red {
-  color: #ff0000;
+  color: #ff3333;
 }
-.green {
-  color: #31c453;
+.b-red {
+  background-color: #ff3333;
+}
+.white {
+  color: #ffffff;
 }
 .tr {
   text-align: left;
 }
-
+.add-user {
+  margin-left: 40px;
+  border: 10px;
+}
 .el-table td,
 .el-table th.is-leaf {
   border-bottom: 1px solid #dcdee2;
@@ -861,11 +874,20 @@ export default {
   background-color: #e8e9ea;
   /* color: #5bcf01; */
 }
-  .el-table .warning-row {
+/* .el-table .warning-row {
     background: oldlace;
   }
 
   .el-table .success-row {
     background: #f0f9eb;
-  }
+  } */
+.container {
+  padding: 15px 40px;
+}
+.el-button + .el-button {
+  margin-left: 0px;
+}
+/* .delete1{
+   margin-left: 10px;
+} */
 </style>
