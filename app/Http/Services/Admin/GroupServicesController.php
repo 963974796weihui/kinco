@@ -152,11 +152,6 @@ class GroupServicesController extends Controller
 
     public function addUserBind($domain_id, $group_id, $id)
     {
-        $result = DB::table('ki_admin_user_hmi_group')
-            ->where('domain_id', $domain_id)
-            ->where('group_id', $group_id)
-            ->where('hmi_id', '0')
-            ->delete();
         foreach ($id as $key => $value) {
             if ($value) {
                 $condition['group_id'] = $group_id;
@@ -166,5 +161,74 @@ class GroupServicesController extends Controller
             }
         }
         return true;
+    }
+    public function unaddUserBind($domain_id, $group_id, $id)
+    {
+        $result = DB::table('ki_admin_user_hmi_group')
+            ->where('domain_id', $domain_id)
+            ->where('group_id', $group_id)
+            ->whereIn('user_id', $id)
+            ->delete();
+        return true;
+    }
+    public function GunhmiAddShell($group_id,$id){
+        $hmi_id=array();
+        $hmi_cert_name=array();
+        $user_cert_name=array();
+        $result=DB::table('ki_admin_user')->whereIn('id',$id)->select('cert_name')->get()->toArray();//得到解绑用户下的证书
+        foreach ($result as $key=>$value){
+            $user_cert_name[]=$value->cert_name;
+        }
+        $res = DB::table('ki_admin_user_hmi_group')//得到组下面的所有人机
+            ->where('group_id', $group_id)
+            ->where('user_id', '0')
+            ->select('hmi_id')
+            ->get();
+        foreach ($res as $key=>$value){
+            $hmi_id[]=$res[$key]->hmi_id;
+        }
+        $result=DB::table('ki_admin_hmi')->whereIn('id',$hmi_id)->select('cert_name')->get();
+        foreach($result as $key=>$value){
+            $hmi_cert_name[]=$value->cert_name;
+        }
+        $this->GunsystemShell($user_cert_name,$hmi_cert_name);//调用shell脚本
+    }
+    public function GunsystemShell($user_cert_name,$hmi_cert_name){
+        for($i=0;$i<count($user_cert_name);$i++){
+            for($j=0;$j<count($hmi_cert_name);$j++){
+                //system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name[$i].' '.'-del'.' '.$hmi_cert_name[$j]);
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$j].' '.'-del'.' '.$user_cert_name[$i]);
+            }
+        }
+    }
+    public function GhmiAddShell($group_id,$id){
+        $hmi_id=array();
+        $hmi_cert_name=array();
+        $user_cert_name=array();
+        $result=DB::table('ki_admin_user')->whereIn('id',$id)->select('cert_name')->get()->toArray();//得到解绑用户下的证书
+        foreach ($result as $key=>$value){
+            $user_cert_name[]=$value->cert_name;
+        }
+        $res = DB::table('ki_admin_user_hmi_group')//得到组下面的所有人机
+        ->where('group_id', $group_id)
+            ->where('user_id', '0')
+            ->select('hmi_id')
+            ->get();
+        foreach ($res as $key=>$value){
+            $hmi_id[]=$res[$key]->hmi_id;
+        }
+        $result=DB::table('ki_admin_hmi')->whereIn('id',$hmi_id)->select('cert_name')->get();
+        foreach($result as $key=>$value){
+            $hmi_cert_name[]=$value->cert_name;
+        }
+        $this->GsystemShell($user_cert_name,$hmi_cert_name);//调用shell脚本
+    }
+    public function GsystemShell($user_cert_name,$hmi_cert_name){
+        for($i=0;$i<count($user_cert_name);$i++){
+            for($j=0;$j<count($hmi_cert_name);$j++){
+                //system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name[$i].' '.'-del'.' '.$hmi_cert_name[$j]);
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$j].' '.'-add'.' '.$user_cert_name[$i]);
+            }
+        }
     }
 }

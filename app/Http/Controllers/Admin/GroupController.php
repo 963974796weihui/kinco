@@ -125,6 +125,21 @@ class GroupController extends Controller
         $group_id = $request->input('group_id');//组id
         $domain_id = $request->input('domain_id');//域id
         $result = $this->groupServices->addUserBind($domain_id, $group_id, $id);
+        $this->groupServices->GhmiAddShell($group_id,$id);//在添加绑定
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定用户成功']);
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 解绑用户确认
+     */
+    public function unaddUserBind(Request $request)
+    {
+        $id = $request->input('id');//用户 id
+        $group_id = $request->input('group_id');//组id
+        $domain_id = $request->input('domain_id');//域id
+        $this->groupServices->GunhmiAddShell($group_id,$id);//先解绑
+        $result = $this->groupServices->unaddUserBind($domain_id, $group_id, $id);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定用户成功']);
     }
 }
