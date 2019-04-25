@@ -80,6 +80,8 @@
                   v-model="value2"
                   :data="dataUser"
                   filterable
+                   @left-check-change="aaa"
+                  @right-check-change="bbb"
                   @change="handleChange2"
                 ></el-transfer>
               </div>
@@ -151,6 +153,7 @@ export default {
   name: "basetable",
   data() {
     return {
+      ff:'',
       shuzu3:[],
       selectRow:[],
       selectData:[],
@@ -294,6 +297,12 @@ export default {
     }
 },
   methods: {
+    aaa(){
+      this.ff=1;
+    },
+    bbb(){
+      this.ff=0;
+    },
     //数组去重
     getArrDifference(arr1, arr2) {
     return arr1.concat(arr2).filter(function(v, i, arr) {
@@ -465,6 +474,7 @@ export default {
       }).then(res => {});
     },
     handleChange2() {
+    
       console.log(5757575);
       // this.b=this.getArrDifference(this.value2,this.shuzu2);
       // console.log(this.value2);
@@ -510,6 +520,7 @@ export default {
     },
     //保存绑定用户按钮
     saveGroupUser() {
+        if(this.ff==1){
 this.$http({
 method: "post",
 url: "/api/group/addUserBind",
@@ -520,7 +531,7 @@ id: this.shuzu3
 }
 }).then(res => {
 });
-
+      }else if(this.ff==0){
 this.$http({
 method: "post",
 url: "/api/group/unaddUserBind",
@@ -531,7 +542,7 @@ id: this.shuzu3
 }
 }).then(res => {
 });
-
+      }
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
