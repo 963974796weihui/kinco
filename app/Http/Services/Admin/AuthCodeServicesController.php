@@ -30,7 +30,7 @@ class AuthCodeServicesController extends Controller
                 $data[$key]->activate_time = '未激活';
                 $data[$key]->end_time='';
             } else {
-                $data[$key]->activate_time = date('Y-m-d H:i:s', $val->activate_time);
+                $data[$key]->activate_time = date('Y-m-d H:i:s', $val->activate_time+8*60*60);
                 $data[$key]->end_time = date('Y-m-d H:i:s', Strtotime($data[$key]->activate_time) + $data[$key]->long * 24 * 60 * 60);
             }
         }
