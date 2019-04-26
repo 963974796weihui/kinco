@@ -26,10 +26,10 @@ class GroupController extends Controller
     {
         $request = $request->all();
         $request['time'] = time();
-//        $result = DB::table('ki_admin_group')->where('group_name', $request['group_name'])->get()->toArray();
-//        if ($result) {
-//            return response()->json(['status' => 'F', 'code' => '201', 'message' => '该组已存在']);
-//        }
+        $result = DB::table('ki_admin_group')->where('group_name', $request['group_name'])->where('domain_id',$request['domain_id'])->where('cut_off','0')->get()->toArray();
+        if ($result) {
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '该组已存在']);
+        }
         DB::table('ki_admin_group')->insertGetId($request);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }
