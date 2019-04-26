@@ -2,10 +2,9 @@
   <div class="table">
     <div class="crumbs">
       <el-button
-        class="add-user"
+        class="add-user b-red"
         icon="el-icon-plus"
         type="primary"
-        round
         @click="addHmiForm()"
       >添加设备</el-button>
       <!-- dialogFormVisible = true -->
@@ -45,13 +44,14 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="hmi_name" label="设备名" width="180"></el-table-column>
-        <el-table-column prop="hmi_status" label="在线状态" width="100"></el-table-column>
-        <el-table-column prop="type1" label="设备型号" width="200"></el-table-column>
-        <el-table-column prop="virtual_address" label="虚拟ip" width="180"></el-table-column>
-        <el-table-column prop="real_address" label="真实ip" width="180"></el-table-column>
-        <el-table-column prop="auth_code" label="授权码绑定情况" width="150"></el-table-column>
-        <el-table-column prop="time" label="开通日期" width="230"></el-table-column>
+        <el-table-column prop="hmi_name" label="设备名" width="150"></el-table-column>
+        <el-table-column prop="hmi_status" label="在线状态" width="150"></el-table-column>
+        <el-table-column prop="type1" label="设备型号" width="180"></el-table-column>
+        <el-table-column prop="virtual_address" label="虚拟ip" width="150"></el-table-column>
+        <el-table-column prop="real_address" label="真实ip" width="150"></el-table-column>
+        <el-table-column prop="auth_code" label="授权码绑定" width="150"></el-table-column>
+        <el-table-column prop="end_time" label="授权码截止日期" width="230"></el-table-column>
+        <el-table-column prop="time" label="开通日期" width="180"></el-table-column>
         <el-table-column label="相关操作" width="220" align="center">
           <template slot-scope="scope">
             <el-button
@@ -284,7 +284,7 @@ export default {
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return "background-color: #00b5f9;color: #f0f0f0;font-weight: 10;";
+         return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     //禁用按钮
@@ -533,12 +533,14 @@ export default {
   font-size: 18px;
 }
 .red {
-  color: #ff0000;
+  color: #ff3333;
 }
-.green {
-  color: #31c453;
+.b-red {
+  background-color: #ff3333;
 }
-
+.white {
+  color: #ffffff;
+}
 .tr {
   text-align: left;
 }

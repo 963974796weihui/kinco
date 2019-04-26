@@ -167,9 +167,14 @@ export default {
                 //bus.$emit('firstitem', this.firstItem);
                 //    localStorage.setItem('hou', JSON.stringify(this.firstItem));
                 this.$router.push({ path: "/" });
-              } else if (res.data.status == "F") {
+              } else if (res.data.code == 201) {
                 this.$message({
                   message: "用户名或密码输入错误   !",
+                  type: "warning"
+                });
+              }else if(res.data.code == 202){
+                this.$message({
+                  message: "请前往邮箱进行确认   !",
                   type: "warning"
                 });
               }
@@ -249,8 +254,6 @@ export default {
   top: 20px;
   left: 20px;
 }
-/* 去掉小眼睛 */
-input[type="password"]::-ms-reveal{
-    display:none;
-}
+/* 清除自带小眼睛 */
+input::-ms-reveal,input::-ms-clear{display:none;}
 </style>

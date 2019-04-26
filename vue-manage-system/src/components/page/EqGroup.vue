@@ -2,12 +2,11 @@
   <div class="table">
     <div class="crumbs">
       <el-button
-        class="add-user"
+        class="add-user b-red"
         icon="el-icon-plus"
         type="primary"
-        round
         @click="dialogFormVisible = true"
-      >添加设备群组</el-button>
+      >添加设备组</el-button>
       <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="设备组名" :label-width="formLabelWidth">
@@ -38,8 +37,8 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="group_name" label="设备组名" width="170"></el-table-column>
-        <el-table-column prop="hmi_num" label="组成员" width="100"></el-table-column>
+        <el-table-column prop="group_name" label="设备组名" width="540"></el-table-column>
+        <el-table-column prop="hmi_num" label="组成员" width="530"></el-table-column>
         <el-table-column label="相关操作" width="500" align="center">
           <template slot-scope="scope">
             <el-button
@@ -319,7 +318,7 @@ export default {
     //表头样式
      tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return 'background-color: #00b5f9;color: #f0f0f0;font-weight: 10;'
+        return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     SomeJavaScriptCode(){
@@ -705,10 +704,19 @@ id: this.shuzu3
   width: 100%;
   font-size: 18px;
 }
-.red {
-  color: #ff0000;
-}
 .tr {
   text-align: left;
 }
+
+.red {
+  color: #ff3333;
+}
+.b-red {
+  background-color: #ff3333;
+}
+.white {
+  color: #ffffff;
+}
+
+
 </style>

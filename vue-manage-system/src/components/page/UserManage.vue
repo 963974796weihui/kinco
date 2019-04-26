@@ -2,7 +2,8 @@
   <div class="table">
     <div class="crumbs">
       <el-button
-        class="add-user b-red white"
+        class="add-user b-red"
+        type="danger"
         icon="el-icon-plus"
         @click="addUserStart()"
       >新增用户</el-button>
@@ -57,7 +58,7 @@
         <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" width="220"></el-table-column>
         <el-table-column prop="hmi" label="匹配设备" width="130"></el-table-column>
-        <el-table-column label="相关操作" width="350" align="center">
+        <el-table-column label="相关操作" width="390" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -545,6 +546,7 @@ export default {
       }).then(res => {});
     },
     addUser(formName) {
+      this.dialogFormVisible = false;
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http
@@ -555,7 +557,6 @@ export default {
               phone: this.form.phone
             })
             .then(res => {
-              console.log(res);
               if (res.data.status == "S") {
                 this.$message({
                   message: "新增用户成功",
@@ -895,7 +896,8 @@ export default {
 /* .delete1{
    margin-left: 10px;
 } */
-.pagination{
+
+/* .pagination{
   padding-right: 800px;
-}
+} */
 </style>

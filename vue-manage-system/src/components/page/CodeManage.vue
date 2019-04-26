@@ -3,10 +3,9 @@
     <div class="crumbs">
       <a target="_blank" href="http://39.104.56.173:8091/alipay">
         <el-button
-          class="add-user"
+          class="add-user b-red"
           icon="el-icon-plus"
           type="primary"
-          round
           @click="buyCode()"
         >购买授权码</el-button>
       </a>
@@ -366,7 +365,7 @@ this.getData();
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return "background-color: #00b5f9;color: #f0f0f0;font-weight:10;";
+        return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     buyCode() {},
@@ -440,9 +439,6 @@ this.getData();
       this.delVisible = true;
     },
 
-
-
-
     delAll() {
       const length = this.multipleSelection.length;
       let str = "";
@@ -505,7 +501,13 @@ this.getData();
   font-size: 18px;
 }
 .red {
-  color: #ff0000;
+  color: #ff3333;
+}
+.b-red {
+  background-color: #ff3333;
+}
+.white {
+  color: #ffffff;
 }
 .two {
   width: 200px;
