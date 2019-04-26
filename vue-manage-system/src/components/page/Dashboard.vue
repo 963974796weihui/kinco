@@ -3,10 +3,9 @@
     <div class="crumbs">
       <a target="_blank" href="http://39.104.56.173:8091/alipay">
         <el-button
-          class="add-user"
+          class="add-user b-red"
           icon="el-icon-plus"
           type="primary"
-          round
           @click="buyCode()"
         >购买授权码</el-button>
       </a>
@@ -31,9 +30,10 @@
       <el-table
         :header-cell-style="tableHeaderColor"
         :data="data1"
-        stripe
         class="table"
+        :stripe= "test"
         ref="multipleTable"
+        :row-style="rowClass"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -151,6 +151,9 @@ export default {
     //     }
     //      };
     return {
+      test:true,
+      selectRow:[],
+      selectData:[],
       radio: "",
       radioId:'',
       radioxlh:'',
@@ -239,7 +242,25 @@ export default {
       });
     }
   },
+  watch: {
+    selectData(data) {
+      this.selectRow = [];
+      if (data.length > 0) {  
+        data.forEach((item, index) => {
+          this.selectRow.push(this.tableData.indexOf(item));
+        });
+      }
+    }
+  },
   methods: {
+    
+      
+    // 多选高亮选中行
+    rowClass({row, rowIndex}){
+      if(this.selectRow.includes(rowIndex)){
+        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+      }
+    },
     //解除绑定
     saveRelieve(){
        this.dialogRelieve = false;
@@ -344,7 +365,7 @@ this.getData();
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-        return "background-color: #00b5f9;color: #f0f0f0;font-weight:10;";
+        return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     buyCode() {},
@@ -417,6 +438,7 @@ this.getData();
       this.idx = index;
       this.delVisible = true;
     },
+
     delAll() {
       const length = this.multipleSelection.length;
       let str = "";
@@ -424,12 +446,20 @@ this.getData();
       for (let i = 0; i < length; i++) {
         str += this.multipleSelection[i].name + " ";
       }
-      this.$message.error("删除了" + str);
+      // this.$message.error("删除了" + str);
       this.multipleSelection = [];
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+       if(val.length > 0){
+          this.test = false;
+        }else{
+          this.test = true;
+        }
+        this.selectData = val
     },
+
+       
     // 保存编辑
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
@@ -471,11 +501,24 @@ this.getData();
   font-size: 18px;
 }
 .red {
-  color: #ff0000;
+  color: #ff3333;
+}
+.b-red {
+  background-color: #ff3333;
+}
+.white {
+  color: #ffffff;
 }
 .two {
   width: 200px;
   height: 200px;
   margin-left: 200px;
 }
+/* .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  } */
 </style>

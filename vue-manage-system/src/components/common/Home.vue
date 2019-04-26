@@ -25,10 +25,9 @@
             return {
                 tagsList: [],
                 collapse: false,
-                // parent1:{}
             }
         },
-        components:{
+         components:{
             vHead, vSidebar, vTags
         },
         created(){

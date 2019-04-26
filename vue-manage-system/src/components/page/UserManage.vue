@@ -47,18 +47,18 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="user_name" label="用户名" width="200">
+        <el-table-column type="selection" :selectable="checkboxT"  min-width="2%" align="center"></el-table-column>
+        <el-table-column prop="user_name" label="用户名" min-width="14%">
           <!-- <template slot-scope="scope">
             <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
           </template>-->
         </el-table-column>
-        <el-table-column prop="remark" label="备注" width="200"></el-table-column>
-        <el-table-column prop="phone" label="手机号" width="180"></el-table-column>
-        <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
-        <el-table-column prop="group" label="匹配设备组" width="220"></el-table-column>
-        <el-table-column prop="hmi" label="匹配设备" width="130"></el-table-column>
-        <el-table-column label="相关操作" width="390" align="center">
+        <el-table-column prop="remark" label="备注" min-width="14%"></el-table-column>
+        <el-table-column prop="phone" label="手机号" min-width="14%"></el-table-column>
+        <el-table-column prop="email" label="邮箱号" min-width="14%"></el-table-column>
+        <el-table-column prop="group" label="匹配设备组" min-width="10%"></el-table-column>
+        <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
+        <el-table-column label="相关操作" min-width="22%" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -900,4 +900,5 @@ export default {
 /* .pagination{
   padding-right: 800px;
 } */
+table{border-collapse:inherit;}
 </style>

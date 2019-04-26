@@ -16,7 +16,7 @@
           <el-form-item label="授权码" :label-width="formLabelWidth" prop="auth_code">
             <el-input v-model="form.auth_code" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="人机名" :label-width="formLabelWidth">
+          <el-form-item label="设备名" :label-width="formLabelWidth">
             <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
           </el-form-item>
         </el-form>
@@ -43,16 +43,16 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" :selectable="checkboxT" width="55" align="center"></el-table-column>
-        <el-table-column prop="hmi_name" label="设备名" width="150"></el-table-column>
-        <el-table-column prop="hmi_status" label="在线状态" width="150"></el-table-column>
-        <el-table-column prop="type1" label="设备型号" width="180"></el-table-column>
-        <el-table-column prop="virtual_address" label="虚拟ip" width="150"></el-table-column>
-        <el-table-column prop="real_address" label="真实ip" width="150"></el-table-column>
-        <el-table-column prop="auth_code" label="授权码绑定" width="150"></el-table-column>
-        <el-table-column prop="end_time" label="授权码截止日期" width="230"></el-table-column>
-        <el-table-column prop="time" label="开通日期" width="180"></el-table-column>
-        <el-table-column label="相关操作" width="220" align="center">
+        <el-table-column type="selection" :selectable="checkboxT" min-width="1%" align="center"></el-table-column>
+        <el-table-column prop="hmi_name" label="设备名" min-width="8%"></el-table-column>
+        <el-table-column prop="hmi_status" label="在线状态" min-width="9%"></el-table-column>
+        <el-table-column prop="type1" label="设备型号" min-width="11%"></el-table-column>
+        <el-table-column prop="virtual_address" label="虚拟ip" min-width="10%"></el-table-column>
+        <el-table-column prop="real_address" label="真实ip" min-width="10%"></el-table-column>
+        <el-table-column prop="auth_code" label="授权码绑定" min-width="11%"></el-table-column>
+        <el-table-column prop="end_time" label="授权码截止日期" min-width="13%"></el-table-column>
+        <el-table-column prop="time" label="添加日期" min-width="13%"></el-table-column>
+        <el-table-column label="相关操作" min-width="9%" align="center">
           <template slot-scope="scope">
             <el-button
               :disabled="scope.row.cut_off==2"

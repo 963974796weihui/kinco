@@ -50,7 +50,7 @@
       <el-row>
          <el-button
          class="back"
-        type="danger"
+        type="info"
         @click="back()"
       >返回</el-button>
       <el-button
@@ -283,7 +283,7 @@ margin-left: -70px;
 }
 /* tab导航字体颜色 */
 .el-tabs__item{
-  color: #fff
+  color: #c9c9c9
 }
 .ms-login {
   position: absolute;
@@ -303,6 +303,8 @@ margin-left: -70px;
   background-size: 100%;
 }
 .back{
+  border: 0px;
+  background-color: #cccccc;
    width:150px;
     margin-left: 100px;
 }

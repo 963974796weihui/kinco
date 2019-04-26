@@ -36,10 +36,10 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="group_name" label="设备组名" width="540"></el-table-column>
-        <el-table-column prop="hmi_num" label="组成员" width="530"></el-table-column>
-        <el-table-column label="相关操作" width="500" align="center">
+        <el-table-column type="selection" min-width="4%" align="center"></el-table-column>
+        <el-table-column prop="group_name" label="设备组名" min-width="32%"></el-table-column>
+        <el-table-column prop="hmi_num" label="组成员" min-width="32%"></el-table-column>
+        <el-table-column label="相关操作" min-width="32%" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"

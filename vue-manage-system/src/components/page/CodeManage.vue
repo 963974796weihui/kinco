@@ -36,12 +36,12 @@
         :row-style="rowClass"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
-        <el-table-column prop="sncode" label="授权码" width="170"></el-table-column>
-        <el-table-column prop="long" label="有效期" width="170"></el-table-column>
-        <el-table-column prop="activate_time" label="激活时间" width="220"></el-table-column>
-        <el-table-column prop="bind" label="绑定情况" width="220"></el-table-column>
-        <el-table-column label="相关操作" width="350" align="center">
+        <el-table-column type="selection" min-width="5%" align="center"></el-table-column>
+        <el-table-column prop="sncode" label="授权码" min-width="19%"></el-table-column>
+        <el-table-column prop="long" label="有效期" min-width="19%"></el-table-column>
+        <el-table-column prop="activate_time" label="激活时间" min-width="19%"></el-table-column>
+        <el-table-column prop="bind" label="绑定情况" min-width="19%"></el-table-column>
+        <el-table-column label="相关操作" min-width="19%" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"

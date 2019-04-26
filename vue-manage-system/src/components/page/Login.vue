@@ -29,11 +29,11 @@
               </el-input>
             </el-form-item>
             <div class="login-btn">
-              <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
               <!-- <el-button type="primary" @click="aaa()">登录1</el-button> -->
               <router-link to="/reg">
-                <p class="white admin">建立管理员账号</p>
+                <p class="admin blue">建立管理员账号</p>
               </router-link>
+               <el-button class="blue-login" type="primary" @click="submitForm('ruleForm')">登录</el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -229,7 +229,7 @@ export default {
   height: 300px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffffff;
   overflow: hidden;
 }
 .ms-content {
@@ -253,6 +253,16 @@ export default {
   position: absolute;
   top: 20px;
   left: 20px;
+}
+.blue{
+  color: #409eff;
+}
+.blue-login{
+  margin-top: 10px;
+  background-color: #6296ea;
+}
+.el-tabs__item{
+  color: #c9c9c9
 }
 /* 清除自带小眼睛 */
 input::-ms-reveal,input::-ms-clear{display:none;}
