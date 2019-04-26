@@ -4,7 +4,7 @@
       <el-button
         class="add-user b-red white"
         icon="el-icon-plus"
-        @click="dialogFormVisible = true"
+        @click="addUserStart()"
       >新增用户</el-button>
       <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
@@ -55,9 +55,9 @@
         <el-table-column prop="remark" label="备注" width="200"></el-table-column>
         <el-table-column prop="phone" label="手机号" width="180"></el-table-column>
         <el-table-column prop="email" label="邮箱号" width="250"></el-table-column>
-        <el-table-column prop="group" label="匹配设备组" width="130"></el-table-column>
+        <el-table-column prop="group" label="匹配设备组" width="220"></el-table-column>
         <el-table-column prop="hmi" label="匹配设备" width="130"></el-table-column>
-        <el-table-column label="相关操作" width="500" align="center">
+        <el-table-column label="相关操作" width="350" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -126,7 +126,9 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="pagination">
+   
+    </div>
+   <div class="pagination">
         <el-pagination
           background
           @current-change="handleCurrentChange"
@@ -134,8 +136,6 @@
           :total="total"
         ></el-pagination>
       </div>
-    </div>
-
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="20%">
       <el-form ref="form" :model="form" label-width="50px">
@@ -374,6 +374,10 @@ export default {
     }
   },
   methods: {
+    addUserStart(){
+       this.form = [];
+      this.dialogFormVisible=true;
+    },
     // 表格选中行的颜色
     // 多选高亮选中行
     rowClass({ row, rowIndex }) {
@@ -744,7 +748,7 @@ export default {
 
         str += this.multipleSelection[i].user_name + " ";
       }
-      this.$message.error("删除了" + str);
+      // this.$message.error("删除了" + str);
       this.multipleSelection = [];
 
       this.$http({
@@ -883,6 +887,7 @@ export default {
   } */
 .container {
   padding: 15px 40px;
+  /* height: 600px; */
 }
 .el-button + .el-button {
   margin-left: 0px;
@@ -890,4 +895,7 @@ export default {
 /* .delete1{
    margin-left: 10px;
 } */
+.pagination{
+  padding-right: 800px;
+}
 </style>

@@ -288,7 +288,7 @@ margin-left: -70px;
 .ms-login {
   position: absolute;
   left: 50%;
-  width: 850px;
+  width: 780px;
   height: 730px;
   margin: 10px 0 0 -375px;
   border-radius: 5px;

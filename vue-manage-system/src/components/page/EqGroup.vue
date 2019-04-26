@@ -626,7 +626,7 @@ id: this.shuzu3
         this.shuzu.push(this.multipleSelection[i].id);
         str += this.multipleSelection[i].group_name + " ";
       }
-      this.$message.error("删除了" + str);
+      // this.$message.error("删除了" + str);
       this.multipleSelection = [];
 
       this.$http({

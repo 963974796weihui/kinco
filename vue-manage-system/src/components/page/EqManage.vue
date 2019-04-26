@@ -12,10 +12,10 @@
       <el-dialog title="添加设备" :visible.sync="dialogFormVisible" width="25%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="序列号" :label-width="formLabelWidth" prop="sncode">
-            <el-input v-model="form.sncode" autocomplete="off" ></el-input>
+            <el-input v-model="form.sncode" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="授权码" :label-width="formLabelWidth" prop="auth_code">
-            <el-input v-model="form.auth_code" autocomplete="off" ></el-input>
+            <el-input v-model="form.auth_code" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="人机名" :label-width="formLabelWidth">
             <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
@@ -40,7 +40,7 @@
         :header-cell-style="tableHeaderColor"
         :data="data1"
         class="table"
-        :stripe= "test"
+        :stripe="test"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
@@ -66,12 +66,12 @@
               class="red"
               @click="ban(scope.$index, scope.row)"
             >{{scope.row.cut_off==2? "解禁":"禁用"}}</el-button>
-             <!-- <el-button
+            <!-- <el-button
               type="text"
               icon="el-icon-close"
               class="green"
               @click="reban(scope.$index, scope.row)"
-            >解禁</el-button> -->
+            >解禁</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -136,19 +136,19 @@ export default {
       }
     };
     return {
-      flag:0,
-         selectRow:[],
-        selectData:[],
-        test:true,
+      flag: 0,
+      selectRow: [],
+      selectData: [],
+      test: true,
       ruleValidate: {
         sncode: [
-          { required: true, message: '请输入序列号', trigger: "blur" },
+          { required: true, message: "请输入序列号", trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
         ],
-         auth_code: [
+        auth_code: [
           // { required: true, message: '请输入授权码', trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
-        ],
+        ]
       },
       total: "",
       dialogTableVisible: false,
@@ -255,7 +255,7 @@ export default {
   watch: {
     selectData(data) {
       this.selectRow = [];
-      if (data.length > 0) {  
+      if (data.length > 0) {
         data.forEach((item, index) => {
           this.selectRow.push(this.tableData.indexOf(item));
         });
@@ -263,13 +263,10 @@ export default {
     }
   },
   methods: {
-
-    
-
     // 多选高亮选中行
-    rowClass({row, rowIndex}){
-      if(this.selectRow.includes(rowIndex)){
-        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+    rowClass({ row, rowIndex }) {
+      if (this.selectRow.includes(rowIndex)) {
+        return { "background-color": "rgba(185, 221, 249, 0.75)" };
       }
     },
     // tableRowClassName({row, rowIndex}) {
@@ -298,6 +295,7 @@ export default {
         //设备id
         id: item.id
       };
+      if (this.flag == 0) {
       this.$http({
         method: "post",
         url: "/api/supply/forbid",
@@ -307,9 +305,22 @@ export default {
       }).then(res => {
         this.getData();
       });
+      this.flag = this.flag + 1;
+      }else if(this.flag == 1){
+         this.$http({
+        method: "post",
+        url: "/api/supply/unforbid",
+        params: {
+          id: this.form.id
+        }
+      }).then(res => {
+        this.getData();
+      });
+      this.flag = this.flag - 1;
+      }
     },
     //解禁按钮
-     reban(index, row) {
+    reban(index, row) {
       this.idx = index;
       const item = this.tableData[index];
       this.form = {
@@ -349,8 +360,13 @@ export default {
           });
           this.getData();
           this.dialogFormVisible = false;
-        } else if (res.data.status == "F") {
+        } else if (res.data.message == "该序列号已存在") {
           this.$message({
+            message: "该序列号已存在",
+            type: "warning"
+          });
+        }else if(res.data.message == "授权码不存在"){
+  this.$message({
             message: "授权码不存在",
             type: "warning"
           });
@@ -408,7 +424,7 @@ export default {
     },
     handleDelete(index, row) {
       this.idx = index;
-       const item = this.tableData[index];
+      const item = this.tableData[index];
       this.form = {
         //设备id
         id: item.id
@@ -416,36 +432,49 @@ export default {
       this.delVisible = true;
     },
     delAll() {
-        const length = this.multipleSelection.length;
-        let str = '';
-        this.del_list = this.del_list.concat(this.multipleSelection);
-        for (let i = 0; i < length; i++) {
-          this.shuzu.push(this.multipleSelection[i].id);
-            str += this.multipleSelection[i].hmi_name + ' ';
-        }
-        this.$message.error('删除了' + str);
-        this.multipleSelection = [];
-
-        this.$http({
+       this.shuzu = [];
+     const length = this.multipleSelection.length;
+      // let str = "";
+      for (let i = 0; i < length; i++) {
+        this.shuzu.push(this.multipleSelection[i].id);
+        // str += this.multipleSelection[i].user_name + " ";
+      }
+      // this.$message.error("删除了" + str);
+      
+      this.$http({
         method: "post",
         url: "/api/supply/deleteSupply",
         data: {
           id: this.shuzu
         }
       }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        //  this.tableData = res.data.message;
+        if (res.data.status == "S") {
+          if(this.shuzu.length>0){
+            
+             this.del_list = this.del_list.concat(this.multipleSelection);
+       this.multipleSelection = [];
+        // this.$message({
+        //     message: "设备删除成功   !",
+        //     type: "error"
+        //   });
+          }
+       } else if (res.data.status == "F") {
+          this.$message({
+            message: "已绑定授权码，不能删除   !",
+            type: "warning"
+          });
+        }
       });
     },
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
-          if(val.length > 0){
-          this.test = false;
-        }else{
-          this.test = true;
-        }
-        this.selectData = val
+      if (val.length > 0) {
+        this.test = false;
+      } else {
+        this.test = true;
+      }
+      this.selectData = val;
     },
     // 保存编辑
     saveEdit() {
@@ -455,7 +484,6 @@ export default {
     },
     // 确定删除
     deleteRow() {
-      this.tableData.splice(this.idx, 1);
       this.delVisible = false;
       //删除设备接口
       this.$http({
@@ -465,13 +493,14 @@ export default {
           id: [this.form.id]
         }
       }).then(res => {
-        if(res.data.status == "S"){
-this.$message.success("删除成功");
-        }else if(res.data.status == "F"){
-                 this.$message({
-              message: "已绑定授权码，不能删除   !",
-              type: "warning"
-            });
+        if (res.data.status == "S") {
+          this.tableData.splice(this.idx, 1);
+          this.$message.success("删除成功");
+        } else if (res.data.status == "F") {
+          this.$message({
+            message: "已绑定授权码，不能删除   !",
+            type: "warning"
+          });
         }
       });
     }
@@ -506,8 +535,8 @@ this.$message.success("删除成功");
 .red {
   color: #ff0000;
 }
-.green{
-  color: #31c453
+.green {
+  color: #31c453;
 }
 
 .tr {

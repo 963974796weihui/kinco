@@ -6,7 +6,6 @@
             <i class="el-icon-menu blue"></i>
         </div>
     </el-tooltip>
-      
         <p class="logo red">EdgeAccess</p>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
        
@@ -271,6 +270,7 @@ this.$http({
         padding: 0 21px;
         cursor: pointer;
         line-height: 70px;
+        background-color: #fff;
     }
     .header .logo{
         font-size:30px;
@@ -334,7 +334,7 @@ this.$http({
         text-align: center;
     }
     .time{
-        font-size: 1px;
+        font-size: 15px;
         margin-right: 20px;
     }
     .blue{
