@@ -50,7 +50,7 @@ import store from '../../store/store.js'
                     //     title: '系统首页'
                     // },
                     {
-                        icon: 'el-icon-lx-cascades',
+                        // icon: 'el-icon-lx-cascades',
                         index: 'codemanage',
                         title: '授权码管理'
                     },

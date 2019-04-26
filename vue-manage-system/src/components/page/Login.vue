@@ -11,11 +11,13 @@
             label-width="0px"
             class="ms-content"
           >
+            <!-- 用户名 -->
             <el-form-item prop="username1">
               <el-input v-model="ruleForm.username" placeholder="admin">
                 <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
               </el-input>
             </el-form-item>
+            <!-- 密码 -->
             <el-form-item prop="password1">
               <el-input
                 type="password"
@@ -35,6 +37,7 @@
             </div>
           </el-form>
         </el-tab-pane>
+
         <el-tab-pane label="普通用户" name="user">
           <el-form
             :model="ruleForm"
@@ -118,12 +121,15 @@ export default {
             })
             .then(res => {
               if (res.data.status == "S") {
-                localStorage.setItem("last_time", res.data.message[0].last_time);
-   this.$notify.success({
-          title: '登录成功',
-          message: '欢迎进入EdgeAccess系统',
-          // position: 'bottom-left'
-        });
+                localStorage.setItem(
+                  "last_time",
+                  res.data.message[0].last_time
+                );
+                this.$notify.success({
+                  title: "登录成功",
+                  message: "欢迎进入EdgeAccess系统"
+                  // position: 'bottom-left'
+                });
 
                 //                 console.log(res)
                 //                  var total=res.data.message.length
@@ -161,11 +167,11 @@ export default {
                 //bus.$emit('firstitem', this.firstItem);
                 //    localStorage.setItem('hou', JSON.stringify(this.firstItem));
                 this.$router.push({ path: "/" });
-              }else if(res.data.status == "F"){
-                 this.$message({
-              message: "用户名或密码输入错误   !",
-              type: "warning"
-            });
+              } else if (res.data.status == "F") {
+                this.$message({
+                  message: "用户名或密码输入错误   !",
+                  type: "warning"
+                });
               }
             })
             .catch(function(error) {
@@ -173,10 +179,10 @@ export default {
               console.log(error);
             });
         } else {
-            this.$message({
-              message: "请输入用户名或密码   !",
-              type: "warning"
-            });
+          this.$message({
+            message: "请输入用户名或密码   !",
+            type: "warning"
+          });
           console.log("error submit!!");
           return false;
         }
@@ -192,7 +198,7 @@ export default {
 }
 .admin {
   float: right;
-  font-size: 10px;
+  font-size: 15px;
 }
 .login-wrap {
   position: relative;
@@ -218,7 +224,7 @@ export default {
   height: 300px;
   margin: -190px 0 0 -175px;
   border-radius: 5px;
-  background: rgba(255,255,255, 0.3);
+  background: rgba(255, 255, 255, 0.3);
   overflow: hidden;
 }
 .ms-content {
@@ -243,8 +249,8 @@ export default {
   top: 20px;
   left: 20px;
 }
-/* tab导航栏样式 */
-/* .el-tabs__item{
-  color: #fff
-} */
+/* 去掉小眼睛 */
+input[type="password"]::-ms-reveal{
+    display:none;
+}
 </style>
