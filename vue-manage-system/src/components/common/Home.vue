@@ -3,19 +3,18 @@
         <v-head></v-head>
         <v-sidebar></v-sidebar>
         <div class="content-box" :class="{'content-collapse':collapse}">
-            <!-- <v-tags></v-tags> -->
             <div class="content">
                 <transition name="move" mode="out-in">
-                    <!-- <keep-alive :include="tagsList"> -->
                         <router-view></router-view>
-                    <!-- </keep-alive> -->
                 </transition>
             </div>
         </div>
+        <!-- <Organ dataList:"dataArray"></Organ> -->
     </div>
 </template>
 
 <script>
+// import Organ from "@/components/OrganizationTree"
     import vHead from './Header.vue';
     import vSidebar from './Sidebar.vue';
     import vTags from './Tags.vue';
@@ -23,6 +22,84 @@
     export default {
         data(){
             return {
+//                 dataArray:[
+//   {
+//     'name': '总经办',
+//     'type': 'department',
+//     'checked': false,
+//     'children': [
+//       {
+//         'name': '总经理',
+//         'type': 'human',
+//         'checked': false,
+//         'children': []
+//       },
+//       {
+//         'name': '财务总监',
+//         'type': 'human',
+//         'checked': false,
+//         'children': []
+//       },
+//       {
+//         'name': '秘书处',
+//         'type': 'department',
+//         'checked': false,
+//         'children': [
+//           {
+//             'name': '秘书1',
+//             'type': 'human',
+//             'checked': false,
+//             'children': []
+//           },
+//           {
+//             'name': '秘书2',
+//             'type': 'human',
+//             'checked': false,
+//             'children': []
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     'name': '营销中心',
+//     'type': 'department',
+//     'checked': false,
+//     'children': [
+//       {
+//         'name': '营销总监',
+//         'type': 'human',
+//         'checked': false,
+//         'children': []
+//       },
+//       {
+//         'name': '营销一部',
+//         'type': 'department',
+//         'checked': false,
+//         'children': [
+//           {
+//             'name': '营销一部经理',
+//             'type': 'human',
+//             'checked': false,
+//             'children': []
+//           },
+//           {
+//             'name': '营销员A',
+//             'type': 'human',
+//             'checked': false,
+//             'children': []
+//           }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     'name': '未分组人员',
+//     'type': 'human',
+//     'checked': false,
+//     'children': []
+//   }
+// ],
                 tagsList: [],
                 collapse: false,
             }
@@ -31,49 +108,6 @@
             vHead, vSidebar, vTags
         },
         created(){
-// this.$http({
-//       method: "post",
-//       url: "/api/admin/login",
-//       data: {
-//         user_name:localStorage.getItem('ms_username'),
-//         password:localStorage.getItem('ms_password')
-//       }
-//     }).then(res => {
-//         const domain_id=res.data.message[0].id;
-//          const domain_name=res.data.message[0].domain_name;
-// // console.log(res.data.message[0].domain_name)
-//  this.parent1=
-//        {
-//                         icon: 'el-icon-lx-calendar',
-//                         title: domain_name,
-//                         index: domain_id,
-//                         subs: [
-//                             {
-//                                 index: 'usermanage',
-//                                 title: '用户'
-//                             },
-//                             {
-//                                 index: this.num2++,
-//                                 title: '设备',
-//                                 subs: [
-//                                     {
-//                                         index: 'eqmanage',
-//                                         title: '设备管理'
-//                                     },
-//                                     {
-//                                         index: 'eqgroup',
-//                                         title: '设备群组'
-//                                     },
-//                                 ]
-//                             }
-//                         ]
-//                     }
-//                     //使浏览器静止的代码
-//                 //   bus.$emit('parent1', this.parent1)  
-
-//     });
-   
-
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
@@ -90,8 +124,10 @@
     }
 </script>
 <style>
+/* 右侧显示的样式 */
 .content {
     box-shadow: 0 20px 35px -5px #bac2ce inset;
     background-color: #e5effe;
+    margin-top: -10px;
 }
 </style>

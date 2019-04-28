@@ -5,7 +5,7 @@
         class="add-user b-red"
         icon="el-icon-plus"
         type="primary"
-        @click="dialogFormVisible = true"
+        @click="addGroupStart()"
       >添加设备组</el-button>
       <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
@@ -123,7 +123,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="pagination">
+    </div>
+ <div class="pagination">
         <el-pagination
           background
           @current-change="handleCurrentChange"
@@ -131,8 +132,6 @@
           :total="total"
         ></el-pagination>
       </div>
-    </div>
-
 
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
@@ -296,11 +295,53 @@ export default {
     }
 },
   methods: {
+    addGroupStart(){
+      this.form = [];
+      this.dialogFormVisible=true;
+    },
     aaa(){
       this.ff=1;
+       this.$http({
+        method: "post",
+        url: "/api/group/addUser",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        console.log(6666666);
+        console.log(res);
+        this.value2 = [];
+        // this.shuzu2=[];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value2.push(res.data.message[i].id);
+          }
+        }
+      this.shuzu2=this.value2;
+      });
     },
     bbb(){
       this.ff=0;
+       this.$http({
+        method: "post",
+        url: "/api/group/addUser",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        console.log(6666666);
+        console.log(res);
+        this.value2 = [];
+        // this.shuzu2=[];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value2.push(res.data.message[i].id);
+          }
+        }
+      this.shuzu2=this.value2;
+      });
     },
     //数组去重
     getArrDifference(arr1, arr2) {
@@ -451,15 +492,12 @@ export default {
         for (var i = 0; i < res.data.message.length; i++) {
           if (res.data.message[i].status == 1) {
             this.value2.push(res.data.message[i].id);
-   
           }
         }
       this.shuzu2=this.value2;
-      
       });
       this.dialogBindUser = true;
     },
-
     //穿梭框的change事件
     handleChange() {
       this.$http({
@@ -473,17 +511,34 @@ export default {
       }).then(res => {});
     },
     handleChange2() {
-    
-      console.log(5757575);
-      // this.b=this.getArrDifference(this.value2,this.shuzu2);
-      // console.log(this.value2);
-      // console.log(this.shuzu2);
-      // alert(this.getArrDifference(this.value2,this.shuzu2))
+         //数组去重 
       this.shuzu3=this.getArrDifference(this.value2,this.shuzu2);
-      // alert(this.shuzu3);
-        // console.log(this.value2)
+        if(this.ff==1){
+this.$http({
+method: "post",
+url: "/api/group/addUserBind",
+data: {
+domain_id: this.domain_id,
+group_id: this.form.id,
+id: this.shuzu3
+}
+}).then(res => {
+});
+      }else if(this.ff==0){
+this.$http({
+method: "post",
+url: "/api/group/unaddUserBind",
+data: {
+domain_id: this.domain_id,
+group_id: this.form.id,
+id: this.shuzu3
+}
+}).then(res => {
+});
+      }
+     
     },
-
+    
     //添加设备群组
     addGroup() {
       this.$http({
@@ -519,29 +574,30 @@ export default {
     },
     //保存绑定用户按钮
     saveGroupUser() {
-        if(this.ff==1){
-this.$http({
-method: "post",
-url: "/api/group/addUserBind",
-data: {
-domain_id: this.domain_id,
-group_id: this.form.id,
-id: this.shuzu3
-}
-}).then(res => {
-});
-      }else if(this.ff==0){
-this.$http({
-method: "post",
-url: "/api/group/unaddUserBind",
-data: {
-domain_id: this.domain_id,
-group_id: this.form.id,
-id: this.shuzu3
-}
-}).then(res => {
-});
-      }
+
+//         if(this.ff==1){
+// this.$http({
+// method: "post",
+// url: "/api/group/addUserBind",
+// data: {
+// domain_id: this.domain_id,
+// group_id: this.form.id,
+// id: this.shuzu3
+// }
+// }).then(res => {
+// });
+//       }else if(this.ff==0){
+// this.$http({
+// method: "post",
+// url: "/api/group/unaddUserBind",
+// data: {
+// domain_id: this.domain_id,
+// group_id: this.form.id,
+// id: this.shuzu3
+// }
+// }).then(res => {
+// });
+//       }
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -717,6 +773,8 @@ id: this.shuzu3
 .white {
   color: #ffffff;
 }
-
+.add-user{
+  margin-left: 30px;
+}
 
 </style>

@@ -51,7 +51,7 @@
         <el-table-column prop="real_address" label="真实ip" min-width="10%"></el-table-column>
         <el-table-column prop="auth_code" label="授权码绑定" min-width="11%"></el-table-column>
         <el-table-column prop="end_time" label="授权码截止日期" min-width="13%"></el-table-column>
-        <el-table-column prop="time" label="添加日期" min-width="13%"></el-table-column>
+        <el-table-column prop="time" label="添加日期" min-width="14%"></el-table-column>
         <el-table-column label="相关操作" min-width="9%" align="center">
           <template slot-scope="scope">
             <el-button
@@ -75,6 +75,7 @@
           </template>
         </el-table-column>
       </el-table>
+    </div>
       <div class="pagination">
         <el-pagination
           background
@@ -83,7 +84,6 @@
           :total="total"
         ></el-pagination>
       </div>
-    </div>
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -553,6 +553,10 @@ export default {
 .el-table--border td {
   border-right: 1px solid #dcdee2;
 }
+.add-user{
+  margin-left: 30px;
+}
+
 /* .el-table .warning-row {
     background: oldlace;
   }

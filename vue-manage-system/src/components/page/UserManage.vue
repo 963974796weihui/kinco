@@ -25,7 +25,9 @@
         </div>
       </el-dialog>
     </div>
+    <!-- 右侧白色 -->
     <div class="container">
+      <!-- 表格 -->
       <div class="handle-box">
         <!-- 测试vuex -->
         <!-- <p>{{this.domain_id}}</p> -->
@@ -38,6 +40,7 @@
       <!-- :data="data1" -->
       <!-- :header-cell-style="{background:'#20a0ff',color:'#92ff00'}" -->
       <!-- :row-class-name="tableRowClassName" -->
+
       <el-table
         :stripe="test"
         :header-cell-style="tableHeaderColor"
@@ -54,11 +57,11 @@
           </template>-->
         </el-table-column>
         <el-table-column prop="remark" label="备注" min-width="14%"></el-table-column>
-        <el-table-column prop="phone" label="手机号" min-width="14%"></el-table-column>
-        <el-table-column prop="email" label="邮箱号" min-width="14%"></el-table-column>
+        <el-table-column prop="phone" label="手机号" min-width="11%"></el-table-column>
+        <el-table-column prop="email" label="邮箱号" min-width="19%"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" min-width="10%"></el-table-column>
         <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
-        <el-table-column label="相关操作" min-width="22%" align="center">
+        <el-table-column label="相关操作" min-width="20%" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -887,8 +890,8 @@ export default {
     background: #f0f9eb;
   } */
 .container {
-  padding: 15px 40px;
-  /* height: 600px; */
+  padding: 15px 30px;
+  border-radius: 10px;
 }
 .el-button + .el-button {
   margin-left: 0px;
@@ -901,4 +904,16 @@ export default {
   padding-right: 800px;
 } */
 table{border-collapse:inherit;}
+
+
+.el-table th>.cell {
+    text-align: center;
+}
+.el-table .cell {
+    text-align: center;
+}
+.add-user{
+  margin-left: 30px;
+}
+
 </style>

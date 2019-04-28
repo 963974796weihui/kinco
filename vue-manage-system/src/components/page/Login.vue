@@ -33,7 +33,7 @@
               <router-link to="/reg">
                 <p class="admin blue">建立管理员账号</p>
               </router-link>
-               <el-button class="blue-login" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+              <el-button class="blue-login" type="primary" @click="submitForm('ruleForm')">登录</el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -62,7 +62,7 @@
               </el-input>
             </el-form-item>
             <div class="login-btn">
-              <el-button type="primary" @click="submitForm1('ruleForm')">登录</el-button>
+              <el-button class="blue-login" type="primary" @click="submitForm1('ruleForm')">登录</el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -172,7 +172,7 @@ export default {
                   message: "用户名或密码输入错误   !",
                   type: "warning"
                 });
-              }else if(res.data.code == 202){
+              } else if (res.data.code == 202) {
                 this.$message({
                   message: "请前往邮箱进行确认   !",
                   type: "warning"
@@ -223,14 +223,17 @@ export default {
 }
 .ms-login {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 350px;
   height: 300px;
-  margin: -190px 0 0 -175px;
   border-radius: 5px;
   background: #ffffff;
-  overflow: hidden;
+  /* overflow: hidden; */
+  padding: 5px 30px;
 }
 .ms-content {
   padding: 30px 30px;
@@ -254,16 +257,23 @@ export default {
   top: 20px;
   left: 20px;
 }
-.blue{
+.blue {
   color: #409eff;
 }
-.blue-login{
+.blue-login {
   margin-top: 10px;
   background-color: #6296ea;
 }
-.el-tabs__item{
-  color: #c9c9c9
+.el-tabs__item {
+  color: #c9c9c9;
 }
 /* 清除自带小眼睛 */
-input::-ms-reveal,input::-ms-clear{display:none;}
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+/* input边框颜色 */
+.el-input__inner{
+  border: 1px solid #DCDFE6;
+}
 </style>

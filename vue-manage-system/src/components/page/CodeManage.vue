@@ -80,14 +80,14 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="pagination">
+      </div>
+       <div class="pagination">
         <el-pagination
           background
           @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :total="total"
         ></el-pagination>
-      </div>
     </div>
 
     <!-- 编辑弹出框 -->

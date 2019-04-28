@@ -6,9 +6,6 @@
 	 ref="formValidate"
     :model="formValidate"
     :rules="ruleValidate">
-    <!-- <router-link to="/login">
-    <i class="el-icon-back icon"></i>
-       </router-link> -->
 	   <span class="reg-adm">注册管理员</span>
     <br>
     <el-form-item label="账号名" prop="user_name">
@@ -253,16 +250,15 @@
   right: 0;
   /* border: 1px red solid; */
   width: 700px;
-  padding: 0px 35px 15px 35px;
-  margin: 50px auto;
+  margin: 10px auto;
 }
 /* input边框颜色 */
 .el-input__inner{
-  border: 1px solid #3a8ee6;
+  border: 1px solid #84c2ff;
 }
 /* 详细地址边颜色 */
 .distpicker-address-wrapper select{
-   border: 1px solid #3a8ee6;
+   border: 1px solid #84c2ff;
 }
 .el-icon-back{
   font-size: 38px;
@@ -287,13 +283,17 @@ margin-left: -70px;
 }
 .ms-login {
   position: absolute;
-  left: 50%;
-  width: 780px;
-  height: 730px;
-  margin: 10px 0 0 -375px;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 750px;
+  height: 700px;
   border-radius: 5px;
-  background: #fff;
-  overflow: hidden;
+  background: #ffffff;
+  /* overflow: hidden; */
+  padding: 10px 5px;
 }
 .login-wrap {
   position: relative;

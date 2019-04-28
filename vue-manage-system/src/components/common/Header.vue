@@ -146,10 +146,6 @@ this.$http({
       }
     }).then(res => {
         if (res.data.status == "S") {
-                  this.$message({
-              message: "新建域成功   !",
-              type: "success"
-            });
         }
         const domain_id=res.data.message[0].id;
          const domain_name=res.data.message[0].domain_name;
@@ -261,7 +257,7 @@ this.$http({
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 70px;
+        height: 60px;
         font-size: 22px;
         color: #fff;
     }
@@ -269,7 +265,7 @@ this.$http({
         float: left;
         padding: 0 21px;
         cursor: pointer;
-        line-height: 70px;
+        line-height: 60px;
         background-color: #fff;
     }
     .header .logo{
@@ -277,8 +273,8 @@ this.$http({
         font-weight:bold;
         float: left;
         width:250px;
-        height: 70px;
-        line-height: 70px;
+        height: 60px;
+        line-height: 60px;
     }
     .header-right{
         float: right;
@@ -286,7 +282,7 @@ this.$http({
     }
     .header-user-con{
         display: flex;
-        height: 70px;
+        height: 60px;
         align-items: center;
     }
     .btn-fullscreen{
