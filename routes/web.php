@@ -24,6 +24,7 @@ Route::get('/user/userInfo','Admin\UserController@userInfo');
 Route::post('/user/addUser','Admin\UserController@addUser');
 Route::post('/user/supplyGroup','Admin\UserController@supplyGroup');//设备组接口
 Route::post('/user/supplyGroupBind','Admin\UserController@supplyGroupBind');//设备组绑定接口
+Route::post('/user/unsupplyGroupBind','Admin\UserController@unSupplyGroupBind');//设备组解绑接口
 Route::post('/user/hmiGroup','Admin\UserController@hmiGroup');//设备接口
 Route::post('/user/hmiGroupBind','Admin\UserController@hmiGroupBind');//设备绑定接口
 Route::get('/user/info/{id}','Admin\UserController@info');//获得用户信息
