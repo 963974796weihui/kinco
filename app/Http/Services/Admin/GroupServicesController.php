@@ -62,11 +62,6 @@ class GroupServicesController extends Controller
 
     public function hmiInfoBind($domain_id, $group_id, $id)
     {
-        $result = DB::table('ki_admin_user_hmi_group')
-            ->where('domain_id', $domain_id)
-            ->where('group_id', $group_id)
-            ->where('user_id', '0')
-            ->delete();
         foreach ($id as $key => $value) {
             if ($value) {
                 $condition['group_id'] = $group_id;
@@ -77,40 +72,99 @@ class GroupServicesController extends Controller
         }
         return true;
     }
+    public function unhmiInfoBind($domain_id, $group_id, $id)
+    {
+        $result = DB::table('ki_admin_user_hmi_group')
+            ->where('domain_id', $domain_id)
+            ->where('group_id', $group_id)
+            ->whereIn('hmi_id', $id)
+            ->delete();
+        return true;
+    }
     public function unhmiAddShell($group_id,$id){
         $hmi_id=array();
         $hmi_cert_name=array();
+        $part_cert_name=array();
         $res = DB::table('ki_admin_user_hmi_group')
             ->where('group_id', $group_id)
             ->where('user_id', '0')
             ->select('hmi_id')
             ->get();
         foreach ($res as $key=>$value){
-            $hmi_id[]=$res[$key]->hmi_id;
+            $hmi_id[]=$res[$key]->hmi_id;//组下所有屏的id
         }
         $result=DB::table('ki_admin_hmi')->whereIn('id',$hmi_id)->select('cert_name')->get();
         foreach($result as $key=>$value){
-            $hmi_cert_name[]=$value->cert_name;
+            $hmi_cert_name[]=$value->cert_name;//组下所有屏
         }
-        $this->unsystemShell($hmi_cert_name);//调用shell脚本
+        $result=DB::table('ki_admin_hmi')->whereIn('id',$id)->select('cert_name')->get();
+        foreach($result as $key=>$value){
+            $part_cert_name[]=$value->cert_name;//解绑的屏
+        }
+        $this->unsystemShell($hmi_cert_name,$part_cert_name);//解绑的屏和所有的屏解绑
+        $this->unUsrSystemShell($group_id,$part_cert_name);//要解绑的屏群组中的所有用户进行解绑
     }
-
-    public function unsystemShell($hmi_cert_name){
+    public function unUsrSystemShell($group_id,$hmi_cert_name){
+        $user_id=array();
+        $user_cert_name=array();
+        $result=DB::table('ki_admin_user_hmi_group')->where('group_id',$group_id)->where('hmi_id','0')->select('user_id')->get();
+        foreach($result as $key=>$value){
+            $user_id[]=$value->user_id;
+        }
+        $result=DB::table('ki_admin_user')->whereIn('id',$user_id)->select('cert_name')->get();
+        foreach($result as $key=>$value){
+            $user_cert_name[]=$value->cert_name;//用户证书
+        }
         for($i=0;$i<count($hmi_cert_name);$i++){
-            for ($j=0;$j<count($hmi_cert_name);$j++){
-                if($i!=$j){
-                    system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-del'.' '.$hmi_cert_name[$j]);
-                }
+            for ($j=0;$j<count($user_cert_name);$j++){
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-del'.' '.$user_cert_name[$j]);
+            }
+        }
+    }
+    public function unsystemShell($hmi_cert_name,$part_cert_name){
+        for($i=0;$i<count($hmi_cert_name);$i++){
+            for ($j=0;$j<count($part_cert_name);$j++){
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-del'.' '.$part_cert_name[$j]);
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$part_cert_name[$j].' '.'-del'.' '.$hmi_cert_name[$i]);
             }
         }
     }
     public function hmiAddShell($group_id,$id){
-        $hmi_cert_name=array();
+        $allhmiId=array();//所有屏
+        $allhmi=array();//所有屏
+        $hmi_cert_name=array();//所有证书
         $result=DB::table('ki_admin_hmi')->whereIn('id',$id)->select('cert_name')->get();
         foreach($result as $key=>$value){
             $hmi_cert_name[]=$value->cert_name;
         }
-        $this->systemShell($hmi_cert_name);//调用shell脚本
+        $this->usrSystemShell($group_id,$hmi_cert_name);//将新增设备与群组中的所有用户进行通讯
+        $res=DB::table('ki_admin_user_hmi_group')->where('group_id',$group_id)->where('user_id','0')->select('hmi_id')->get();
+        foreach($res as $key=>$value){
+            $allhmiId[]=$value->hmi_id;
+        }
+        $res=DB::table('ki_admin_hmi')->whereIn('id',$allhmiId)->select('cert_name')->get();
+        foreach($res as $key=>$value){
+            $allhmi[]=$value->cert_name;
+        }
+        $this->SystemShell($allhmi);//组下面所有的屏进行通讯
+    }
+
+    public function usrSystemShell($group_id,$hmi_cert_name){
+        $user_id=array();
+        $user_cert_name=array();
+        $result=DB::table('ki_admin_user_hmi_group')->where('group_id',$group_id)->where('hmi_id','0')->select('user_id')->get();
+        foreach($result as $key=>$value){
+            $user_id[]=$value->user_id;
+        }
+        $result=DB::table('ki_admin_user')->whereIn('id',$user_id)->select('cert_name')->get();
+        foreach($result as $key=>$value){
+            $user_cert_name[]=$value->cert_name;//用户证书
+        }
+        for($i=0;$i<count($hmi_cert_name);$i++){
+            for ($j=0;$j<count($user_cert_name);$j++){
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-add'.' '.$user_cert_name[$j]);
+            }
+        }
     }
     public function systemShell($hmi_cert_name){
         for($i=0;$i<count($hmi_cert_name);$i++){

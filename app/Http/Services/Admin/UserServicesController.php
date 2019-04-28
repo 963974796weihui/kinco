@@ -100,11 +100,6 @@ class UserServicesController extends Controller
 
     public function supplyGroupBind($domain_id, $user_id, $id)
     {
-        $result = DB::table('ki_admin_user_hmi_group')
-            ->where('domain_id', $domain_id)
-            ->where('user_id', $user_id)
-            ->where('hmi_id', '0')
-            ->delete();
         foreach ($id as $key => $value) {
             if ($value) {
                 $condition['user_id'] = $user_id;
@@ -113,6 +108,15 @@ class UserServicesController extends Controller
                 $result = DB::table('ki_admin_user_hmi_group')->insertGetId($condition);
             }
         }
+        return true;
+    }
+    public function unsupplyGroupBind($domain_id, $user_id, $id)
+    {
+        $result = DB::table('ki_admin_user_hmi_group')
+            ->where('domain_id', $domain_id)
+            ->where('user_id', $user_id)
+            ->whereIn('group_id', $id)
+            ->delete();
         return true;
     }
 
@@ -183,6 +187,46 @@ class UserServicesController extends Controller
     public function unsystemShell($user_cert_name,$hmi_cert_name){
         foreach ($hmi_cert_name as $key=>$value){
             //system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-del'.' '.$value);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$value.' '.'-del'.' '.$user_cert_name);
+        }
+    }
+    public function AddShell($user_id,$id){
+        $allhmiId=array();
+        $hmi_cert_name=array();
+        $user_cert_name=DB::table('ki_admin_user')->where('id',$user_id)->select('cert_name')->first()->cert_name;
+        $res=DB::table('ki_admin_user_hmi_group')->whereIn('group_id',$id)->where('user_id','0')->select('hmi_id')->get();
+        foreach($res as $key=>$value){
+            $allhmiId[]=$value->hmi_id;//组下全部人机id
+        }
+        $res=DB::table('ki_admin_hmi')->whereIn('id',$allhmiId)->select('cert_name')->get();
+        foreach($res as $key=>$value){
+            $hmi_cert_name[]=$value->cert_name;
+        }
+        $this->ugShell($hmi_cert_name,$user_cert_name);//调用shell脚本
+    }
+    public function ugShell($hmi_cert_name,$user_cert_name){
+        foreach ($hmi_cert_name as $key=>$value){
+            //system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-add'.' '.$value);
+            system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$value.' '.'-add'.' '.$user_cert_name);
+        }
+    }
+    public function unAddShell($user_id,$id){
+        $allhmiId=array();
+        $hmi_cert_name=array();
+        $user_cert_name=DB::table('ki_admin_user')->where('id',$user_id)->select('cert_name')->first()->cert_name;
+        $res=DB::table('ki_admin_user_hmi_group')->whereIn('group_id',$id)->where('user_id','0')->select('hmi_id')->get();
+        foreach($res as $key=>$value){
+            $allhmiId[]=$value->hmi_id;//组下全部人机id
+        }
+        $res=DB::table('ki_admin_hmi')->whereIn('id',$allhmiId)->select('cert_name')->get();
+        foreach($res as $key=>$value){
+            $hmi_cert_name[]=$value->cert_name;
+        }
+        $this->unShell($hmi_cert_name,$user_cert_name);//调用shell脚本
+    }
+    public function unShell($hmi_cert_name,$user_cert_name){
+        foreach ($hmi_cert_name as $key=>$value){
+            //system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$user_cert_name.' '.'-add'.' '.$value);
             system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$value.' '.'-del'.' '.$user_cert_name);
         }
     }

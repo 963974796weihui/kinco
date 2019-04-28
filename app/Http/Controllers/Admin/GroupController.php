@@ -85,21 +85,6 @@ class GroupController extends Controller
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $result]);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * 管理组成员确认
-     */
-    public function hmiInfoBind(Request $request)
-    {
-        $id = $request->input('id');//hmi id
-        $group_id = $request->input('group_id');//组id
-        $domain_id = $request->input('domain_id');//域id
-        $this->groupServices->unhmiAddShell($group_id,$id);//先解绑
-        $result = $this->groupServices->hmiInfoBind($domain_id, $group_id, $id);
-        $this->groupServices->hmiAddShell($group_id,$id);//在添加绑定
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定屏成功']);
-    }
 
     /**
      * @param Request $request
@@ -141,5 +126,36 @@ class GroupController extends Controller
         $this->groupServices->GunhmiAddShell($group_id,$id);//先解绑
         $result = $this->groupServices->unaddUserBind($domain_id, $group_id, $id);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '解绑成功']);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 管理组成员确认
+     */
+    public function hmiInfoBind(Request $request)
+    {
+        $id = $request->input('id');//hmi id
+        $group_id = $request->input('group_id');//组id
+        $domain_id = $request->input('domain_id');//域id
+        //$this->groupServices->unhmiAddShell($group_id,$id);//先解绑
+        $result = $this->groupServices->hmiInfoBind($domain_id, $group_id, $id);
+        $this->groupServices->hmiAddShell($group_id,$id);//在添加绑定
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定屏成功']);
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 管理组成员解绑
+     */
+    public function unhmiInfoBind(Request $request)
+    {
+        $id = $request->input('id');//hmi id
+        $group_id = $request->input('group_id');//组id
+        $domain_id = $request->input('domain_id');//域id
+        //$this->groupServices->unhmiAddShell($group_id,$id);//先解绑
+        $result = $this->groupServices->unhmiInfoBind($domain_id, $group_id, $id);
+        $this->groupServices->unhmiAddShell($group_id,$id);//在添加绑定
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '组解绑屏成功']);
     }
 }

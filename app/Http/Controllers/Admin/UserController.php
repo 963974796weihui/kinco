@@ -59,8 +59,23 @@ class UserController extends Controller
         $id = $request->input('id');
         $user_id = $request->input('user_id');
         $domain_id = $request->input('domain_id');
+        $result = $this->userServices->AddShell($domain_id, $user_id, $id);
         $this->userServices->supplyGroupBind($domain_id, $user_id, $id);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户绑定组成功']);
+    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 域下设备组解绑（用户绑定组）
+     */
+    public function unSupplyGroupBind(Request $request)
+    {
+        $id = $request->input('id');
+        $user_id = $request->input('user_id');
+        $domain_id = $request->input('domain_id');
+        $result = $this->userServices->unAddShell($domain_id, $user_id, $id);
+        $this->userServices->unsupplyGroupBind($domain_id, $user_id, $id);
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => '用户解绑组成功']);
     }
 
     /**
