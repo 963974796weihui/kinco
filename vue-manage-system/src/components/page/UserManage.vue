@@ -50,7 +50,7 @@
         ref="multipleTable"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" :selectable="checkboxT"  min-width="2%" align="center"></el-table-column>
+        <el-table-column type="selection" :selectable="checkboxT" min-width="2%" align="center"></el-table-column>
         <el-table-column prop="user_name" label="用户名" min-width="14%">
           <!-- <template slot-scope="scope">
             <div :class="scope.row.cut_off==2? 'one' :''"> {{ scope.row.user_name }}</div>
@@ -79,11 +79,13 @@
                       :titles="['所有设备组', '已绑定设备组']"
                       v-model="value1"
                       :data="dataGroup"
+                      @left-check-change="aaa"
+                      @right-check-change="bbb"
                       filterable
                       @change="hmiGroupChange"
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
-                      <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
                       <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
                     </div>
                   </div>
@@ -130,16 +132,15 @@
           </template>
         </el-table-column>
       </el-table>
-   
     </div>
-   <div class="pagination">
-        <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout="prev, pager, next"
-          :total="total"
-        ></el-pagination>
-      </div>
+    <div class="pagination">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="20%">
       <el-form ref="form" :model="form" label-width="50px">
@@ -193,6 +194,9 @@ export default {
       }
     };
     return {
+      ff: "",
+      shuzu2: [],
+      shuzu3: [],
       flag: 0,
       banText: "禁用",
       //匹配校验器
@@ -253,7 +257,7 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
-      idx: -1,
+      idx: -1
     };
   },
   store,
@@ -378,9 +382,55 @@ export default {
     }
   },
   methods: {
-    addUserStart(){
-       this.form = [];
-      this.dialogFormVisible=true;
+    aaa() {
+      this.ff = 1;
+      //获取已绑定设备组
+      this.$http({
+        method: "post",
+        url: "/api/user/supplyGroup",
+        data: {
+          id: this.domain_id, //域id
+          user_id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+        this.shuzu2 = this.value1;
+      });
+    },
+    bbb() {
+      this.ff = 0;
+      //获取已绑定设备组
+      this.$http({
+        method: "post",
+        url: "/api/user/supplyGroup",
+        data: {
+          id: this.domain_id, //域id
+          user_id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+        this.shuzu2 = this.value1;
+      });
+    },
+    //数组去重
+    getArrDifference(arr1, arr2) {
+      return arr1.concat(arr2).filter(function(v, i, arr) {
+        return arr.indexOf(v) === arr.lastIndexOf(v);
+      });
+    },
+    addUserStart() {
+      this.form = [];
+      this.dialogFormVisible = true;
     },
     // 表格选中行的颜色
     // 多选高亮选中行
@@ -511,15 +561,29 @@ export default {
 
     //穿梭框的hmigroupchange事件
     hmiGroupChange() {
-      this.$http({
-        method: "post",
-        url: "/api/user/supplyGroupBind",
-        data: {
-          domain_id: this.domain_id,
-          user_id: this.form.id,
-          id: this.value1
-        }
-      }).then(res => {});
+      //数组去重
+      this.shuzu3 = this.getArrDifference(this.value1, this.shuzu2);
+      if (this.ff == 1) {
+        this.$http({
+          method: "post",
+          url: "/api/user/supplyGroupBind",
+          data: {
+            domain_id: this.domain_id,
+            user_id: this.form.id,
+            id: this.shuzu3
+          }
+        }).then(res => {});
+      } else if (this.ff == 0) {
+        this.$http({
+          method: "post",
+          url: "/api/user/unsupplyGroupBind",
+          data: {
+            domain_id: this.domain_id,
+            user_id: this.form.id,
+            id: this.shuzu3
+          }
+        }).then(res => {});
+      }
     },
     //穿梭框的hmichange事件
     hmiChange() {
@@ -649,6 +713,7 @@ export default {
             this.value1.push(res.data.message[i].id);
           }
         }
+        this.shuzu2 = this.value1;
       });
       //获取已绑定设备
       this.$http({
@@ -903,17 +968,17 @@ export default {
 /* .pagination{
   padding-right: 800px;
 } */
-table{border-collapse:inherit;}
+table {
+  border-collapse: inherit;
+}
 
-
-.el-table th>.cell {
-    text-align: center;
+.el-table th > .cell {
+  text-align: center;
 }
 .el-table .cell {
-    text-align: center;
+  text-align: center;
 }
-.add-user{
+.add-user {
   margin-left: 30px;
 }
-
 </style>
