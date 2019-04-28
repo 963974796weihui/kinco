@@ -27,8 +27,8 @@
       <file leaf-file-name="GroupController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="144" column="5" lean-forward="true" selection-start-line="144" selection-start-column="5" selection-end-line="144" selection-end-column="5" />
+            <state relative-caret-position="109">
+              <caret line="135" column="31" lean-forward="false" selection-start-line="135" selection-start-column="20" selection-end-line="135" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -47,8 +47,8 @@
       <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
-              <caret line="70" column="37" lean-forward="false" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="37" />
+            <state relative-caret-position="409">
+              <caret line="105" column="34" lean-forward="false" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -57,8 +57,8 @@
       <file leaf-file-name="web.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="31" column="63" lean-forward="true" selection-start-line="31" selection-start-column="63" selection-end-line="31" selection-end-column="63" />
+            <state relative-caret-position="253">
+              <caret line="47" column="60" lean-forward="false" selection-start-line="47" selection-start-column="60" selection-end-line="47" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -67,8 +67,8 @@
       <file leaf-file-name="UserServicesController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="226" column="60" lean-forward="true" selection-start-line="226" selection-start-column="60" selection-end-line="226" selection-end-column="60" />
+            <state relative-caret-position="149">
+              <caret line="232" column="20" lean-forward="false" selection-start-line="232" selection-start-column="20" selection-end-line="232" selection-end-column="20" />
               <folding>
                 <element signature="e#47#83#0#PHP" expanded="true" />
               </folding>
@@ -80,7 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>auth_code</find>
       <find>forbid</find>
       <find>forbi</find>
       <find>addus</find>
@@ -99,7 +98,6 @@
       <find>codein</find>
       <find>hmiInfoBind</find>
       <find>delet</find>
-      <find>hmiGroupBind</find>
       <find>hmiAddShell</find>
       <find>UsrSystemShell</find>
       <find>systemShell</find>
@@ -107,9 +105,11 @@
       <find>AddShell</find>
       <find>delete</find>
       <find>unhmiAddShell</find>
+      <find>unAddShell</find>
+      <find>hmiGroupBind</find>
       <find>supplyGroupBind</find>
       <find>SupplyGroupBind</find>
-      <find>unAddShell</find>
+      <find>unhmiInfoBind</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -663,7 +663,7 @@
       <workItem from="1556156868319" duration="17956000" />
       <workItem from="1556243015166" duration="3380000" />
       <workItem from="1556268349874" duration="2478000" />
-      <workItem from="1556415350713" duration="17833000" />
+      <workItem from="1556415350713" duration="18124000" />
     </task>
     <task id="LOCAL-00001" summary="phpstrom提交">
       <created>1552382669922</created>
@@ -774,7 +774,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="438650000" />
+    <option name="totallyTimeSpent" value="438941000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1120,36 +1120,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="144" column="5" lean-forward="true" selection-start-line="144" selection-start-column="5" selection-end-line="144" selection-end-column="5" />
+        <state relative-caret-position="409">
+          <caret line="105" column="34" lean-forward="false" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Services/Admin/UserServicesController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="226" column="60" lean-forward="true" selection-start-line="226" selection-start-column="60" selection-end-line="226" selection-end-column="60" />
+        <state relative-caret-position="149">
+          <caret line="232" column="20" lean-forward="false" selection-start-line="232" selection-start-column="20" selection-end-line="232" selection-end-column="20" />
           <folding>
             <element signature="e#47#83#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UserController.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
-          <caret line="70" column="37" lean-forward="false" selection-start-line="70" selection-start-column="20" selection-end-line="70" selection-end-column="37" />
+        <state relative-caret-position="109">
+          <caret line="135" column="31" lean-forward="false" selection-start-line="135" selection-start-column="20" selection-end-line="135" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/web.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="31" column="63" lean-forward="true" selection-start-line="31" selection-start-column="63" selection-end-line="31" selection-end-column="63" />
+        <state relative-caret-position="253">
+          <caret line="47" column="60" lean-forward="false" selection-start-line="47" selection-start-column="60" selection-end-line="47" selection-end-column="60" />
           <folding />
         </state>
       </provider>

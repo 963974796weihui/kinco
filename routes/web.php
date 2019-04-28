@@ -45,6 +45,7 @@ Route::post('/group/updateGroup','Admin\GroupController@updateGroup');//更新�
 Route::post('/group/deleteGroup','Admin\GroupController@deleteGroup');//删除组
 Route::post('/group/hmiInfo','Admin\GroupController@hmiInfo');//管理组成员
 Route::post('/group/hmiInfoBind','Admin\GroupController@hmiInfoBind');//管理组成员确认
+Route::post('/group/unhmiInfoBind','Admin\GroupController@unhmiInfoBind');//管理组成员确认
 Route::post('/group/addUser','Admin\GroupController@addUser');//绑定用户
 Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定用户确认
 Route::post('/group/unaddUserBind','Admin\GroupController@unaddUserBind');//绑定用户确认
