@@ -54,6 +54,8 @@
                   :titles="['所有设备', '已绑定设备']"
                   v-model="value1"
                   :data="dataGroupHmi"
+                   @left-check-change="aaa1"
+                  @right-check-change="bbb1"
                   filterable
                   @change="handleChange"
                 ></el-transfer>
@@ -85,7 +87,7 @@
                 ></el-transfer>
               </div>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogBindUser = false">取 消</el-button>
+                <el-button @click="dialogBindUser = false">返 回</el-button>
                 <el-button type="primary" @click="saveGroupUser()">确 定</el-button>
               </div>
             </el-dialog>
@@ -152,7 +154,9 @@ export default {
   data() {
     return {
       ff:'',
+      ff1:'',
       shuzu3:[],
+      shuzu31:[],
       selectRow:[],
       selectData:[],
       test:true,
@@ -171,6 +175,7 @@ export default {
       dataUser: [],
       shuzu: [],
       shuzu2: [],
+      shuzu21:[],
       trGroup: [],
       cur_page: 1,
       multipleSelection: [],
@@ -321,6 +326,25 @@ export default {
       this.shuzu2=this.value2;
       });
     },
+    aaa1(){
+     this.ff1=1;
+       this.$http({
+        method: "post",
+        url: "/api/group/hmiInfo",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+        this.shuzu21=this.value1;
+      });
+    },
     bbb(){
       this.ff=0;
        this.$http({
@@ -341,6 +365,25 @@ export default {
           }
         }
       this.shuzu2=this.value2;
+      });
+    },
+    bbb1(){
+  this.ff1=0;
+       this.$http({
+        method: "post",
+        url: "/api/group/hmiInfo",
+        data: {
+          domain_id: this.domain_id, //域id
+          id: this.form.id
+        }
+      }).then(res => {
+        this.value1 = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.value1.push(res.data.message[i].id);
+          }
+        }
+        this.shuzu21=this.value1;
       });
     },
     //数组去重
@@ -441,13 +484,12 @@ export default {
             this.value1.push(res.data.message[i].id);
           }
         }
+        this.shuzu21=this.value1;
       });
       this.dialogManagerMember = true;
     },
     //绑定用户按钮事件
     handleGroupUser(index, row) {
-      // this.shuzu2=this.dataGroupHmi;
-      // this.getUser();
        this.$http({
         method: "get",
         url: "/api/user/userInfo",
@@ -500,15 +542,38 @@ export default {
     },
     //穿梭框的change事件
     handleChange() {
-      this.$http({
+      //数组去重 
+      this.shuzu31=this.getArrDifference(this.value1,this.shuzu21);
+      // this.$http({
+      //   method: "post",
+      //   url: "/api/group/hmiInfoBind",
+      //   data: {
+      //     domain_id: this.domain_id,
+      //     group_id: this.form.id,
+      //     id: this.shuzu31
+      //   }
+      // }).then(res => {});
+              if(this.ff1==1){
+ this.$http({
         method: "post",
         url: "/api/group/hmiInfoBind",
         data: {
           domain_id: this.domain_id,
           group_id: this.form.id,
-          id: this.value1
+          id: this.shuzu31
         }
       }).then(res => {});
+      }else if(this.ff1==0){
+ this.$http({
+        method: "post",
+        url: "/api/group/unhmiInfoBind",
+        data: {
+          domain_id: this.domain_id,
+          group_id: this.form.id,
+          id: this.shuzu31
+        }
+      }).then(res => {});
+      }
     },
     handleChange2() {
          //数组去重 
