@@ -89,13 +89,13 @@ class GroupServicesController extends Controller
             ->where('group_id', $group_id)
             ->where('user_id', '0')
             ->select('hmi_id')
-            ->get();
+            ->get();//剩余的所有的屏
         foreach ($res as $key=>$value){
             $hmi_id[]=$res[$key]->hmi_id;//组下所有屏的id
         }
         $result=DB::table('ki_admin_hmi')->whereIn('id',$hmi_id)->select('cert_name')->get();
         foreach($result as $key=>$value){
-            $hmi_cert_name[]=$value->cert_name;//组下所有屏
+            $hmi_cert_name[]=$value->cert_name;//剩余的所有的屏证书
         }
         $result=DB::table('ki_admin_hmi')->whereIn('id',$id)->select('cert_name')->get();
         foreach($result as $key=>$value){
@@ -130,7 +130,7 @@ class GroupServicesController extends Controller
         }
     }
     public function hmiAddShell($group_id,$id){
-        $allhmiId=array();//所有屏
+        $allhmiId=array();//所有屏id
         $allhmi=array();//所有屏
         $hmi_cert_name=array();//所有证书
         $result=DB::table('ki_admin_hmi')->whereIn('id',$id)->select('cert_name')->get();
@@ -146,7 +146,7 @@ class GroupServicesController extends Controller
         foreach($res as $key=>$value){
             $allhmi[]=$value->cert_name;
         }
-        $this->SystemShell($allhmi);//组下面所有的屏进行通讯
+        $this->SystemShell($allhmi,$hmi_cert_name);//新增的屏与组下面所有的屏进行通讯
     }
 
     public function usrSystemShell($group_id,$hmi_cert_name){
@@ -162,16 +162,15 @@ class GroupServicesController extends Controller
         }
         for($i=0;$i<count($hmi_cert_name);$i++){
             for ($j=0;$j<count($user_cert_name);$j++){
-                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-add'.' '.$user_cert_name[$j]);
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh' . ' ' . $hmi_cert_name[$i] . ' ' . '-add' . ' ' . $user_cert_name[$j]);
             }
         }
     }
-    public function systemShell($hmi_cert_name){
-        for($i=0;$i<count($hmi_cert_name);$i++){
+    public function systemShell($allhmi,$hmi_cert_name){
+        for($i=0;$i<count($allhmi);$i++){
             for ($j=0;$j<count($hmi_cert_name);$j++){
-                if($i!=$j){
-                    system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$i].' '.'-add'.' '.$hmi_cert_name[$j]);
-                }
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$allhmi[$i].' '.'-add'.' '.$hmi_cert_name[$j]);
+                system('/root/openvpn_docker/release_1/deploy_map_related/script_dir/pf_related/authority_alloc.sh'.' '.$hmi_cert_name[$j].' '.'-add'.' '.$allhmi[$i]);
             }
         }
     }

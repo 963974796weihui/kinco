@@ -138,9 +138,8 @@ class GroupController extends Controller
         $id = $request->input('id');//hmi id
         $group_id = $request->input('group_id');//组id
         $domain_id = $request->input('domain_id');//域id
-        //$this->groupServices->unhmiAddShell($group_id,$id);//先解绑
-        $result = $this->groupServices->hmiInfoBind($domain_id, $group_id, $id);
         $this->groupServices->hmiAddShell($group_id,$id);//在添加绑定
+        $result = $this->groupServices->hmiInfoBind($domain_id, $group_id, $id);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '组绑定屏成功']);
     }
     /**
@@ -155,7 +154,7 @@ class GroupController extends Controller
         $domain_id = $request->input('domain_id');//域id
         //$this->groupServices->unhmiAddShell($group_id,$id);//先解绑
         $result = $this->groupServices->unhmiInfoBind($domain_id, $group_id, $id);
-        $this->groupServices->unhmiAddShell($group_id,$id);//在添加绑定
+        $this->groupServices->unhmiAddShell($group_id,$id);//在解除绑定
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '组解绑屏成功']);
     }
 }
