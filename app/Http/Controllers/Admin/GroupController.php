@@ -157,4 +157,20 @@ class GroupController extends Controller
         $this->groupServices->unhmiAddShell($group_id,$id);//在解除绑定
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '组解绑屏成功']);
     }
+
+    /**
+     * @param Request $request
+     * 获得组下的人机名
+     */
+    public function hmiDetail(Request $request){
+        $id=$request->input('id');
+        $hmi_name = DB::table('ki_admin_hmi')
+            ->leftjoin('ki_admin_user_hmi_group', 'ki_admin_hmi.id', '=', 'ki_admin_user_hmi_group.hmi_id')
+            ->where('group_id', $id)
+            ->where('user_id', '0')
+            ->where('cut_off','1')
+            ->get()
+            ->toArray();
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $hmi_name]);
+    }
 }

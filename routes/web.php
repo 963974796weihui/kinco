@@ -49,6 +49,7 @@ Route::post('/group/unhmiInfoBind','Admin\GroupController@unhmiInfoBind');//管�
 Route::post('/group/addUser','Admin\GroupController@addUser');//绑定用户
 Route::post('/group/addUserBind','Admin\GroupController@addUserBind');//绑定用户确认
 Route::post('/group/unaddUserBind','Admin\GroupController@unaddUserBind');//绑定用户确认
+Route::post('/group/hmidetail','Admin\GroupController@hmiDetail');//获得组下人机名
 //授权码模块
 Route::post('/AuthCode/codeInfo','Admin\AuthCodeController@codeInfo');//授权码信息
 Route::post('/AuthCode/allhmi','Admin\AuthCodeController@allhmi');//授权码信息
