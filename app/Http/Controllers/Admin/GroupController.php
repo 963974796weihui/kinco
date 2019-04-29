@@ -167,8 +167,9 @@ class GroupController extends Controller
         $hmi_name = DB::table('ki_admin_hmi')
             ->leftjoin('ki_admin_user_hmi_group', 'ki_admin_hmi.id', '=', 'ki_admin_user_hmi_group.hmi_id')
             ->where('group_id', $id)
-            ->where('user_id', '0')
-            ->where('cut_off','1')
+            ->where('ki_admin_user_hmi_group.user_id', '0')
+            ->where('cut_off','0')
+            ->select('hmi_name')
             ->get()
             ->toArray();
         return response()->json(['status' => 'S', 'code' => '200', 'message' => $hmi_name]);
