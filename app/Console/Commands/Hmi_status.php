@@ -40,15 +40,15 @@ class Hmi_status extends Command
     {
         $online_id=array();
         //$handle = file(public_path().'/a.log');
-	    $handle = file('/app/openvpn_rel/openvpn-status.log');
+	    $handle = file('/root/openvpn_docker/release_1/deploy_map_related/openvpn/server/openvpn-status.log');
         if($handle[count($handle)-1]==1){//文件内容不变则退出
             exit;
         }
-        file_put_contents('/app/openvpn_rel/openvpn-status.log', '1',FILE_APPEND);
+        file_put_contents('/root/openvpn_docker/release_1/deploy_map_related/openvpn/server/openvpn-status.log', '1',FILE_APPEND);
         $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
         $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数
         for($i=$start_line;$i<$end_line;$i++){
-            $array=explode(',',$handle[$i]);
+            $array=explode(',',$handle[$i]);    
             $condition['virtual_address']=$array[0];
             $condition['real_address']=$array[2];
             $condition['hmi_status']=1;

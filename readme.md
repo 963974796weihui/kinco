@@ -15,3 +15,4 @@ config文件中的mail.php
 授权码到期时间：
 定时任务去修改到期时间ki_admin_hmi表中的auth_code设置为0
 没到期的授权码不允许删除
+定时任务需要启动
