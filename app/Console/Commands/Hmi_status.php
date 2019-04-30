@@ -48,7 +48,7 @@ class Hmi_status extends Command
         $start_line=array_search("ROUTING TABLE\r\n",$handle)+2;//开始行数
         $end_line=array_search("GLOBAL STATS\r\n",$handle);//结束行数
         for($i=$start_line;$i<$end_line;$i++){
-            $array=explode(',',$handle[$i]);    
+            $array=explode(',',$handle[$i]);
             $condition['virtual_address']=$array[0];
             $condition['real_address']=$array[2];
             $condition['hmi_status']=1;

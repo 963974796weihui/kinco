@@ -163,15 +163,21 @@ class GroupController extends Controller
      * 获得组下的人机名
      */
     public function hmiDetail(Request $request){
+        $group=array();
         $id=$request->input('id');
-        $hmi_name = DB::table('ki_admin_hmi')
-            ->leftjoin('ki_admin_user_hmi_group', 'ki_admin_hmi.id', '=', 'ki_admin_user_hmi_group.hmi_id')
-            ->where('group_id', $id)
-            ->where('ki_admin_user_hmi_group.user_id', '0')
-            ->where('cut_off','0')
-            ->select('hmi_name')
-            ->get()
-            ->toArray();
-        return response()->json(['status' => 'S', 'code' => '200', 'message' => $hmi_name]);
+        $groupName=DB::table('ki_admin_group')->whereIn('id',$id)->get()->toArray();
+        foreach ($groupName as $key=>$value){
+            $group[$key]['lable']=$value->group_name;
+            $hmi_name = DB::table('ki_admin_hmi')
+                ->leftjoin('ki_admin_user_hmi_group', 'ki_admin_hmi.id', '=', 'ki_admin_user_hmi_group.hmi_id')
+                ->where('group_id', $value->id)
+                ->where('ki_admin_user_hmi_group.user_id', '0')
+                ->where('cut_off','0')
+                ->select('hmi_name')
+                ->get()
+                ->toArray();
+            $group[$key]['children']=$hmi_name;
+        }
+        return response()->json(['status' => 'S', 'code' => '200', 'message' => $group]);
     }
 }
