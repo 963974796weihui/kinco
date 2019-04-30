@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
 class Auth_code extends Command
