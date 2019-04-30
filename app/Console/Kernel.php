@@ -26,17 +26,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $total=array();
-        $result=DB::table('ki_admin_code')->select('long','activate_time','bind')->where('activate_time','!=','null')->get()->toArray();
-        foreach ($result as $key=>$value){
-            $total[$key]['time']=$value->long*24*60*60+$value->activate_time-time();//
-            $total[$key]['bind']=$value->bind;
-        }
-        foreach ($total as $key=>$value){
-            if($value['time']<0){//授权码已到期
-                DB::table('ki_admin_hmi')->where('sncode',$value['bind'])->update(['auth_code'=>0]);
-            }
-        }
         // $schedule->command('inspire')
         //          ->hourly();
         //DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'5']);
