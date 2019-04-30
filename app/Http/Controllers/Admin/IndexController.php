@@ -135,7 +135,16 @@ class IndexController extends Controller
      */
     public function test()
     {
-        dd(phpinfo());
-        return view('emails.ceshi');
+            $total=array();
+            $result=DB::table('ki_admin_code')->select('long','activate_time','bind')->where('activate_time','!=','null')->get()->toArray();
+            foreach ($result as $key=>$value){
+                $total[$key]['time']=$value->long*24*60*60+$value->activate_time-time();//
+                $total[$key]['bind']=$value->bind;
+            }
+            foreach ($total as $key=>$value){
+                if($value['time']<0){//授权码已到期
+                    DB::table('ki_admin_hmi')->where('sncode',$value['bind'])->update(['auth_code'=>0]);
+                }
+            }
     }
 }

@@ -26,11 +26,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-	
+
         // $schedule->command('inspire')
         //          ->hourly();
-        DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'5']);
+        //DB::table('ki_admin_hmi')->where('cert_name','client0')->update(['password'=>'5']);
         $schedule->command('hmi_status')->everyMinute();
+        $schedule->command('Auth_code')->everyMinute();
+      //  ->daily()
     }
 
     /**
