@@ -78,7 +78,7 @@ class IndexServicesController extends Controller
             if($status[0]==0){//未通过邮箱确认
                 return $status[0];
             }
-            Cache::put('loginId', $result, 5);//缓存登录ip
+            Cache::put('loginId', $result, 1);//缓存登录ip
             $domain_name = DB::table('ki_admin_administrtor')
                 ->leftjoin('ki_admin_domain', 'ki_admin_administrtor.id', '=', 'ki_admin_domain.uid')
                 ->where('ki_admin_administrtor.id', '=', $result[0])
