@@ -12,16 +12,16 @@ Route::get('/', function () {
 | contains the "web" middleware group. Now create something great!
 |
 */
-//超管模块
-Route::group(['middleware' => ['Login']], function () {
-
     Route::post('/admin/register','Admin\IndexController@register');
     Route::post('/admin/login','Admin\IndexController@login');
-    Route::post('/admin/registerDomain','Admin\IndexController@registerDomain');
-    Route::post('/admin/region','Admin\IndexController@region');
     Route::get('/admin/confirm','Admin\IndexController@confirm');//邮箱确认
     Route::get('/admin/confirmer','Admin\IndexController@confirmer');//邮箱确认
     Route::get('/admin/logout','Admin\IndexController@logout');//退出登录
+//超管模块
+Route::group(['middleware' => ['Login']], function () {
+    Route::post('/admin/registerDomain','Admin\IndexController@registerDomain');
+    Route::post('/admin/region','Admin\IndexController@region');
+    Route::get('/admin/confirm','Admin\IndexController@confirm');//邮箱确认
     //用户模块
     Route::get('/user/userInfo','Admin\UserController@userInfo');
     Route::post('/user/addUser','Admin\UserController@addUser');
