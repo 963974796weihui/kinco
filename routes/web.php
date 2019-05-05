@@ -21,6 +21,7 @@ Route::group(['middleware' => ['Login']], function () {
     Route::post('/admin/region','Admin\IndexController@region');
     Route::get('/admin/confirm','Admin\IndexController@confirm');//邮箱确认
     Route::get('/admin/confirmer','Admin\IndexController@confirmer');//邮箱确认
+    Route::get('/admin/logout','Admin\IndexController@logout');//退出登录
     //用户模块
     Route::get('/user/userInfo','Admin\UserController@userInfo');
     Route::post('/user/addUser','Admin\UserController@addUser');

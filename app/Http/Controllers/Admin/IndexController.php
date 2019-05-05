@@ -131,6 +131,12 @@ class IndexController extends Controller
     }
 
     /**
+     * 退出登录
+     */
+    public function logout(){
+        Cache::put('loginId', 'null', '-1');//缓存登录ip
+    }
+    /**
      * 测试
      */
     public function test()
