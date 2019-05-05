@@ -17,12 +17,11 @@ class Login
     public function handle($request, Closure $next)
     {
         $id=Cache::get('loginId');
-       // dump($id);
+        echo $id;
         if(!isset($id)||$id=='null'){
             //return response()->json(['status' => 'F', 'code' => '201', 'message' => '请登录']);
             return redirect('http://39.104.56.173:5901/#/login');
         }
-        return redirect('http://39.104.56.173:5901/#/login');
         return $next($request);
     }
 }
