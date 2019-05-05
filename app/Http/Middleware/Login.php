@@ -16,7 +16,7 @@ class Login
      */
     public function handle($request, Closure $next)
     {
-        $id=Cache::get('loginId');
+        $id=Cache::has('loginId');
         dump($id);
         if(!isset($id)||$id=='null'){
             //return response()->json(['status' => 'F', 'code' => '201', 'message' => '请登录']);
