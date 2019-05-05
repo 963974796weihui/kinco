@@ -68,6 +68,12 @@ class GroupController extends Controller
     public function deleteGroup(Request $request)
     {
         $id = $request->input('id');
+        $result=$this->groupServices->delete($id);
+        if($result==1){
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '请先进行设备解绑']);
+        }elseif($result==2){
+            return response()->json(['status' => 'F', 'code' => '201', 'message' => '请先进行用户解绑']);
+        }
         DB::table('ki_admin_group')->whereIn('id', $id)->update(['cut_off' => 1]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
     }

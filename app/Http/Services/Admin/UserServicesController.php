@@ -325,12 +325,12 @@ class UserServicesController extends Controller
         }
     }
     public function delete($id){
-        $supplygroup=DB::table('ki_admin_user_hmi_group')->where('user_id',$id)->where('hmi_id','0')->pluck('group_id')->toArray();
+        $supplygroup=DB::table('ki_admin_user_hmi_group')->whereIn('user_id',$id)->where('hmi_id','0')->pluck('group_id')->toArray();
         $groupid=DB::table('ki_admin_group')->whereIn('id',$supplygroup)->where('cut_off','0')->pluck('id')->toArray();
         if($groupid){
             return 1;//组未解绑
         }
-        $supply=DB::table('ki_admin_user_hmi_group')->where('user_id',$id)->where('group_id','0')->pluck('hmi_id')->toArray();
+        $supply=DB::table('ki_admin_user_hmi_group')->whereIn('user_id',$id)->where('group_id','0')->pluck('hmi_id')->toArray();
         $hmiid=DB::table('ki_admin_hmi')->whereIn('id',$supply)->where('cut_off','0')->pluck('id')->toArray();
         if($hmiid){
             return 2;//设备未解绑
