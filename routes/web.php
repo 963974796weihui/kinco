@@ -21,7 +21,6 @@ Route::get('/', function () {
 Route::group(['middleware' => ['Login']], function () {
     Route::post('/admin/registerDomain','Admin\IndexController@registerDomain');
     Route::post('/admin/region','Admin\IndexController@region');
-    Route::get('/admin/confirm','Admin\IndexController@confirm');//邮箱确认
     //用户模块
     Route::get('/user/userInfo','Admin\UserController@userInfo');
     Route::post('/user/addUser','Admin\UserController@addUser');
