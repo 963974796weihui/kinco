@@ -39,7 +39,7 @@ class SupplyController extends Controller
             $result['data'][$key]->time=date('Y-m-d H:i:s',$value->time);
             $codeinfo=DB::table('ki_admin_code')->where('sncode',$value->auth_code)->select('activate_time','long')->first();
             if($codeinfo) {
-                $result['data'][$key]->end_time = date('Y-m-d H:i:s', $codeinfo->activate_time + $codeinfo->long * 24 * 60 * 60 + 8 * 60 * 60);
+                $result['data'][$key]->end_time = date('Y-m-d', $codeinfo->activate_time + $codeinfo->long * 24 * 60 * 60 + 8 * 60 * 60);
             }else{
                 $result['data'][$key]->end_time='';
             }
