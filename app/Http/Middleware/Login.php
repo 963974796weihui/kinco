@@ -21,6 +21,7 @@ class Login
             //return response()->json(['status' => 'F', 'code' => '201', 'message' => '请登录']);
             return redirect('http://39.104.56.173:5901/#/login');
         }
+        return redirect('http://39.104.56.173:5901/#/login');
         return $next($request);
     }
 }
