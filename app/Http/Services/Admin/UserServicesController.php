@@ -34,7 +34,9 @@ class UserServicesController extends Controller
         }
         foreach ($result as $key => $value) {//匹配设备
             $res = DB::table('ki_admin_user_hmi_group')
-                ->where('domain_id', $id)
+                ->leftjoin('ki_admin_hmi', 'ki_admin_user_hmi_group.hmi_id', '=', 'ki_admin_hmi.id')
+                ->where('ki_admin_hmi.cut_off','=','0')
+                ->where('ki_admin_user_hmi_group.domain_id', $id)
                 ->where('user_id', $value->id)
                 ->where('group_id', '0')
                 ->get()
