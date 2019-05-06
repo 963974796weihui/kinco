@@ -408,6 +408,9 @@ this.getData();
           // user_id:164
         }
       }).then(res => {
+         if(res.data.code == 302){
+this.$router.push("/login");
+      }
         // console.log(5555555555);
         //               console.log(res);
         //               console.log(res.data.message)

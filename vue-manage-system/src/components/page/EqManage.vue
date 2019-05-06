@@ -392,17 +392,11 @@ export default {
           page: this.cur_page
         }
       }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        console.log(66666666666666666);
-        console.log(res);
+         if(res.data.code == 302){
+this.$router.push("/login");
+      }
         this.total = res.data.message.total;
         this.tableData = res.data.message.data;
-        //  console.log(this.tableData );
-
-        // for(var i=0;i<res.data.message.data.length;i++){
-        //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
-        // }
-        //  bus.$emit('trhmi', this.trHmi);
       });
     },
     search() {

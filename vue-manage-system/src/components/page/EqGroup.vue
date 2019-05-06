@@ -31,7 +31,7 @@
         :header-cell-style="tableHeaderColor"
         :data="data1"
         :row-style="rowClass"
-        :stripe= "test"
+        :stripe="test"
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
@@ -54,7 +54,7 @@
                   :titles="['所有设备', '已绑定设备']"
                   v-model="value1"
                   :data="dataGroupHmi"
-                   @left-check-change="aaa1"
+                  @left-check-change="aaa1"
                   @right-check-change="bbb1"
                   filterable
                   @change="handleChange"
@@ -81,7 +81,7 @@
                   v-model="value2"
                   :data="dataUser"
                   filterable
-                   @left-check-change="aaa"
+                  @left-check-change="aaa"
                   @right-check-change="bbb"
                   @change="handleChange2"
                 ></el-transfer>
@@ -91,7 +91,11 @@
                 <el-button type="primary" @click="saveGroupUser()">确 定</el-button>
               </div>
             </el-dialog>
-            <el-button type="text" icon="el-icon-document" @click="handleEdit(scope.$index, scope.row)">更改组名</el-button>
+            <el-button
+              type="text"
+              icon="el-icon-document"
+              @click="handleEdit(scope.$index, scope.row)"
+            >更改组名</el-button>
             <!-- <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
               <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
                 <el-form-item label="组名" :label-width="formLabelWidth">
@@ -103,19 +107,19 @@
                 <el-button @click="dialogGroupName = false">取 消</el-button>
                 <el-button type="primary">确 定</el-button>
               </div>
-            </el-dialog> -->
+            </el-dialog>-->
             <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" :visible.sync="dialogGroupName" width="30%">
-      <el-form ref="form" :model="form" label-width="50px">
-        <el-form-item label="组名">
-          <el-input v-model="form.group_name" @change="SomeJavaScriptCode"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogGroupName = false">取 消</el-button>
-        <el-button type="primary" @click="saveEdit()">确 定</el-button>
-      </span>
-    </el-dialog>
+            <el-dialog title="编辑" :visible.sync="dialogGroupName" width="30%">
+              <el-form ref="form" :model="form" label-width="50px">
+                <el-form-item label="组名">
+                  <el-input v-model="form.group_name" @change="SomeJavaScriptCode"></el-input>
+                </el-form-item>
+              </el-form>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogGroupName = false">取 消</el-button>
+                <el-button type="primary" @click="saveEdit()">确 定</el-button>
+              </span>
+            </el-dialog>
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -126,14 +130,14 @@
         </el-table-column>
       </el-table>
     </div>
- <div class="pagination">
-        <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout="prev, pager, next"
-          :total="total"
-        ></el-pagination>
-      </div>
+    <div class="pagination">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
 
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
@@ -153,13 +157,13 @@ export default {
   name: "basetable",
   data() {
     return {
-      ff:'',
-      ff1:'',
-      shuzu3:[],
-      shuzu31:[],
-      selectRow:[],
-      selectData:[],
-      test:true,
+      ff: "",
+      ff1: "",
+      shuzu3: [],
+      shuzu31: [],
+      selectRow: [],
+      selectData: [],
+      test: true,
       total: "",
       //穿梭框
       value1: [],
@@ -175,7 +179,7 @@ export default {
       dataUser: [],
       shuzu: [],
       shuzu2: [],
-      shuzu21:[],
+      shuzu21: [],
       trGroup: [],
       cur_page: 1,
       multipleSelection: [],
@@ -200,24 +204,27 @@ export default {
   // },
 
   created() {
-     //获取所有组信息
-      this.$http({
-        method: "post",
-        url: "/api/group/supplyInfo",
-        data: {
-          id: localStorage.getItem("loginDomainId"), //域id
-          limit: 10,
-          page: this.cur_page
-        }
-      }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        console.log(11111111111111);
-        // console.log(res.data.message.length);
-        console.log(res);
-        this.total = res.data.total;
-        this.tableData = res.data.message;
-        console.log(this.tableData);
-      });
+    //获取所有组信息
+    this.$http({
+      method: "post",
+      url: "/api/group/supplyInfo",
+      data: {
+        id: localStorage.getItem("loginDomainId"), //域id
+        limit: 10,
+        page: this.cur_page
+      }
+    }).then(res => {
+      // console.log(res.data.message[0].user_name)   输入h
+      console.log(11111111111111);
+      // console.log(res.data.message.length);
+      console.log(res);
+      if(res.data.code == 302){
+this.$router.push("/login");
+      }
+      this.total = res.data.total;
+      this.tableData = res.data.message;
+      console.log(this.tableData);
+    });
 
     // this.$http({
     //   method: "post",
@@ -236,7 +243,6 @@ export default {
     //   //存入vuex中
     //   this.$store.commit("saveDomainId", domain_id);
 
-     
     // });
   },
 
@@ -294,21 +300,21 @@ export default {
   watch: {
     selectData(data) {
       this.selectRow = [];
-      if (data.length > 0) {  
+      if (data.length > 0) {
         data.forEach((item, index) => {
           this.selectRow.push(this.tableData.indexOf(item));
         });
       }
     }
-},
+  },
   methods: {
-    addGroupStart(){
+    addGroupStart() {
       this.form = [];
-      this.dialogFormVisible=true;
+      this.dialogFormVisible = true;
     },
-    aaa(){
-      this.ff=1;
-       this.$http({
+    aaa() {
+      this.ff = 1;
+      this.$http({
         method: "post",
         url: "/api/group/addUser",
         data: {
@@ -325,12 +331,12 @@ export default {
             this.value2.push(res.data.message[i].id);
           }
         }
-      this.shuzu2=this.value2;
+        this.shuzu2 = this.value2;
       });
     },
-    aaa1(){
-     this.ff1=1;
-       this.$http({
+    aaa1() {
+      this.ff1 = 1;
+      this.$http({
         method: "post",
         url: "/api/group/hmiInfo",
         data: {
@@ -344,12 +350,12 @@ export default {
             this.value1.push(res.data.message[i].id);
           }
         }
-        this.shuzu21=this.value1;
+        this.shuzu21 = this.value1;
       });
     },
-    bbb(){
-      this.ff=0;
-       this.$http({
+    bbb() {
+      this.ff = 0;
+      this.$http({
         method: "post",
         url: "/api/group/addUser",
         data: {
@@ -366,12 +372,12 @@ export default {
             this.value2.push(res.data.message[i].id);
           }
         }
-      this.shuzu2=this.value2;
+        this.shuzu2 = this.value2;
       });
     },
-    bbb1(){
-  this.ff1=0;
-       this.$http({
+    bbb1() {
+      this.ff1 = 0;
+      this.$http({
         method: "post",
         url: "/api/group/hmiInfo",
         data: {
@@ -385,35 +391,34 @@ export default {
             this.value1.push(res.data.message[i].id);
           }
         }
-        this.shuzu21=this.value1;
+        this.shuzu21 = this.value1;
       });
     },
     //数组去重
     getArrDifference(arr1, arr2) {
-    return arr1.concat(arr2).filter(function(v, i, arr) {
-      return arr.indexOf(v) === arr.lastIndexOf(v);
-    });
-   
-  },
+      return arr1.concat(arr2).filter(function(v, i, arr) {
+        return arr.indexOf(v) === arr.lastIndexOf(v);
+      });
+    },
     // 多选高亮选中行
-    rowClass({row, rowIndex}){
-      if(this.selectRow.includes(rowIndex)){
-        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+    rowClass({ row, rowIndex }) {
+      if (this.selectRow.includes(rowIndex)) {
+        return { "background-color": "rgba(185, 221, 249, 0.75)" };
       }
     },
     //表头样式
-     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
-    SomeJavaScriptCode(){
-        this.$http({
+    SomeJavaScriptCode() {
+      this.$http({
         method: "post",
         url: "/api/group/updateGroup",
         data: {
           id: this.form.id,
-          group_name:this.form.group_name
+          group_name: this.form.group_name
         }
       }).then(res => {});
     },
@@ -423,7 +428,7 @@ export default {
         method: "post",
         url: "/api/supply/supplyInfo",
         params: {
-          domain_id:localStorage.getItem("loginDomainId"),
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10000,
           page: 1
         }
@@ -486,13 +491,13 @@ export default {
             this.value1.push(res.data.message[i].id);
           }
         }
-        this.shuzu21=this.value1;
+        this.shuzu21 = this.value1;
       });
       this.dialogManagerMember = true;
     },
     //绑定用户按钮事件
     handleGroupUser(index, row) {
-       this.$http({
+      this.$http({
         method: "get",
         url: "/api/user/userInfo",
         params: {
@@ -508,7 +513,6 @@ export default {
             label: res.data.message[i].user_name
           });
         }
-   
       });
       this.idx = index;
       // const item = this.tableData[index];
@@ -538,14 +542,14 @@ export default {
             this.value2.push(res.data.message[i].id);
           }
         }
-      this.shuzu2=this.value2;
+        this.shuzu2 = this.value2;
       });
       this.dialogBindUser = true;
     },
     //穿梭框的change事件
     handleChange() {
-      //数组去重 
-      this.shuzu31=this.getArrDifference(this.value1,this.shuzu21);
+      //数组去重
+      this.shuzu31 = this.getArrDifference(this.value1, this.shuzu21);
       // this.$http({
       //   method: "post",
       //   url: "/api/group/hmiInfoBind",
@@ -555,57 +559,54 @@ export default {
       //     id: this.shuzu31
       //   }
       // }).then(res => {});
-              if(this.ff1==1){
- this.$http({
-        method: "post",
-        url: "/api/group/hmiInfoBind",
-        data: {
-          domain_id: localStorage.getItem("loginDomainId"),
-          group_id: this.form.id,
-          id: this.shuzu31
-        }
-      }).then(res => {});
-      }else if(this.ff1==0){
- this.$http({
-        method: "post",
-        url: "/api/group/unhmiInfoBind",
-        data: {
-          domain_id: localStorage.getItem("loginDomainId"),
-          group_id: this.form.id,
-          id: this.shuzu31
-        }
-      }).then(res => {});
+      if (this.ff1 == 1) {
+        this.$http({
+          method: "post",
+          url: "/api/group/hmiInfoBind",
+          data: {
+            domain_id: localStorage.getItem("loginDomainId"),
+            group_id: this.form.id,
+            id: this.shuzu31
+          }
+        }).then(res => {});
+      } else if (this.ff1 == 0) {
+        this.$http({
+          method: "post",
+          url: "/api/group/unhmiInfoBind",
+          data: {
+            domain_id: localStorage.getItem("loginDomainId"),
+            group_id: this.form.id,
+            id: this.shuzu31
+          }
+        }).then(res => {});
       }
     },
     handleChange2() {
-         //数组去重 
-      this.shuzu3=this.getArrDifference(this.value2,this.shuzu2);
-        if(this.ff==1){
-this.$http({
-method: "post",
-url: "/api/group/addUserBind",
-data: {
-domain_id: localStorage.getItem("loginDomainId"),
-group_id: this.form.id,
-id: this.shuzu3
-}
-}).then(res => {
-});
-      }else if(this.ff==0){
-this.$http({
-method: "post",
-url: "/api/group/unaddUserBind",
-data: {
-domain_id: localStorage.getItem("loginDomainId"),
-group_id: this.form.id,
-id: this.shuzu3
-}
-}).then(res => {
-});
+      //数组去重
+      this.shuzu3 = this.getArrDifference(this.value2, this.shuzu2);
+      if (this.ff == 1) {
+        this.$http({
+          method: "post",
+          url: "/api/group/addUserBind",
+          data: {
+            domain_id: localStorage.getItem("loginDomainId"),
+            group_id: this.form.id,
+            id: this.shuzu3
+          }
+        }).then(res => {});
+      } else if (this.ff == 0) {
+        this.$http({
+          method: "post",
+          url: "/api/group/unaddUserBind",
+          data: {
+            domain_id: localStorage.getItem("loginDomainId"),
+            group_id: this.form.id,
+            id: this.shuzu3
+          }
+        }).then(res => {});
       }
-     
     },
-    
+
     //添加设备群组
     addGroup() {
       this.$http({
@@ -641,30 +642,29 @@ id: this.shuzu3
     },
     //保存绑定用户按钮
     saveGroupUser() {
-
-//         if(this.ff==1){
-// this.$http({
-// method: "post",
-// url: "/api/group/addUserBind",
-// data: {
-// domain_id: this.domain_id,
-// group_id: this.form.id,
-// id: this.shuzu3
-// }
-// }).then(res => {
-// });
-//       }else if(this.ff==0){
-// this.$http({
-// method: "post",
-// url: "/api/group/unaddUserBind",
-// data: {
-// domain_id: this.domain_id,
-// group_id: this.form.id,
-// id: this.shuzu3
-// }
-// }).then(res => {
-// });
-//       }
+      //         if(this.ff==1){
+      // this.$http({
+      // method: "post",
+      // url: "/api/group/addUserBind",
+      // data: {
+      // domain_id: this.domain_id,
+      // group_id: this.form.id,
+      // id: this.shuzu3
+      // }
+      // }).then(res => {
+      // });
+      //       }else if(this.ff==0){
+      // this.$http({
+      // method: "post",
+      // url: "/api/group/unaddUserBind",
+      // data: {
+      // domain_id: this.domain_id,
+      // group_id: this.form.id,
+      // id: this.shuzu3
+      // }
+      // }).then(res => {
+      // });
+      //       }
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
@@ -711,7 +711,7 @@ id: this.shuzu3
         group_name: item.group_name,
         hmi_num: item.hmi_num,
         domain_id: item.domain_id,
-        id:item.id
+        id: item.id
       };
       this.dialogGroupName = true;
     },
@@ -766,12 +766,12 @@ id: this.shuzu3
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      if(val.length > 0){
-          this.test = false;
-        }else{
-          this.test = true;
-        }
-        this.selectData = val
+      if (val.length > 0) {
+        this.test = false;
+      } else {
+        this.test = true;
+      }
+      this.selectData = val;
     },
     // 保存编辑
     saveEdit() {
@@ -791,10 +791,15 @@ id: this.shuzu3
           id: [this.form.id]
         }
       }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333);
-        console.log(res);
-        //  this.tableData = res.data.message;
+        if (res.data.status == "S") {
+          this.$message.success("删除成功");
+          this.$set(this.tableData, this.idx, this.form);
+          this.tableData.splice(this.idx, 1);
+        } else if (res.data.code == 201) {
+          this.$message.success("请先进行设备解绑");
+        } else if (res.data.code == 202) {
+          this.$message.success("请先进行用户解绑");
+        }
       });
       this.$message.success("删除成功");
       this.delVisible = false;
@@ -840,8 +845,7 @@ id: this.shuzu3
 .white {
   color: #ffffff;
 }
-.add-user{
+.add-user {
   margin-left: 30px;
 }
-
 </style>
