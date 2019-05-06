@@ -25,6 +25,7 @@ class GroupServicesController extends Controller
                 //->where('domain_id', $id)
                 ->where('ki_admin_user_hmi_group.group_id', $value->id)
                 ->where('ki_admin_user_hmi_group.user_id', '0')
+                ->where('ki_admin_hmi.cut_off','0')
                 ->pluck('ki_admin_user_hmi_group.id')
                 ->toArray();
             $result['data'][$key]->hmi_num = count($res);
