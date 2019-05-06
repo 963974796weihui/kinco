@@ -61,7 +61,7 @@ class AuthCodeController extends Controller
             if (!$bind) {
                 return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
             }
-            if (isset($bind[0]->bind )) {
+            if (isset($bind[0]->bind )&& $bind[0]->bind!=0) {
                 return response()->json(['status' => 'F', 'code' => '202', 'message' => '授权码已被使用']);
             }
             $activate_time = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('activate_time')->get()->toArray();
