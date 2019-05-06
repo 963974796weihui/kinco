@@ -303,8 +303,9 @@ export default {
       //   if (!domain_id) {
       //   return;
       // }
-        console.log(222222222222);
-        console.log(res);
+      if(res.data.code == 302){
+this.$router.push("/login");
+      }
         this.total = res.data.total;
         // console.log(res.data.message[0].user_name)   输入h
         this.tableData = res.data.message;
@@ -950,8 +951,8 @@ export default {
     },
     // 确定删除
     deleteRow() {
-      this.$set(this.tableData, this.idx, this.form);
-      this.tableData.splice(this.idx, 1);
+      // this.$set(this.tableData, this.idx, this.form);
+      // this.tableData.splice(this.idx, 1);
       // const a=this.form.id;
       // alert(this.form.id)
       this.$http({
@@ -961,12 +962,21 @@ export default {
           user_id: [this.form.id]
         }
       }).then(res => {
+        if(res.data.status == "S"){
+this.$message.success("删除成功");
+this.$set(this.tableData, this.idx, this.form);
+this.tableData.splice(this.idx, 1);
+        }else if(res.data.code == 201){
+this.$message.success("请先进行设备组解绑");
+        }else if(res.data.code == 202){
+          this.$message.success("请先进行设备解绑");
+        }
         // console.log(res.data.message[0].user_name)   输入h
         console.log(333333333333333);
         console.log(res);
         //  this.tableData = res.data.message;
       });
-      this.$message.success("删除成功");
+      // this.$message.success("删除成功");
       this.delVisible = false;
     }
   }
