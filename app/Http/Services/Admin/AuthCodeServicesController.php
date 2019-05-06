@@ -21,7 +21,7 @@ class AuthCodeServicesController extends Controller
         $data = $result['data'];
         foreach ($data as $key => $val) {
             if ($val->bind) {
-                $hmi_name = DB::table('ki_admin_hmi')->where('sncode', $val->bind)->get()->toArray();
+                $hmi_name = DB::table('ki_admin_hmi')->where('sncode', $val->bind)->where('cut_off','0')->get()->toArray();
                 $data[$key]->bind = $hmi_name[0]->hmi_name;
             } else {
                 $data[$key]->bind = '未绑定';
