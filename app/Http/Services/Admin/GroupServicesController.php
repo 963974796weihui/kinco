@@ -21,10 +21,11 @@ class GroupServicesController extends Controller
             ->toArray();
         foreach ($result['data'] as $key => $value) {//匹配设备组
             $res = DB::table('ki_admin_user_hmi_group')
-                ->where('domain_id', $id)
-                ->where('group_id', $value->id)
-                ->where('user_id', '0')
-                ->get()
+                ->leftjoin('ki_admin_hmi','ki_admin_user_hmi_group.hmi_id','=','ki_admin_hmi.id')
+                //->where('domain_id', $id)
+                ->where('ki_admin_user_hmi_group.group_id', $value->id)
+                ->where('ki_admin_user_hmi_group.user_id', '0')
+                ->pluck('ki_admin_user_hmi_group.id')
                 ->toArray();
             $result['data'][$key]->hmi_num = count($res);
         }
