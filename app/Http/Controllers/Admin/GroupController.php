@@ -179,7 +179,7 @@ class GroupController extends Controller
                 ->where('group_id', $value->id)
                 ->where('ki_admin_user_hmi_group.user_id', '0')
                 ->where('cut_off','0')
-                ->select('hmi_name')
+                ->select('hmi_name as lable')
                 ->get()
                 ->toArray();
             $group[$key]['children']=$hmi_name;
