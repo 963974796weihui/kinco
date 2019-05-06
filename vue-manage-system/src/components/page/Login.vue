@@ -30,10 +30,10 @@
             </el-form-item>
             <div class="login-btn">
               <!-- <el-button type="primary" @click="aaa()">登录1</el-button> -->
-              <router-link to="/reg">
+              <el-button class="blue-login" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                <router-link to="/reg">
                 <p class="admin blue">建立管理员账号</p>
               </router-link>
-              <el-button class="blue-login" type="primary" @click="submitForm('ruleForm')">登录</el-button>
             </div>
           </el-form>
         </el-tab-pane>
@@ -121,6 +121,14 @@ export default {
             })
             .then(res => {
               if (res.data.status == "S") {
+                 localStorage.setItem(
+                  "loginDomainId",
+                  res.data.message[0].id
+                );
+                 localStorage.setItem(
+                  "loginDomainName",
+                  res.data.message[0].domain_name
+                );
                 localStorage.setItem(
                   "last_time",
                   res.data.message[0].last_time
@@ -130,42 +138,6 @@ export default {
                   message: "欢迎进入EdgeAccess系统"
                   // position: 'bottom-left'
                 });
-
-                //                 console.log(res)
-                //                  var total=res.data.message.length
-                //              for(var i=0;i<total;i++){
-                // //                 this.firstItem.push(
-                // //   {
-                // //                         icon: 'el-icon-lx-calendar',
-                // //                         index: res.data.message[i].id,
-                // //                         title: res.data.message[i].domain_name,
-                // //                         subs: [
-                // //                             {
-                // //                                 index: 'usermanage',
-                // //                                 title: '用户'
-                // //                             },
-                // //                             {
-                // //                                 index: res.data.message[i].id,
-                // //                                 title: '设备',
-                // //                                 subs: [
-                // //                                     {
-                // //                                         index: 'eqmanage',
-                // //                                         title: '设备管理'
-                // //                                     },
-                // //                                     {
-                // //                                         index: 'eqgroup',
-                // //                                         title: '设备群组'
-                // //                                     },
-                // //                                 ]
-                // //                             },
-                // //                         ]
-                // //                     }
-                // //                 )
-
-                //              }
-                //  console.log( this.firstItem)
-                //bus.$emit('firstitem', this.firstItem);
-                //    localStorage.setItem('hou', JSON.stringify(this.firstItem));
                 this.$router.push({ path: "/" });
               } else if (res.data.code == 201) {
                 this.$message({

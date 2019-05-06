@@ -30,7 +30,7 @@
       <!-- 表格 -->
       <div class="handle-box">
         <!-- 测试vuex -->
-        <!-- <p>{{this.domain_id}}</p> -->
+        <!-- <p>{{localStorage.getItem("loginDomainId")}}</p> -->
         <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
@@ -59,7 +59,11 @@
         <el-table-column prop="remark" label="备注" min-width="14%"></el-table-column>
         <el-table-column prop="phone" label="手机号" min-width="11%"></el-table-column>
         <el-table-column prop="email" label="邮箱号" min-width="19%"></el-table-column>
-        <el-table-column prop="group" label="匹配设备组" min-width="10%"></el-table-column>
+        <el-table-column prop="group" label="匹配设备组" min-width="10%">
+           <template slot-scope="scope">
+ <el-button type="text" size="small" @click="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
+</template>
+        </el-table-column>
         <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
         <el-table-column label="相关操作" min-width="20%" align="center">
           <template slot-scope="scope">
@@ -116,6 +120,13 @@
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
+             <!-- <el-button
+              :disabled="scope.row.cut_off==2"
+              type="text"
+              class="editbtn"
+              icon="el-icon-edit"
+              @click="handleDetails(scope.$index, scope.row)"
+            >组详情</el-button> -->
             <el-button
               :disabled="scope.row.cut_off==2"
               type="text"
@@ -153,6 +164,14 @@
         <el-button type="primary" @click="saveEdit()">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 组详情弹框 -->
+    <el-dialog title="设备组详情" :visible.sync="detailsVisible" width="20%">
+    <el-tree :data="dataTree" :props="defaultProps"></el-tree>
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button @click="detailsVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveDetails()">确 定</el-button>
+      </span> -->
+    </el-dialog>
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
@@ -165,6 +184,7 @@
 </template>
 
 <script>
+// import treeTransfer from "@/components/transfer-extend";
 import store from "../../store/store.js";
 // import bus from "../common/bus";
 export default {
@@ -197,6 +217,13 @@ export default {
       ff: "",
       shuzu2: [],
       shuzu3: [],
+      valueTree:[],
+      //树形图数据
+      dataTree:[],
+        defaultProps: {
+          children: 'children',
+          label: 'lable'
+        },
       flag: 0,
       banText: "禁用",
       //匹配校验器
@@ -220,7 +247,7 @@ export default {
         group: "",
         // domain_id:this.$store.state.domainId,
         //计算属性
-        // domain_id:this.domain_id,
+        // domain_id:localStorage.getItem("loginDomainId"),
         id: ""
       },
       // ccc:this.$store.state.domainId,
@@ -257,57 +284,53 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
+      detailsVisible:false,
       idx: -1
     };
   },
+  // components: { treeTransfer },
   store,
   created() {
-    // this.$store.commit('savetrArray',this.value1);
-    // alert("刷新")
     this.$http({
-      method: "post",
-      url: "/api/admin/login",
-      data: {
-        user_name: localStorage.getItem("ms_username"),
-        password: localStorage.getItem("ms_password")
-      }
-    }).then(res => {
-      const domain_id = res.data.message[0].id;
-      const domain_name = res.data.message[0].domain_name;
-      //如果此用户从没建过域
-      if (!domain_id) {
-        return;
-      }
-      //存入vuex中
-      this.$store.commit("saveDomainId", domain_id);
-
-      this.$http({
         method: "get",
         url: "/api/user/userInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10,
           page: this.cur_page
         }
       }).then(res => {
+      //   if (!domain_id) {
+      //   return;
+      // }
         console.log(222222222222);
         console.log(res);
         this.total = res.data.total;
         // console.log(res.data.message[0].user_name)   输入h
         this.tableData = res.data.message;
       });
+    // this.$store.commit('savetrArray',this.value1);
+    // alert("刷新")
+    // this.$http({
+    //   method: "post",
+    //   url: "/api/admin/login",
+    //   data: {
+    //     user_name: localStorage.getItem("ms_username"),
+    //     password: localStorage.getItem("ms_password")
+    //   }
+    // }).then(res => {
+    //   const domain_id = res.data.message[0].id;
+    //   const domain_name = res.data.message[0].domain_name;
+    //   //如果此用户从没建过域
+    //   if (!domain_id) {
+    //     return;
+    //   }
+    //   //存入vuex中
+    //   this.$store.commit("saveDomainId", domain_id);
 
-      //设备组绑定接口
-      // this.$http({
-      //   method: "post",
-      //   url: "/api/user/supplyGroupBind",
-      //   data: {
-      //     domain_id: this.domain_id,
-      //     user_id: this.form.id,
-      //     id: this.value1
-      //   }
-      // }).then(res => {});
-    });
+      
+
+    // });
   },
   mounted() {
     // this.getData();
@@ -316,7 +339,7 @@ export default {
     //   method: "post",
     //   url: "/api/user/supplyGroup",
     //   data: {
-    //     id: this.domain_id
+    //     id: localStorage.getItem("loginDomainId")
     //   }
     // }).then(res => {
     //   for (var i = 0; i < res.data.message.length; i++) {
@@ -332,7 +355,7 @@ export default {
     //   method: "post",
     //   url: "/api/user/hmiGroup",
     //   data: {
-    //     id: this.domain_id
+    //     id: localStorage.getItem("loginDomainId")
     //   }
     // }).then(res => {
     //   for (var i = 0; i < res.data.message.length; i++) {
@@ -382,6 +405,8 @@ export default {
     }
   },
   methods: {
+    clickHmiGroup(){
+    },
     aaa() {
       this.ff = 1;
       //获取已绑定设备组
@@ -389,7 +414,7 @@ export default {
         method: "post",
         url: "/api/user/supplyGroup",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           user_id: this.form.id
         }
       }).then(res => {
@@ -409,7 +434,7 @@ export default {
         method: "post",
         url: "/api/user/supplyGroup",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           user_id: this.form.id
         }
       }).then(res => {
@@ -484,7 +509,7 @@ export default {
         method: "post",
         url: "/api/group/supplyInfo",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           limit: 10000,
           page: 1
         }
@@ -505,7 +530,7 @@ export default {
         method: "post",
         url: "/api/supply/supplyInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10000,
           page: 1
         }
@@ -568,7 +593,7 @@ export default {
           method: "post",
           url: "/api/user/supplyGroupBind",
           data: {
-            domain_id: this.domain_id,
+            domain_id: localStorage.getItem("loginDomainId"),
             user_id: this.form.id,
             id: this.shuzu3
           }
@@ -578,7 +603,7 @@ export default {
           method: "post",
           url: "/api/user/unsupplyGroupBind",
           data: {
-            domain_id: this.domain_id,
+            domain_id: localStorage.getItem("loginDomainId"),
             user_id: this.form.id,
             id: this.shuzu3
           }
@@ -594,7 +619,7 @@ export default {
         method: "post",
         url: "/api/user/hmiGroupBind",
         data: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           user_id: this.form.id,
           id: this.value2
         }
@@ -620,7 +645,7 @@ export default {
             .post("/api/user/addUser", {
               user_name: this.form.user_name,
               email: this.form.email,
-              domain_id: this.domain_id, //域id
+              domain_id: localStorage.getItem("loginDomainId"), //域id
               phone: this.form.phone
             })
             .then(res => {
@@ -654,7 +679,7 @@ export default {
         method: "get",
         url: "/api/user/userInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10,
           page: this.cur_page
         }
@@ -694,7 +719,7 @@ export default {
         email: item.email,
         hmi: item.hmi,
         group: item.group,
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         //用户id
         id: item.id
       };
@@ -703,7 +728,7 @@ export default {
         method: "post",
         url: "/api/user/supplyGroup",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           user_id: this.form.id
         }
       }).then(res => {
@@ -720,7 +745,7 @@ export default {
         method: "post",
         url: "/api/user/hmiGroup",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           user_id: this.form.id
         }
       }).then(res => {
@@ -737,7 +762,7 @@ export default {
       //     method: "post",
       //     url: "/api/user/supplyGroup",
       //     data: {
-      //       id: this.domain_id
+      //       id: localStorage.getItem("loginDomainId")
       //     }
       //   }).then(res => {
       //     for (var i = 0; i < res.data.message.length; i++) {
@@ -753,7 +778,7 @@ export default {
       //       method: "post",
       //       url: "/api/user/hmiGroup",
       //       data: {
-      //         id: this.domain_id
+      //         id: localStorage.getItem("loginDomainId")
       //       }
       //     }).then(res => {
       //       for (var i = 0; i < res.data.message.length; i++) {
@@ -778,12 +803,64 @@ export default {
         email: item.email,
         hmi: item.hmi,
         group: item.group,
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         //用户id
         id: item.id
       };
 
       this.editVisible = true;
+    },
+    //组详情
+    handleDetails(index, row){
+   this.idx = index;
+      // const item = this.tableData[index];
+      const item = this.tableData[index];
+      this.form = {
+        // remark: item.remark,
+        user_name: item.user_name,
+        remark: item.remark,
+        phone: item.phone,
+        email: item.email,
+        hmi: item.hmi,
+        group: item.group,
+        domain_id: localStorage.getItem("loginDomainId"),
+        //用户id
+        id: item.id
+      };
+     
+    //获取已绑定设备组
+      this.$http({
+        method: "post",
+        url: "/api/user/supplyGroup",
+        data: {
+          id: localStorage.getItem("loginDomainId"), //域id
+          user_id: this.form.id
+        }
+      }).then(res => {
+        this.valueTree = [];
+        for (var i = 0; i < res.data.message.length; i++) {
+          if (res.data.message[i].status == 1) {
+            this.valueTree.push(res.data.message[i].id);
+          }
+        }
+        // this.shuzu2 = this.value1;
+        this.detailsVisible = true;
+           this.$http({
+        method:'post',
+        url: "/api/group/hmidetail",
+        data: {
+          id: this.valueTree
+        }
+      }).then(res => {
+        // console.log(res.data.message[0].user_name)   输入h
+        console.log(333333333333333);
+        // console.log(res.data.message);
+         this.dataTree=res.data.message;
+          console.log(this.dataTree)
+        //  this.tableData = res.data.message;
+      });
+      });
+      
     },
     //删除
     handleDelete(index, row) {
@@ -798,7 +875,7 @@ export default {
         email: item.email,
         hmi: item.hmi,
         group: item.group,
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         //用户id
         id: item.id
       };
@@ -821,7 +898,7 @@ export default {
       this.multipleSelection = [];
 
       this.$http({
-        method: "get",
+        method:'get',
         url: "/api/user/delete",
         params: {
           user_id: this.shuzu
@@ -865,6 +942,11 @@ export default {
       this.$set(this.tableData, this.idx, this.form);
       this.editVisible = false;
       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+    },
+    //确定组详情
+    saveDetails(){
+      this.$set(this.tableData, this.idx, this.form);
+      this.detailsVisible = false;
     },
     // 确定删除
     deleteRow() {

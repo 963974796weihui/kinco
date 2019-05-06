@@ -2,7 +2,6 @@
   "name": "vue-manage-system",
   "version": "3.2.0",
   "description": "vue",
-  "author": "lin-xin <2981207131@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -11,6 +10,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "babel-polyfill": "^6.23.0",
+    "el-tree-transfer": "^2.2.0",
     "element-ui": "^2.4.5",
     "mavon-editor": "^2.5.4",
     "v-distpicker": "^1.1.0",

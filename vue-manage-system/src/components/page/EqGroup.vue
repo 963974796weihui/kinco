@@ -188,7 +188,7 @@ export default {
       form: {
         group_name: "",
         hmi_num: "",
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         id: ""
       },
       idx: -1
@@ -200,29 +200,12 @@ export default {
   // },
 
   created() {
-    this.$http({
-      method: "post",
-      url: "/api/admin/login",
-      data: {
-        user_name: localStorage.getItem("ms_username"),
-        password: localStorage.getItem("ms_password")
-      }
-    }).then(res => {
-      const domain_id = res.data.message[0].id;
-      const domain_name = res.data.message[0].domain_name;
-      //如果此用户从没建过域
-      if (!domain_id) {
-        return;
-      }
-      //存入vuex中
-      this.$store.commit("saveDomainId", domain_id);
-
-      //获取所有组信息
+     //获取所有组信息
       this.$http({
         method: "post",
         url: "/api/group/supplyInfo",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           limit: 10,
           page: this.cur_page
         }
@@ -235,7 +218,26 @@ export default {
         this.tableData = res.data.message;
         console.log(this.tableData);
       });
-    });
+
+    // this.$http({
+    //   method: "post",
+    //   url: "/api/admin/login",
+    //   data: {
+    //     user_name: localStorage.getItem("ms_username"),
+    //     password: localStorage.getItem("ms_password")
+    //   }
+    // }).then(res => {
+    //   const domain_id = res.data.message[0].id;
+    //   const domain_name = res.data.message[0].domain_name;
+    //   //如果此用户从没建过域
+    //   if (!domain_id) {
+    //     return;
+    //   }
+    //   //存入vuex中
+    //   this.$store.commit("saveDomainId", domain_id);
+
+     
+    // });
   },
 
   mounted() {
@@ -310,7 +312,7 @@ export default {
         method: "post",
         url: "/api/group/addUser",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -332,7 +334,7 @@ export default {
         method: "post",
         url: "/api/group/hmiInfo",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -351,7 +353,7 @@ export default {
         method: "post",
         url: "/api/group/addUser",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -373,7 +375,7 @@ export default {
         method: "post",
         url: "/api/group/hmiInfo",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -421,7 +423,7 @@ export default {
         method: "post",
         url: "/api/supply/supplyInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id:localStorage.getItem("loginDomainId"),
           limit: 10000,
           page: 1
         }
@@ -441,7 +443,7 @@ export default {
         method: "get",
         url: "/api/user/userInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10000,
           page: 1
         }
@@ -465,7 +467,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         //设备id
         id: item.id
       };
@@ -474,7 +476,7 @@ export default {
         method: "post",
         url: "/api/group/hmiInfo",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -494,7 +496,7 @@ export default {
         method: "get",
         url: "/api/user/userInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10000,
           page: 1
         }
@@ -514,7 +516,7 @@ export default {
       this.form = {
         group_name: item.group_name,
         hmi_num: item.hmi_num,
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         //设备id
         id: item.id
       };
@@ -523,7 +525,7 @@ export default {
         method: "post",
         url: "/api/group/addUser",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           id: this.form.id
         }
       }).then(res => {
@@ -558,7 +560,7 @@ export default {
         method: "post",
         url: "/api/group/hmiInfoBind",
         data: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           group_id: this.form.id,
           id: this.shuzu31
         }
@@ -568,7 +570,7 @@ export default {
         method: "post",
         url: "/api/group/unhmiInfoBind",
         data: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           group_id: this.form.id,
           id: this.shuzu31
         }
@@ -583,7 +585,7 @@ this.$http({
 method: "post",
 url: "/api/group/addUserBind",
 data: {
-domain_id: this.domain_id,
+domain_id: localStorage.getItem("loginDomainId"),
 group_id: this.form.id,
 id: this.shuzu3
 }
@@ -594,7 +596,7 @@ this.$http({
 method: "post",
 url: "/api/group/unaddUserBind",
 data: {
-domain_id: this.domain_id,
+domain_id: localStorage.getItem("loginDomainId"),
 group_id: this.form.id,
 id: this.shuzu3
 }
@@ -610,7 +612,7 @@ id: this.shuzu3
         method: "post",
         url: "/api/group/addGroup",
         data: {
-          domain_id: this.domain_id, //域id
+          domain_id: localStorage.getItem("loginDomainId"), //域id
           group_name: this.form.group_name
         }
       }).then(res => {
@@ -678,7 +680,7 @@ id: this.shuzu3
         method: "post",
         url: "/api/group/supplyInfo",
         data: {
-          id: this.domain_id, //域id
+          id: localStorage.getItem("loginDomainId"), //域id
           limit: 10,
           page: this.cur_page
         }

@@ -171,7 +171,7 @@ export default {
         auth_code: "",
         sncode: "",
         //计算属性
-        domain_id: this.domain_id,
+        domain_id: localStorage.getItem("loginDomainId"),
         // domain_id:1,
         hmi_name: ""
       },
@@ -185,45 +185,47 @@ export default {
   // },
 
   created() {
-    this.$http({
-      method: "post",
-      url: "/api/admin/login",
-      data: {
-        user_name: localStorage.getItem("ms_username"),
-        password: localStorage.getItem("ms_password")
-      }
-    }).then(res => {
-      const domain_id = res.data.message[0].id;
-      const domain_name = res.data.message[0].domain_name;
-      //如果此用户从没建过域
-      if (!domain_id) {
-        return;
-      }
-      //存入vuex中
-      this.$store.commit("saveDomainId", domain_id);
       this.getData();
-      //                        this.$http({
-      //   method: 'post',
-      //   url: '/api/supply/supplyInfo',
-      //     params: {
-      //       domain_id: this.domain_id,
-      //       limit: 10,
-      //       page: this.cur_page
-      //   },
-      // }).then((res) => {
-      //                   // console.log(res.data.message[0].user_name)   输入h
-      //                   // console.log(111);
-      //                   // console.log(res);
-      //                     this.tableData = res.data.message.data;
-      //                     //  console.log(this.tableData );
 
-      // // for(var i=0;i<res.data.message.data.length;i++){
-      // //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
-      // // }
-      // //  bus.$emit('trhmi', this.trHmi);
+    // this.$http({
+    //   method: "post",
+    //   url: "/api/admin/login",
+    //   data: {
+    //     user_name: localStorage.getItem("ms_username"),
+    //     password: localStorage.getItem("ms_password")
+    //   }
+    // }).then(res => {
+    //   const domain_id = res.data.message[0].id;
+    //   const domain_name = res.data.message[0].domain_name;
+    //   //如果此用户从没建过域
+    //   if (!domain_id) {
+    //     return;
+    //   }
+    //   //存入vuex中
+    //   this.$store.commit("saveDomainId", domain_id);
+    //   this.getData();
+    //   //                        this.$http({
+    //   //   method: 'post',
+    //   //   url: '/api/supply/supplyInfo',
+    //   //     params: {
+    //   //       domain_id: this.domain_id,
+    //   //       limit: 10,
+    //   //       page: this.cur_page
+    //   //   },
+    //   // }).then((res) => {
+    //   //                   // console.log(res.data.message[0].user_name)   输入h
+    //   //                   // console.log(111);
+    //   //                   // console.log(res);
+    //   //                     this.tableData = res.data.message.data;
+    //   //                     //  console.log(this.tableData );
 
-      //                 });
-    });
+    //   // // for(var i=0;i<res.data.message.data.length;i++){
+    //   // //   this.trHmi.push({key:i+1,label:res.data.message.data[i].hmi_name});
+    //   // // }
+    //   // //  bus.$emit('trhmi', this.trHmi);
+
+    //   //                 });
+    // });
   },
 
   mounted() {},
@@ -348,7 +350,7 @@ export default {
         data: {
           auth_code: this.form.auth_code,
           sncode: this.form.sncode,
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           hmi_name: this.form.hmi_name
         }
       }).then(res => {
@@ -385,7 +387,7 @@ export default {
         method: "post",
         url: "/api/supply/supplyInfo",
         params: {
-          domain_id: this.domain_id,
+          domain_id: localStorage.getItem("loginDomainId"),
           limit: 10,
           page: this.cur_page
         }

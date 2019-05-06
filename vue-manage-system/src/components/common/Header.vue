@@ -146,8 +146,7 @@ this.$http({
       }
     }).then(res => {
         if (res.data.status == "S") {
-        }
-        const domain_id=res.data.message[0].id;
+              const domain_id=res.data.message[0].id;
          const domain_name=res.data.message[0].domain_name;
 // console.log(res.data.message[0].domain_name)
  this.itemRegion=
@@ -189,10 +188,10 @@ this.$http({
                         ]
                     }
 ]
-     
 //                     var objStr=JSON.stringify(this.itemRegion);
 // localStorage.setItem('aa',objStr);
                      bus.$emit('items', this.itemRegion)
+        }
     });
  this.dialogFormVisible=false;
 

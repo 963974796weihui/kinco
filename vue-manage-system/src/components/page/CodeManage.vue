@@ -314,7 +314,7 @@ this.getData();
         method: "POST",
         url: "/api/AuthCode/allhmi",
         data: {
-          domain_id: this.domain_id
+          domain_id: localStorage.getItem("loginDomainId")
         }
       }).then(res => {
         this.dataCode = [];
