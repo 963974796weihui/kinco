@@ -19,9 +19,8 @@ class Login
         $id=Cache::get('loginId');
         if(!isset($id)||$id=='null'){
             //return response()->json(['status' => 'F', 'code' => '201', 'message' => '请登录']);
-            return redirect('http://39.104.56.173:5901/#/reg');
+            return redirect('http://39.104.56.173:5901/#/login');
         }
-        return redirect('http://39.104.56.173:5901/#/reg');
         return $next($request);
     }
 }
