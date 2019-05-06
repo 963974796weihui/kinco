@@ -160,7 +160,7 @@ class UserController extends Controller
         if($result==1){
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '请先进行设备组解绑']);
         }elseif($result==2){
-            return response()->json(['status' => 'F', 'code' => '201', 'message' => '请先进行设备解绑']);
+            return response()->json(['status' => 'F', 'code' => '202', 'message' => '请先进行设备解绑']);
         }
         DB::table('ki_admin_user')->whereIn('id', $id)->update(['cut_off' => 1]);
         return response()->json(['status' => 'S', 'code' => '200', 'message' => '成功']);
