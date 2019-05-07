@@ -385,9 +385,7 @@ export default {
           });
         }
       });
-          }else {
-          this.$message.error("请输入正确信息！");
-        }
+          }
         });
     },
     // 分页导航

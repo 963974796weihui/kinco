@@ -656,11 +656,6 @@ this.$router.push("/login");
           });
         }
       });
-         }else{
- this.$message({
-            message: "请输入正确信息",
-            type: "warning"
-          });
          }
   });
      

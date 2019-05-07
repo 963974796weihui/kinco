@@ -683,9 +683,7 @@ if(res.data.status=="S"){
               }
             });
               this.dialogFormVisible = false;
-        } else {
-          this.$message.error("请输入正确信息！");
-        }
+        } 
       });
     },
     // 分页导航
