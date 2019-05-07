@@ -56,6 +56,9 @@ class AuthCodeController extends Controller
         $request = $request->all();
         $request['time'] = time();
         //授权码不存在
+        if(!$request['sncode']){
+            return response()->json(['status' => 'F', 'code' => '204', 'data' => '请选择要绑定的设备']);
+        }
         if($request['auth_code']) {
             $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind','activate_time','long')->get()->toArray();
             if (!$bind) {
