@@ -16,13 +16,13 @@
           <el-form-item label="授权码" :label-width="formLabelWidth" prop="auth_code">
             <el-input v-model="form.auth_code" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="设备名" :label-width="formLabelWidth">
-            <el-input v-model="form.hmi_name" autocomplete="off" prop="hmi_name"></el-input>
+          <el-form-item label="设备名" :label-width="formLabelWidth" prop="hmi_name">
+            <el-input v-model="form.hmi_name" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addSerial()">确 定</el-button>
+          <el-button type="primary" @click="addSerial('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -136,6 +136,8 @@ export default {
         callback();
       }
     };
+      const pure = (rule, value, callback) => {
+    };
     return {
       flag: 0,
       selectRow: [],
@@ -145,6 +147,10 @@ export default {
         sncode: [
           { required: true, message: "请输入序列号", trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
+        ],
+        hmi_name:[
+ { required: true, message: "请输入设备名", trigger: "blur" },
+ { validator: pure, trigger: "blur" }
         ],
         auth_code: [
           // { required: true, message: '请输入授权码', trigger: "blur" },
@@ -347,8 +353,10 @@ export default {
       return row.cut_off != 2;
     },
     //添加序列号
-    addSerial() {
-      this.$http({
+    addSerial(formName) {
+       this.$refs[formName].validate(valid => {
+          if (valid) {
+  this.$http({
         method: "post",
         url: "/api/supply/addSupply",
         data: {
@@ -358,7 +366,6 @@ export default {
           hmi_name: this.form.hmi_name
         }
       }).then(res => {
-        console.log(res);
         if (res.data.status == "S") {
           this.$message({
             message: "新增设备成功",
@@ -378,6 +385,10 @@ export default {
           });
         }
       });
+          }else {
+          this.$message.error("请输入正确信息！");
+        }
+        });
     },
     // 分页导航
     handleCurrentChange(val) {

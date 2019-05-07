@@ -16,7 +16,7 @@
           </el-form-item>
            <el-form-item label="域简介" :label-width="formLabelWidth">
             <el-input type="textarea" placeholder="80字以内" maxlength="80" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"
-            @change="SomeJavaScriptCode"
+            
             ></el-input>
           </el-form-item>
         </el-form>
@@ -27,7 +27,7 @@
       </el-dialog>
 
         <div class="header-right">
-            <div class="header-user-con">
+            <div class="header-user-con">                                                                                                 
  <el-button class="create-region b-red" icon="el-icon-plus" size="medium" @click="dialogFormVisible = true">新建域</el-button>
                  <span class="time blue">上次登录:{{this.time}}</span>
                 <!-- 用户头像 -->
@@ -86,57 +86,40 @@ computed:{
             }
         },
         methods:{
-            SomeJavaScriptCode(){
-                 this.$http.post('/api/admin/registerDomain',
+//             SomeJavaScriptCode(){
+//                  this.$http.post('/api/admin/registerDomain',
+//                 {
+//                      domain_name: this.formRegion.name,
+//                      remark: this.formRegion.regionInfo
+//                 }).then(res => {
+//             console.log(res)
+//             if(res.data.status=="S"){
+//                    this.$message({
+//           message: '新建域成功',
+//           type: 'success'
+//         });
+//             }else if(res.data.status=="F"){
+//  this.$message({
+//           message: '该域已存在',
+//           type: 'warning'
+//         });
+//             }
+//         })
+//             },
+            //新建域
+            addRegion(){
+    this.$http.post('/api/admin/registerDomain',
                 {
                      domain_name: this.formRegion.name,
                      remark: this.formRegion.regionInfo
                 }).then(res => {
-            console.log(res)
-            if(res.data.status=="S"){
-                   this.$message({
-          message: '新建域成功',
-          type: 'success'
+                     if(this.formRegion.name=='' ||this.formRegion.regionInfo==''){
+               this.$message({
+          message: '请正确输入域信息！',
+          type: 'error'
         });
-       
-    //     this.itemRegion=
-    //    {
-    //                     icon: 'el-icon-lx-calendar',
-    //                     title: this.formRegion.name,
-    //                     index: this.num1++,
-    //                     subs: [
-    //                         {
-    //                             index: 'usermanage',
-    //                             title: '用户'
-    //                         },
-    //                         {
-    //                             index: this.num2++,
-    //                             title: '设备',
-    //                             subs: [
-    //                                 {
-    //                                     index: 'eqmanage',
-    //                                     title: '设备管理'
-    //                                 },
-    //                                 {
-    //                                     index: 'eqgroup',
-    //                                     title: '设备群组'
-    //                                 },
-    //                             ]
-    //                         }
-    //                     ]
-    //                 },
-          //bus发送侧边栏
-            // bus.$emit('items', this.itemRegion)
-            }else if(res.data.status=="F"){
- this.$message({
-          message: '该域已存在',
-          type: 'warning'
-        });
-            }
-        })
-            },
-            //新建域
-            addRegion(){
+            return;
+        }
 this.$http({
       method: "post",
       url: "/api/admin/login",
@@ -145,6 +128,7 @@ this.$http({
         password:localStorage.getItem('ms_password')
       }
     }).then(res => {
+       
         if (res.data.status == "S") {
                  localStorage.setItem(
                   "loginDomainId",
@@ -207,6 +191,21 @@ this.$http({
 // localStorage.setItem('aa',objStr);
                      bus.$emit('items', this.itemRegion)
     });
+
+            if(res.data.status=="S"){
+                   this.$message({
+          message: '新建域成功',
+          type: 'success'
+        });
+            }else if(res.data.status=="F"){
+ this.$message({
+          message: '该域已存在',
+          type: 'warning'
+        });
+            }
+        })
+
+
  this.dialogFormVisible=false;
 
             },

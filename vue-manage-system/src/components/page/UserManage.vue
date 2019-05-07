@@ -9,8 +9,8 @@
       >新增用户</el-button>
       <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="用户名" :label-width="formLabelWidth">
-            <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
+          <el-form-item label="用户名" :label-width="formLabelWidth" prop="user_name">
+            <el-input v-model="form.user_name" autocomplete="off" ></el-input>
           </el-form-item>
           <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
             <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -119,7 +119,7 @@
     <el-dialog title="编辑" :visible.sync="editVisible" width="20%">
       <el-form ref="form" :model="form" label-width="50px">
         <el-form-item label="备注">
-          <el-input v-model="form.remark" maxlength="20" @change="SomeJavaScriptCode"></el-input>
+          <el-input v-model="form.remark" maxlength="20"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -195,6 +195,9 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
+    //用户名校验
+     const pure = (rule, value, callback) => {
+    };
     //手机号校验
     const validatephone = (rule, value, callback) => {
       if (
@@ -233,6 +236,10 @@ export default {
       banText: "禁用",
       //匹配校验器
       ruleValidate: {
+        user_name:[
+             { required: true, message: "请输入用户名", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
+        ],
         phone: [
           { required: true, message: "请输入电话号码", trigger: "blur" },
           { validator: validatephone, trigger: "blur" }
@@ -650,24 +657,7 @@ if(res.data.status=="S"){
 
       });
     },
-    // 编辑的change事件
-    SomeJavaScriptCode() {
-      this.$http({
-        method: "post",
-        url: "/api/user/updateInfo",
-        data: {
-          id: this.form.id,
-          email: this.form.email,
-          remark: this.form.remark
-        }
-      }).then(res => {
-//         if(res.data.status=="S"){
-//           this.$message.success('修改成功!');
-// }
-      });
-    },
     addUser(formName) {
-      this.dialogFormVisible = false;
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http
@@ -692,8 +682,9 @@ if(res.data.status=="S"){
                 });
               }
             });
+              this.dialogFormVisible = false;
         } else {
-          this.$message.error("请正确输入用户信息   !");
+          this.$message.error("请输入正确信息！");
         }
       });
     },
@@ -948,6 +939,20 @@ if(res.data.status=="S"){
     },
     // 保存编辑 222222222
     saveEdit() {
+      if(this.form.remark==null){
+          this.$message.success('请完善信息!');
+          return;
+      }
+       this.$http({
+        method: "post",
+        url: "/api/user/updateInfo",
+        data: {
+          id: this.form.id,
+          email: this.form.email,
+          remark: this.form.remark
+        }
+      }).then(res => {
+      });
       this.$set(this.tableData, this.idx, this.form);
       this.editVisible = false;
       // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
