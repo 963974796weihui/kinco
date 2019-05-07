@@ -42,6 +42,7 @@
         :stripe="test"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
+        @row-click="clickRow"
       >
         <el-table-column type="selection" :selectable="checkboxT" min-width="1%" align="center"></el-table-column>
         <el-table-column prop="hmi_name" label="设备名" min-width="8%"></el-table-column>
@@ -265,6 +266,9 @@ export default {
     }
   },
   methods: {
+      clickRow(row){
+                this.$refs.multipleTable.toggleRowSelection(row);
+            },
     // 多选高亮选中行
     rowClass({ row, rowIndex }) {
       if (this.selectRow.includes(rowIndex)) {

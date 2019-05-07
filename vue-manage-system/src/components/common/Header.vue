@@ -65,7 +65,7 @@ import store from '../../store/store.js'
                  dialogFormVisible: false,
                 collapse: false,
                 fullscreen: false,
-                name: '无名氏',
+                name: '你好，请登录',
                 message: 2,
                 time:'',
                 num1:0,
