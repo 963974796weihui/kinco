@@ -9,8 +9,8 @@
       >新增用户</el-button>
       <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="用户名" :label-width="formLabelWidth">
-            <el-input v-model="form.user_name" autocomplete="off" prop="user_name"></el-input>
+          <el-form-item label="用户名" :label-width="formLabelWidth" prop="user_name">
+            <el-input v-model="form.user_name" autocomplete="off" ></el-input>
           </el-form-item>
           <el-form-item label="手机号" :label-width="formLabelWidth" prop="phone">
             <el-input v-model="form.phone" autocomplete="off"></el-input>
@@ -62,8 +62,8 @@
         <el-table-column prop="email" label="邮箱号" min-width="19%"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" min-width="10%">
            <template slot-scope="scope">
-              <!-- @mouseover.native="handleDetails(scope.$index, scope.row)" -->
- <el-button type="primary" @mouseleave.native='detailsOut()' @mouseenter.native="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
+              <!-- @mouseenter.native="handleDetails(scope.$index, scope.row)" -->
+ <el-button type="primary" @mouseleave.native='detailsOut()' @click="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
 </template>
         </el-table-column>
         <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
@@ -119,7 +119,7 @@
     <el-dialog title="编辑" :visible.sync="editVisible" width="20%">
       <el-form ref="form" :model="form" label-width="50px">
         <el-form-item label="备注">
-          <el-input v-model="form.remark" maxlength="20" @change="SomeJavaScriptCode"></el-input>
+          <el-input v-model="form.remark" maxlength="20"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -144,7 +144,7 @@
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
                       <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
+                      <el-button type="primary" @click="saveHmiGroup()">完 成</el-button>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -160,7 +160,7 @@
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
                       <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmi()">确 定</el-button>
+                      <el-button type="primary" @click="saveHmi()">完 成</el-button>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -195,6 +195,9 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
+    //用户名校验
+     const pure = (rule, value, callback) => {
+    };
     //手机号校验
     const validatephone = (rule, value, callback) => {
       if (
@@ -233,6 +236,10 @@ export default {
       banText: "禁用",
       //匹配校验器
       ruleValidate: {
+        user_name:[
+             { required: true, message: "请输入用户名", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
+        ],
         phone: [
           { required: true, message: "请输入电话号码", trigger: "blur" },
           { validator: validatephone, trigger: "blur" }
@@ -608,7 +615,11 @@ this.$router.push("/login");
             user_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+  this.$message.success('用户绑定组成功');
+}
+        });
       } else if (this.ff == 0) {
         this.$http({
           method: "post",
@@ -618,7 +629,12 @@ this.$router.push("/login");
             user_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+if(res.data.status=="S"){
+  this.$message.success('用户解绑组成功');
+}
+
+        });
       }
     },
     //穿梭框的hmichange事件
@@ -634,22 +650,14 @@ this.$router.push("/login");
           user_id: this.form.id,
           id: this.value2
         }
-      }).then(res => {});
-    },
-    // 编辑的change事件
-    SomeJavaScriptCode() {
-      this.$http({
-        method: "post",
-        url: "/api/user/updateInfo",
-        data: {
-          id: this.form.id,
-          email: this.form.email,
-          remark: this.form.remark
-        }
-      }).then(res => {});
+      }).then(res => {
+if(res.data.status=="S"){
+  this.$message.success('操作成功!');
+}
+
+      });
     },
     addUser(formName) {
-      this.dialogFormVisible = false;
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http
@@ -674,9 +682,8 @@ this.$router.push("/login");
                 });
               }
             });
-        } else {
-          this.$message.error("请正确输入用户信息   !");
-        }
+              this.dialogFormVisible = false;
+        } 
       });
     },
     // 分页导航
@@ -915,9 +922,9 @@ this.$router.push("/login");
       //  alert(this.value1)
       // this.$store.commit('savetrArray',this.value1);
       // alert(this.value1.length)
-      this.$set(this.tableData, this.idx, this.form);
+      // this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
       // localStorage.setItem('tr1',JSON.stringify(this.value1));
     },
@@ -925,14 +932,28 @@ this.$router.push("/login");
     saveHmi() {
       this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     // 保存编辑 222222222
     saveEdit() {
+      if(this.form.remark==null){
+          this.$message.success('请完善信息!');
+          return;
+      }
+       this.$http({
+        method: "post",
+        url: "/api/user/updateInfo",
+        data: {
+          id: this.form.id,
+          email: this.form.email,
+          remark: this.form.remark
+        }
+      }).then(res => {
+      });
       this.$set(this.tableData, this.idx, this.form);
       this.editVisible = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     //确定组详情
     saveDetails(){

@@ -9,13 +9,13 @@
       >添加设备组</el-button>
       <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
-          <el-form-item label="设备组名" :label-width="formLabelWidth">
-            <el-input v-model="form.group_name" autocomplete="off" prop="group_name"></el-input>
+          <el-form-item label="设备组名" :label-width="formLabelWidth" prop="group_name">
+            <el-input v-model="form.group_name" autocomplete="off" ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addGroup()">确 定</el-button>
+          <el-button type="primary" @click="addGroup('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -73,7 +73,6 @@
                 <el-button type="primary">确 定</el-button>
               </div>
             </el-dialog>-->
-          
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -109,7 +108,7 @@
 
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogManagerMember = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupHmi()">确 定</el-button>
+                <el-button type="primary" @click="saveGroupHmi()">完 成</el-button>
               </div>
             </el-dialog>
             <!-- 绑定用户弹出框 -->
@@ -128,14 +127,14 @@
               </div>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogBindUser = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupUser()">确 定</el-button>
+                <el-button type="primary" @click="saveGroupUser()">完 成</el-button>
               </div>
             </el-dialog>
               <!-- 更改组名弹出框 -->
             <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
               <el-form ref="form" :model="form" label-width="50px">
                 <el-form-item label="组名">
-                  <el-input v-model="form.group_name" @change="SomeJavaScriptCode"></el-input>
+                  <el-input v-model="form.group_name" ></el-input>
                 </el-form-item>
               </el-form>
               <span slot="footer" class="dialog-footer">
@@ -160,6 +159,9 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
+      //组名校验
+     const pure = (rule, value, callback) => {
+    };
     return {
       ff: "",
       ff1: "",
@@ -193,6 +195,13 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
+       //匹配校验器
+      ruleValidate: {
+        group_name:[
+             { required: true, message: "请输入组名", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
+        ]
+      },
       form: {
         group_name: "",
         hmi_num: "",
@@ -419,16 +428,6 @@ this.$router.push("/login");
         return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
-    SomeJavaScriptCode() {
-      this.$http({
-        method: "post",
-        url: "/api/group/updateGroup",
-        data: {
-          id: this.form.id,
-          group_name: this.form.group_name
-        }
-      }).then(res => {});
-    },
     //获取所有设备
     getHmi() {
       this.$http({
@@ -575,7 +574,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu31
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+            this.$message.success('加入设备组成功');
+          }
+        });
       } else if (this.ff1 == 0) {
         this.$http({
           method: "post",
@@ -585,7 +588,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu31
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+            this.$message.success('移出设备组成功！');
+          }
+        });
       }
     },
     handleChange2() {
@@ -600,7 +607,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+	            this.$message.success('组绑定用户成功!');
+          }
+        });
       } else if (this.ff == 0) {
         this.$http({
           method: "post",
@@ -610,13 +621,19 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+           if(res.data.status=="S"){
+	            this.$message.success('组解绑用户成功!');
+          }
+        });
       }
     },
 
     //添加设备群组
-    addGroup() {
-      this.$http({
+    addGroup(formName) {
+       this.$refs[formName].validate(valid => {
+         if (valid) {
+ this.$http({
         method: "post",
         url: "/api/group/addGroup",
         data: {
@@ -639,42 +656,22 @@ this.$router.push("/login");
           });
         }
       });
+         }
+  });
+     
     },
     //保存管理组成员按钮
     saveGroupHmi() {
       this.$set(this.tableData, this.idx, this.form);
       this.dialogManagerMember = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     //保存绑定用户按钮
     saveGroupUser() {
-      //         if(this.ff==1){
-      // this.$http({
-      // method: "post",
-      // url: "/api/group/addUserBind",
-      // data: {
-      // domain_id: this.domain_id,
-      // group_id: this.form.id,
-      // id: this.shuzu3
-      // }
-      // }).then(res => {
-      // });
-      //       }else if(this.ff==0){
-      // this.$http({
-      // method: "post",
-      // url: "/api/group/unaddUserBind",
-      // data: {
-      // domain_id: this.domain_id,
-      // group_id: this.form.id,
-      // id: this.shuzu3
-      // }
-      // }).then(res => {
-      // });
-      //       }
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     // 分页导航
@@ -786,9 +783,17 @@ this.$router.push("/login");
     },
     // 保存编辑
     saveEdit() {
+  this.$http({
+        method: "post",
+        url: "/api/group/updateGroup",
+        data: {
+          id: this.form.id,
+          group_name: this.form.group_name
+        }
+      }).then(res => {});
       this.$set(this.tableData, this.idx, this.form);
       this.dialogGroupName = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     // 确定删除
     deleteRow() {
