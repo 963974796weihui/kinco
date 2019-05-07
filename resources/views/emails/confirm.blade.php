@@ -1,9 +1,3 @@
-<!-- <html>
-<br>
-<br>
-<h1>111</h1>
-<center><h2>确认成功 去登录</h2></center>
-</html> -->
 
 
 <!DOCTYPE html>
@@ -47,7 +41,7 @@
 <body>
 <div id="login">
 <h1>恭喜您注册成功！</h1>
-    <img src="./duihao.png" alt="">
+    <img src="./tick.png" alt="">
 </div>
 </body>
 

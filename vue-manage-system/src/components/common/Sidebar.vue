@@ -114,10 +114,23 @@ import store from '../../store/store.js'
         },
 
         created(){
-              const domain_id=localStorage.getItem("loginDomainId");
-         const domain_name=localStorage.getItem("loginDomainName");
-	      //自定义代码
-	           this.items=
+            // alert("侧边栏刷新")
+            this.$http({
+      method: "post",
+      url: "/api/admin/login",
+      data: {
+        user_name:localStorage.getItem('ms_username'),
+        password:localStorage.getItem('ms_password')
+      }
+    }).then(res => {
+        const domain_id=res.data.message[0].id;
+         const domain_name=res.data.message[0].domain_name;
+
+//如果此用户从没建过域
+if(!domain_id){
+    return;
+}
+ this.items=
 [
                     // {
                     //     icon: 'el-icon-lx-home',
@@ -156,29 +169,13 @@ import store from '../../store/store.js'
                         ]
                     }
 ]
-            // alert("侧边栏刷新")
-//             this.$http({
-//       method: "post",
-//       url: "/api/admin/login",
-//       data: {
-//         user_name:localStorage.getItem('ms_username'),
-//         password:localStorage.getItem('ms_password')
-//       }
-//     }).then(res => {
-      
-
-// //如果此用户从没建过域
-// if(!domain_id){
-//     return;
-// }
- 
-// //存入vuex中
-// this.$store.commit('saveDomainId',domain_id)
-//     //  console.log(this.$store.state.domainId)   可以打印
-// //                     var objStr=JSON.stringify(this.itemRegion);
-// // localStorage.setItem('aa',objStr);
-//                     //  bus.$emit('items', this.itemRegion)
-//     });
+//存入vuex中
+this.$store.commit('saveDomainId',domain_id)
+    //  console.log(this.$store.state.domainId)   可以打印
+//                     var objStr=JSON.stringify(this.itemRegion);
+// localStorage.setItem('aa',objStr);
+                    //  bus.$emit('items', this.itemRegion)
+    });
             bus.$on('collapse', msg => {
                 this.collapse = msg;
             })
