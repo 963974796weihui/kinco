@@ -21,7 +21,7 @@
     </div>
     <div class="container">
       <div class="handle-box">
-        <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
+        <!-- <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button> -->
         <div class="search">
           <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
           <el-button type="primary" icon="search" @click="search">搜索</el-button>
@@ -296,8 +296,12 @@ export default {
           id: this.radioId
         }
       }).then(res => {
-        if(res.data.status=="F"){
+        if(res.data.code==202){
           this.$message.success('授权码已被使用！');
+        }else if(res.data.code==203){
+          this.$message.success('授权码已过期 请重新购买!');
+        }else if(res.data.code==204){
+          this.$message.success('请选择要绑定的设备!');
         }else{
 this.getData();
  this.$message.success('绑定成功！');
@@ -521,6 +525,7 @@ this.$router.push("/login");
 <style scoped>
 .search {
   float: right;
+  margin-bottom: 15px;
 }
 .handle-box {
   margin-bottom: 20px;
