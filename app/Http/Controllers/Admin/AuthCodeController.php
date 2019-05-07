@@ -57,12 +57,16 @@ class AuthCodeController extends Controller
         $request['time'] = time();
         //授权码不存在
         if($request['auth_code']) {
-            $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind')->get()->toArray();
+            $bind = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('bind','activate_time','long')->get()->toArray();
             if (!$bind) {
                 return response()->json(['status' => 'F', 'code' => '201', 'message' => '授权码不存在']);
             }
             if (strlen($bind[0]->bind)>1) {
                 return response()->json(['status' => 'F', 'code' => '202', 'message' => '授权码已被使用']);
+            }
+            $time=$bind[0]->activate_time+$bind[0]->long*60*60*24-time();
+            if($time<0){
+                return response()->json(['status' => 'F', 'code' => '203', 'message' => '授权码已过期 请重新购买']);
             }
             $activate_time = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('activate_time')->get()->toArray();
             if($activate_time[0]->activate_time){
