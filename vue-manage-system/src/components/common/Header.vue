@@ -15,7 +15,7 @@
             <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
           </el-form-item>
            <el-form-item label="域简介" :label-width="formLabelWidth">
-            <el-input type="textarea" placeholder="80字以内" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"
+            <el-input type="textarea" placeholder="80字以内" maxlength="80" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"
             @change="SomeJavaScriptCode"
             ></el-input>
           </el-form-item>

@@ -73,7 +73,6 @@
                 <el-button type="primary">确 定</el-button>
               </div>
             </el-dialog>-->
-          
             <el-button
               type="text"
               icon="el-icon-delete"
@@ -109,7 +108,7 @@
 
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogManagerMember = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupHmi()">确 定</el-button>
+                <el-button type="primary" @click="saveGroupHmi()">完 成</el-button>
               </div>
             </el-dialog>
             <!-- 绑定用户弹出框 -->
@@ -128,7 +127,7 @@
               </div>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogBindUser = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupUser()">确 定</el-button>
+                <el-button type="primary" @click="saveGroupUser()">完 成</el-button>
               </div>
             </el-dialog>
               <!-- 更改组名弹出框 -->
@@ -575,7 +574,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu31
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+            this.$message.success('加入设备组成功');
+          }
+        });
       } else if (this.ff1 == 0) {
         this.$http({
           method: "post",
@@ -585,7 +588,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu31
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+            this.$message.success('移出设备组成功！');
+          }
+        });
       }
     },
     handleChange2() {
@@ -600,7 +607,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+	            this.$message.success('组绑定用户成功!');
+          }
+        });
       } else if (this.ff == 0) {
         this.$http({
           method: "post",
@@ -610,7 +621,11 @@ this.$router.push("/login");
             group_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+           if(res.data.status=="S"){
+	            this.$message.success('组解绑用户成功!');
+          }
+        });
       }
     },
 
@@ -644,7 +659,7 @@ this.$router.push("/login");
     saveGroupHmi() {
       this.$set(this.tableData, this.idx, this.form);
       this.dialogManagerMember = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     //保存绑定用户按钮
@@ -674,7 +689,7 @@ this.$router.push("/login");
       //       }
       this.$set(this.tableData, this.idx, this.form);
       this.dialogBindUser = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     // 分页导航

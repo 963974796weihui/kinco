@@ -144,7 +144,7 @@
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
                       <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
+                      <el-button type="primary" @click="saveHmiGroup()">完 成</el-button>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -160,7 +160,7 @@
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
                       <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmi()">确 定</el-button>
+                      <el-button type="primary" @click="saveHmi()">完 成</el-button>
                     </div>
                   </div>
                 </el-tab-pane>
@@ -608,7 +608,11 @@ this.$router.push("/login");
             user_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+          if(res.data.status=="S"){
+  this.$message.success('用户绑定组成功');
+}
+        });
       } else if (this.ff == 0) {
         this.$http({
           method: "post",
@@ -618,7 +622,12 @@ this.$router.push("/login");
             user_id: this.form.id,
             id: this.shuzu3
           }
-        }).then(res => {});
+        }).then(res => {
+if(res.data.status=="S"){
+  this.$message.success('用户解绑组成功');
+}
+
+        });
       }
     },
     //穿梭框的hmichange事件
@@ -634,7 +643,12 @@ this.$router.push("/login");
           user_id: this.form.id,
           id: this.value2
         }
-      }).then(res => {});
+      }).then(res => {
+if(res.data.status=="S"){
+  this.$message.success('操作成功!');
+}
+
+      });
     },
     // 编辑的change事件
     SomeJavaScriptCode() {
@@ -646,7 +660,11 @@ this.$router.push("/login");
           email: this.form.email,
           remark: this.form.remark
         }
-      }).then(res => {});
+      }).then(res => {
+//         if(res.data.status=="S"){
+//           this.$message.success('修改成功!');
+// }
+      });
     },
     addUser(formName) {
       this.dialogFormVisible = false;
@@ -915,9 +933,9 @@ this.$router.push("/login");
       //  alert(this.value1)
       // this.$store.commit('savetrArray',this.value1);
       // alert(this.value1.length)
-      this.$set(this.tableData, this.idx, this.form);
+      // this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
       // localStorage.setItem('tr1',JSON.stringify(this.value1));
     },
@@ -932,7 +950,7 @@ this.$router.push("/login");
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
       this.editVisible = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     //确定组详情
     saveDetails(){
