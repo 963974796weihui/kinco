@@ -49,7 +49,8 @@ class AlipayController extends Controller
         $data = Pay::alipay($this->config)->verify(); // 是的，验签就这么简单！
         $alidata=DB::table('ki_admin_code')->where('out_trade_no',$data->out_trade_no)->where('trade_no',$data->trade_no)->get()->toArray();
         if($alidata){
-            return view('emails.alipay', ['data' => $alidata]);
+            return redirect('http://39.104.56.173:5901/#/codemanage');
+          //  return view('emails.alipay', ['data' => $alidata]);
         }else{
             return response()->json(['status' => 'F', 'code' => '201', 'message' => '服务器内部错误']);
         }
