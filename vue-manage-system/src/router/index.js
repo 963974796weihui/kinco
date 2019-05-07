@@ -34,6 +34,11 @@ export default new Router({
                     meta: { title: '授权码管理' }
                 },
                 {
+                    path: '/pay',
+                    component: resolve => require(['../components/page/Pay.vue'], resolve),
+                    meta: { title: '支付成功' }
+                },
+                {
                     path: '/tabs',
                     component: resolve => require(['../components/page/Tabs.vue'], resolve),
                     meta: { title: 'tab选项卡' }

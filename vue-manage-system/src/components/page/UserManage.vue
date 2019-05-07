@@ -61,7 +61,8 @@
         <el-table-column prop="email" label="邮箱号" min-width="19%"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" min-width="10%">
            <template slot-scope="scope">
- <el-button type="text" size="small" @click="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
+              <!-- @mouseover.native="handleDetails(scope.$index, scope.row)" -->
+ <el-button type="primary" @mouseleave.native='detailsOut()' @mouseenter.native="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
 </template>
         </el-table-column>
         <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
@@ -80,7 +81,7 @@
                     <!-- 穿梭框 -->
                     <el-transfer
                       :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['所有设备组', '已绑定设备组']"
+                      :titles="['未绑定设备组', '已绑定设备组']"
                       v-model="value1"
                       :data="dataGroup"
                       @left-check-change="aaa"
@@ -98,14 +99,14 @@
                   <div class="tr">
                     <el-transfer
                       :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['所有设备', '已绑定设备']"
+                      :titles="['未绑定设备', '已绑定设备']"
                       v-model="value2"
                       :data="dataHmi"
                       filterable
                       @change="hmiChange"
                     ></el-transfer>
                     <div slot="footer" class="dialog-footer">
-                      <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
                       <el-button type="primary" @click="saveHmi()">确 定</el-button>
                     </div>
                   </div>
@@ -165,8 +166,9 @@
       </span>
     </el-dialog>
     <!-- 组详情弹框 -->
-    <el-dialog title="设备组详情" :visible.sync="detailsVisible" width="20%">
-    <el-tree :data="dataTree" :props="defaultProps"></el-tree>
+ 
+    <el-dialog title="设备组详情" :visible.sync="detailsVisible" width="20%" :before-close="handleClose">
+    <el-tree :data="dataTree" node-key="lable" :props="defaultProps"></el-tree>
       <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="detailsVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveDetails()">确 定</el-button>
@@ -406,8 +408,9 @@ this.$router.push("/login");
     }
   },
   methods: {
-    clickHmiGroup(){
-    },
+   handleClose(done) {
+            done();
+      },
     aaa() {
       this.ff = 1;
       //获取已绑定设备组
@@ -863,6 +866,14 @@ this.$router.push("/login");
       });
       
     },
+    detailsOut(){
+      // this.handleClose();
+      // // console.log("移出")
+      // alert(111)
+    },
+    detailsOver(){
+  console.log("移入")
+    },
     //删除
     handleDelete(index, row) {
       this.idx = index;
@@ -884,31 +895,33 @@ this.$router.push("/login");
       this.delVisible = true;
     },
     //批量删除
+    
     delAll() {
+      this.shuzu = [];
       const length = this.multipleSelection.length;
-      console.log(33333333333333);
-      console.log(this.multipleSelection[0].id);
-      let str = "";
-      this.del_list = this.del_list.concat(this.multipleSelection);
+     
       for (let i = 0; i < length; i++) {
         this.shuzu.push(this.multipleSelection[i].id);
-
-        str += this.multipleSelection[i].user_name + " ";
       }
-      // this.$message.error("删除了" + str);
-      this.multipleSelection = [];
 
-      this.$http({
-        method:'get',
+   this.$http({
+        method: "get",
         url: "/api/user/delete",
         params: {
-          user_id: this.shuzu
+           user_id: this.shuzu
         }
       }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333);
-        console.log(res);
-        //  this.tableData = res.data.message;
+        if (res.data.status == "S") {
+           this.del_list = this.del_list.concat(this.multipleSelection);
+           this.multipleSelection = [];
+          // this.$message.success("删除成功");
+          // this.$set(this.tableData, this.idx, this.form);
+          // this.tableData.splice(this.idx, 1);
+        } else if (res.data.code == 201) {
+          this.$message.success("请先进行设备解绑");
+        } else if (res.data.code == 202) {
+          this.$message.success("请先进行用户解绑");
+        }
       });
     },
     handleSelectionChange(val) {

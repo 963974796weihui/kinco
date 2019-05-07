@@ -200,6 +200,7 @@ export default {
       select_cate: "",
       select_word: "",
       del_list: [],
+      shuzu:[],
       is_search: false,
       editVisible: false,
       delVisible: false,
@@ -265,7 +266,7 @@ export default {
     saveRelieve(){
        this.dialogRelieve = false;
           //  this.$set(this.tableData, this.idx, this.form);
-       this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+       
       this.$http({
         method: "post",
         url: "/api/AuthCode/unbind",
@@ -275,6 +276,7 @@ export default {
       }).then(res => {
         console.log(res);
           this.getData();
+          this.$message.success('解绑成功！');
       });
     },
     //绑定设备确定按钮
@@ -289,11 +291,17 @@ export default {
           id: this.radioId
         }
       }).then(res => {
+        if(res.data.status=="F"){
+          this.$message.success('授权码已被使用！');
+        }else{
 this.getData();
+ this.$message.success('绑定成功！');
+        }
+
       });
       // this.$set(this.tableData, this.idx, this.form);
       this.dialogCode = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     //进行绑定
     getBind() {
@@ -442,15 +450,43 @@ this.$router.push("/login");
       this.delVisible = true;
     },
 
-    delAll() {
+    // delAll() {
+    //   const length = this.multipleSelection.length;
+    //   let str = "";
+    //   this.del_list = this.del_list.concat(this.multipleSelection);
+    //   for (let i = 0; i < length; i++) {
+    //     str += this.multipleSelection[i].name + " ";
+    //   }
+    //   // this.$message.error("删除了" + str);
+    //   this.multipleSelection = [];
+    // },
+       delAll() {
+      this.shuzu = [];
       const length = this.multipleSelection.length;
-      let str = "";
-      this.del_list = this.del_list.concat(this.multipleSelection);
+     
       for (let i = 0; i < length; i++) {
-        str += this.multipleSelection[i].name + " ";
+        this.shuzu.push(this.multipleSelection[i].id);
       }
-      // this.$message.error("删除了" + str);
-      this.multipleSelection = [];
+
+   this.$http({
+        method: "get",
+        url: "/api/user/delete",
+        params: {
+           user_id: this.shuzu
+        }
+      }).then(res => {
+        if (res.data.status == "S") {
+           this.del_list = this.del_list.concat(this.multipleSelection);
+           this.multipleSelection = [];
+          // this.$message.success("删除成功");
+          // this.$set(this.tableData, this.idx, this.form);
+          // this.tableData.splice(this.idx, 1);
+        } else if (res.data.code == 201) {
+          this.$message.success("请先进行设备解绑");
+        } else if (res.data.code == 202) {
+          this.$message.success("请先进行用户解绑");
+        }
+      });
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -467,7 +503,7 @@ this.$router.push("/login");
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
       this.editVisible = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
     },
     // 确定删除
     deleteRow() {

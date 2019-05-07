@@ -51,7 +51,7 @@
               <div class="tr">
                 <el-transfer
                   :button-texts="['移出', '加入']"
-                  :titles="['所有设备', '已绑定设备']"
+                  :titles="['未绑定设备', '已绑定设备']"
                   v-model="value1"
                   :data="dataGroupHmi"
                   @left-check-change="aaa1"
@@ -62,7 +62,7 @@
               </div>
 
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogManagerMember = false">取 消</el-button>
+                <el-button @click="dialogManagerMember = false">返 回</el-button>
                 <el-button type="primary" @click="saveGroupHmi()">确 定</el-button>
               </div>
             </el-dialog>
@@ -77,7 +77,7 @@
               <div class="tr">
                 <el-transfer
                   :button-texts="['进行解绑', '进行绑定']"
-                  :titles="['所有用户', '已绑定用户']"
+                  :titles="['未绑定用户', '已绑定用户']"
                   v-model="value2"
                   :data="dataUser"
                   filterable
@@ -741,27 +741,31 @@ this.$router.push("/login");
     },
     //批量删除
     delAll() {
+      this.shuzu = [];
       const length = this.multipleSelection.length;
-      let str = "";
-      this.del_list = this.del_list.concat(this.multipleSelection);
+     
       for (let i = 0; i < length; i++) {
         this.shuzu.push(this.multipleSelection[i].id);
-        str += this.multipleSelection[i].group_name + " ";
       }
-      // this.$message.error("删除了" + str);
-      this.multipleSelection = [];
 
-      this.$http({
+   this.$http({
         method: "post",
         url: "/api/group/deleteGroup",
         data: {
-          id: this.shuzu
+           id: this.shuzu
         }
       }).then(res => {
-        // console.log(res.data.message[0].user_name)   输入h
-        console.log(333333333333333);
-        console.log(res);
-        //  this.tableData = res.data.message;
+        if (res.data.status == "S") {
+           this.del_list = this.del_list.concat(this.multipleSelection);
+           this.multipleSelection = [];
+          // this.$message.success("删除成功");
+          // this.$set(this.tableData, this.idx, this.form);
+          // this.tableData.splice(this.idx, 1);
+        } else if (res.data.code == 201) {
+          this.$message.success("请先进行设备解绑");
+        } else if (res.data.code == 202) {
+          this.$message.success("请先进行用户解绑");
+        }
       });
     },
     handleSelectionChange(val) {
@@ -781,8 +785,8 @@ this.$router.push("/login");
     },
     // 确定删除
     deleteRow() {
-      this.$set(this.tableData, this.idx, this.form);
-      this.tableData.splice(this.idx, 1);
+      // this.$set(this.tableData, this.idx, this.form);
+      // this.tableData.splice(this.idx, 1);
       // alert(this.form.id)
       this.$http({
         method: "post",
@@ -801,7 +805,7 @@ this.$router.push("/login");
           this.$message.success("请先进行用户解绑");
         }
       });
-      this.$message.success("删除成功");
+      // this.$message.success("删除成功");
       this.delVisible = false;
     }
   }

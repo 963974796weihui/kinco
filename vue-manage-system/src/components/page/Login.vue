@@ -138,7 +138,7 @@ export default {
                   message: "欢迎进入EdgeAccess系统"
                   // position: 'bottom-left'
                 });
-                this.$router.push({ path: "/" });
+                this.$router.push({ path: "/codemanage" });
               } else if (res.data.code == 201) {
                 this.$message({
                   message: "用户名或密码输入错误   !",
