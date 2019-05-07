@@ -84,7 +84,12 @@ class AlipayController extends Controller
             $date['app_id'] = $data->app_id;
             $date['buyer_pay_amount'] = $data->buyer_pay_amount;
             $date['seller_id'] = $data->seller_id;
-            $date['sncode'] =str_random(16);
+            $number=str_random(16);
+            $auth_code=DB::table('ki_admin_code')->pluck('sncode')->toArray();
+            while (in_array($number,$auth_code)){
+                $number=str_random(16);
+            }
+            $date['sncode'] =$number;
             $date['user_id'] =$this->id;
             $date['long'] ='90';
             $date['buy_time'] =time();

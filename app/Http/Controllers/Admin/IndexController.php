@@ -142,6 +142,14 @@ class IndexController extends Controller
      */
     public function test()
     {
+        $number=str_random(1);
+        $subject=DB::table('test')->pluck('subject')->toArray();
+        while (in_array($number,$subject)){
+            $number=str_random(1);
+        }
+        $data['subject']=$number;
+        DB::table('test')->insertGetId($data);
+
             $total=array();
             $result=DB::table('ki_admin_code')->select('long','activate_time','bind')->where('activate_time','!=','null')->get()->toArray();
             foreach ($result as $key=>$value){
