@@ -62,8 +62,8 @@
         <el-table-column prop="email" label="邮箱号" min-width="19%"></el-table-column>
         <el-table-column prop="group" label="匹配设备组" min-width="10%">
            <template slot-scope="scope">
-              <!-- @mouseover.native="handleDetails(scope.$index, scope.row)" -->
- <el-button type="primary" @mouseleave.native='detailsOut()' @mouseenter.native="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
+              <!-- @mouseenter.native="handleDetails(scope.$index, scope.row)" -->
+ <el-button type="primary" @mouseleave.native='detailsOut()' @click="handleDetails(scope.$index, scope.row)">{{scope.row.group}}</el-button>
 </template>
         </el-table-column>
         <el-table-column prop="hmi" label="匹配设备" min-width="10%"></el-table-column>
@@ -943,7 +943,7 @@ if(res.data.status=="S"){
     saveHmi() {
       this.$set(this.tableData, this.idx, this.form);
       this.dialogFormVisible1 = false;
-      this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+      // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
       this.getData();
     },
     // 保存编辑 222222222

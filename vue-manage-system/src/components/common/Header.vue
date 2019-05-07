@@ -146,7 +146,20 @@ this.$http({
       }
     }).then(res => {
         if (res.data.status == "S") {
-        }
+                 localStorage.setItem(
+                  "loginDomainId",
+                  res.data.message[0].id
+                );
+                 localStorage.setItem(
+                  "loginDomainName",
+                  res.data.message[0].domain_name
+                );
+                localStorage.setItem(
+                  "last_time",
+                  res.data.message[0].last_time
+                );
+                // this.$router.push({ path: "/codemanage" });
+              }
         const domain_id=res.data.message[0].id;
          const domain_name=res.data.message[0].domain_name;
 // console.log(res.data.message[0].domain_name)
