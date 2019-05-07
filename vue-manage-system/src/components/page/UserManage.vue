@@ -49,6 +49,7 @@
         class="table"
         ref="multipleTable"
         @selection-change="handleSelectionChange"
+        @row-click="clickRow"
       >
         <el-table-column type="selection" :selectable="checkboxT" min-width="2%" align="center"></el-table-column>
         <el-table-column prop="user_name" label="用户名" min-width="14%">
@@ -69,58 +70,19 @@
         <el-table-column label="相关操作" min-width="20%" align="center">
           <template slot-scope="scope">
             <el-button
+            :disabled="scope.row.cut_off==2"
               type="text"
               icon="el-icon-date"
-              :disabled="scope.row.cut_off==2"
               @click="handleHmi(scope.$index, scope.row)"
             >设备管理</el-button>
-            <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="40%">
-              <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="设备组" name="first">
-                  <div class="tr">
-                    <!-- 穿梭框 -->
-                    <el-transfer
-                      :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['未绑定设备组', '已绑定设备组']"
-                      v-model="value1"
-                      :data="dataGroup"
-                      @left-check-change="aaa"
-                      @right-check-change="bbb"
-                      filterable
-                      @change="hmiGroupChange"
-                    ></el-transfer>
-                    <div slot="footer" class="dialog-footer">
-                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
-                    </div>
-                  </div>
-                </el-tab-pane>
-                <el-tab-pane label="设备" name="second">
-                  <div class="tr">
-                    <el-transfer
-                      :button-texts="['进行解绑', '进行绑定']"
-                      :titles="['未绑定设备', '已绑定设备']"
-                      v-model="value2"
-                      :data="dataHmi"
-                      filterable
-                      @change="hmiChange"
-                    ></el-transfer>
-                    <div slot="footer" class="dialog-footer">
-                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
-                      <el-button type="primary" @click="saveHmi()">确 定</el-button>
-                    </div>
-                  </div>
-                </el-tab-pane>
-              </el-tabs>
-            </el-dialog>
 
             <el-button
               :disabled="scope.row.cut_off==2"
               type="text"
-              class="editbtn"
               icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button>
+            
              <!-- <el-button
               :disabled="scope.row.cut_off==2"
               type="text"
@@ -165,6 +127,47 @@
         <el-button type="primary" @click="saveEdit()">确 定</el-button>
       </span>
     </el-dialog>
+     <el-dialog title="设备管理" :visible.sync="dialogFormVisible1" width="40%">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="设备组" name="first">
+                  <div class="tr">
+                    <!-- 穿梭框 -->
+                    <el-transfer
+                      :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['未绑定设备组', '已绑定设备组']"
+                      v-model="value1"
+                      :data="dataGroup"
+                      @left-check-change="aaa"
+                      @right-check-change="bbb"
+                      filterable
+                      @change="hmiGroupChange"
+                    ></el-transfer>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
+                      <el-button type="primary" @click="saveHmiGroup()">确 定</el-button>
+                    </div>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="设备" name="second">
+                  <div class="tr">
+                    <el-transfer
+                      :button-texts="['进行解绑', '进行绑定']"
+                      :titles="['未绑定设备', '已绑定设备']"
+                      v-model="value2"
+                      :data="dataHmi"
+                      filterable
+                      @change="hmiChange"
+                    ></el-transfer>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="dialogFormVisible1 = false">返 回</el-button>
+                      <el-button type="primary" @click="saveHmi()">确 定</el-button>
+                    </div>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+            </el-dialog>
+    <!-- 设备管理弹出框 -->
+      
     <!-- 组详情弹框 -->
  
     <el-dialog title="设备组详情" :visible.sync="detailsVisible" width="20%" :before-close="handleClose">
@@ -408,6 +411,10 @@ this.$router.push("/login");
     }
   },
   methods: {
+    //点击一行选中行前复选框
+     clickRow(row){
+                this.$refs.multipleTable.toggleRowSelection(row);
+            },
    handleClose(done) {
             done();
       },
@@ -760,36 +767,6 @@ this.$router.push("/login");
           }
         }
       });
-
-      //从用户界面获取所有添加的设备组
-      // this.$http({
-      //     method: "post",
-      //     url: "/api/user/supplyGroup",
-      //     data: {
-      //       id: localStorage.getItem("loginDomainId")
-      //     }
-      //   }).then(res => {
-      //     for (var i = 0; i < res.data.message.length; i++) {
-      //       this.dataGroup.push({
-      //         // key: i + 1,
-      //         key: res.data.message[i].id,
-      //         label: res.data.message[i].group_name,
-      //       });
-      //     }
-      //   });
-      //从用户界面获取所有添加的设备
-      //  this.$http({
-      //       method: "post",
-      //       url: "/api/user/hmiGroup",
-      //       data: {
-      //         id: localStorage.getItem("loginDomainId")
-      //       }
-      //     }).then(res => {
-      //       for (var i = 0; i < res.data.message.length; i++) {
-      //         this.dataHmi=[{ key: res.data.message[i].id, label: res.data.message[i].hmi_name }];
-      //       }
-      //     });
-
       this.dialogFormVisible1 = true;
     },
 

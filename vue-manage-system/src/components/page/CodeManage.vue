@@ -35,6 +35,7 @@
         ref="multipleTable"
         :row-style="rowClass"
         @selection-change="handleSelectionChange"
+        @row-click="clickRow"
       >
         <el-table-column type="selection" min-width="5%" align="center"></el-table-column>
         <el-table-column prop="sncode" label="授权码" min-width="19%"></el-table-column>
@@ -54,28 +55,8 @@
               icon="el-icon-date"
               @click="bindRelieve(scope.$index, scope.row)"
             >解除绑定</el-button>
-            <el-dialog title="未绑定授权码设备" :visible.sync="dialogCode" width="20%">
-              <!-- <input type="radio" name="test" v-for="item in dataCode" :key="item.id" :value="item.label" v-model="checkedValue"> -->
-              <el-radio-group v-model="radio" @change="onRadioChange()">
-                <el-radio
-                  :label="item.id+','+item.xlh"
-                  :key="item.id"
-                  v-for="item in dataCode"
-                >{{item.label}}</el-radio>
-              </el-radio-group>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCode = false">取 消</el-button>
-                <el-button type="primary" @click="saveCode()">确 定</el-button>
-              </div>
-            </el-dialog>
 
-            <el-dialog title="提示" :visible.sync="dialogRelieve" width="300px" center>
-      <div class="del-dialog-cnt">是否确认解除绑定？</div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogRelieve = false">取 消</el-button>
-        <el-button type="primary" @click="saveRelieve()">确 定</el-button>
-      </span>
-    </el-dialog>
+            
 
           </template>
         </el-table-column>
@@ -89,7 +70,29 @@
           :total="total"
         ></el-pagination>
     </div>
-
+    <!-- 绑定设备弹出框 -->
+ <el-dialog title="未绑定授权码设备" :visible.sync="dialogCode" width="20%">
+              <!-- <input type="radio" name="test" v-for="item in dataCode" :key="item.id" :value="item.label" v-model="checkedValue"> -->
+              <el-radio-group v-model="radio" @change="onRadioChange()">
+                <el-radio
+                  :label="item.id+','+item.xlh"
+                  :key="item.id"
+                  v-for="item in dataCode"
+                >{{item.label}}</el-radio>
+              </el-radio-group>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogCode = false">取 消</el-button>
+                <el-button type="primary" @click="saveCode()">确 定</el-button>
+              </div>
+            </el-dialog>
+            <!-- 解除绑定弹出框 -->
+            <el-dialog title="提示" :visible.sync="dialogRelieve" width="300px" center>
+      <div class="del-dialog-cnt">是否确认解除绑定？</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogRelieve = false">取 消</el-button>
+        <el-button type="primary" @click="saveRelieve()">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
       <el-form ref="form" :model="form" label-width="50px">
@@ -254,7 +257,9 @@ export default {
     }
   },
   methods: {
-    
+     clickRow(row){
+                this.$refs.multipleTable.toggleRowSelection(row);
+            },
       
     // 多选高亮选中行
     rowClass({row, rowIndex}){
@@ -497,8 +502,6 @@ this.$router.push("/login");
         }
         this.selectData = val
     },
-
-       
     // 保存编辑
     saveEdit() {
       this.$set(this.tableData, this.idx, this.form);
