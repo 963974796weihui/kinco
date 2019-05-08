@@ -137,6 +137,7 @@ export default {
       }
     };
       const pure = (rule, value, callback) => {
+        callback();
     };
     return {
       flag: 0,
@@ -153,8 +154,8 @@ export default {
  { validator: pure, trigger: "blur" }
         ],
         auth_code: [
-          // { required: true, message: '请输入授权码', trigger: "blur" },
-          { validator: enOrnunText, trigger: "blur" }
+          // { required: true, message: '请输入授权码' },
+          { validator: enOrnunText }
         ]
       },
       total: "",

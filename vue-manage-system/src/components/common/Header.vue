@@ -8,21 +8,20 @@
     </el-tooltip>
         <p class="logo red">EdgeAccess</p>
         <!-- <h3>{{this.$store.state.domainId}}</h3> -->
-       
         <el-dialog title="新建域" :visible.sync="dialogFormVisible" width="20%">
-        <el-form :model="formRegion">
-          <el-form-item label="域名" :label-width="formLabelWidth">
-            <el-input v-model="formRegion.name"  autocomplete="off" prop="name"></el-input>
+        <el-form :model="formRegion" :rules="ruleValidate" ref="ruleForm">
+          <el-form-item label="域名" :label-width="formLabelWidth" prop="name">
+            <el-input v-model="formRegion.name"  autocomplete="off" ></el-input>
           </el-form-item>
-           <el-form-item label="域简介" :label-width="formLabelWidth">
-            <el-input type="textarea" placeholder="80字以内" maxlength="80" v-model="formRegion.regionInfo"  autocomplete="off" prop="regionInfo"
+           <el-form-item label="域简介" :label-width="formLabelWidth" prop="regionInfo">
+            <el-input type="textarea" placeholder="80字以内" maxlength="80" v-model="formRegion.regionInfo"  autocomplete="off" 
             
             ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" :plain="true" @click="addRegion()">确 定</el-button>
+          <el-button type="primary" :plain="true" @click="addRegion('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
 
@@ -56,6 +55,10 @@ import store from '../../store/store.js'
     import bus from '../common/bus';
     export default {
         data() {
+              //域名和域简介校验
+    const pure = (rule, value, callback) => {
+      callback();
+    };
             return {
                 formRegion:{
                     name:'',
@@ -71,6 +74,16 @@ import store from '../../store/store.js'
                 num1:0,
                 num2:1,
                 itemRegion:[],
+                  ruleValidate: {
+        name:[
+          { required: true, message: "请输入域名", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
+        ],
+          regionInfo:[
+          { required: true, message: "请输入域简介", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
+        ],
+      },
             }
         },
         store,
@@ -107,19 +120,22 @@ computed:{
 //         })
 //             },
             //新建域
-            addRegion(){
-    this.$http.post('/api/admin/registerDomain',
+            addRegion(formName){
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
+ this.$http.post('/api/admin/registerDomain',
                 {
                      domain_name: this.formRegion.name,
                      remark: this.formRegion.regionInfo
                 }).then(res => {
-                     if(this.formRegion.name=='' ||this.formRegion.regionInfo==''){
-               this.$message({
-          message: '请正确输入域信息！',
-          type: 'error'
-        });
-            return;
-        }
+                     this.dialogFormVisible=false;
+        //              if(this.formRegion.name=='' ||this.formRegion.regionInfo==''){
+        //        this.$message({
+        //   message: '请正确输入域信息！',
+        //   type: 'error'
+        // });
+        //     return;
+        // }
 this.$http({
       method: "post",
       url: "/api/admin/login",
@@ -204,9 +220,8 @@ this.$http({
         });
             }
         })
-
-
- this.dialogFormVisible=false;
+                    }
+                    });
 
             },
             // 用户名下拉菜单选择事件

@@ -197,6 +197,7 @@ export default {
   data() {
     //用户名校验
      const pure = (rule, value, callback) => {
+       callback();
     };
     //手机号校验
     const validatephone = (rule, value, callback) => {
@@ -222,6 +223,7 @@ export default {
       }
     };
     return {
+      // loading: true,
       ff: "",
       shuzu2: [],
       shuzu3: [],

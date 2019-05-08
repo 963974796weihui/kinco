@@ -10,7 +10,7 @@
       <el-dialog title="添加设备群组" :visible.sync="dialogFormVisible" width="20%">
         <el-form :model="form" :rules="ruleValidate" ref="ruleForm">
           <el-form-item label="设备组名" :label-width="formLabelWidth" prop="group_name">
-            <el-input v-model="form.group_name" autocomplete="off" ></el-input>
+            <el-input v-model="form.group_name" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -48,14 +48,13 @@
               @click="handleGroupHmi(scope.$index, scope.row)"
             >管理组成员</el-button>
 
-
             <el-button
               type="text"
               icon="el-icon-lx-people"
               class="red"
               @click="handleGroupUser(scope.$index, scope.row)"
             >绑定用户</el-button>
-          
+
             <el-button
               type="text"
               icon="el-icon-document"
@@ -92,56 +91,56 @@
       ></el-pagination>
     </div>
     <!-- 管理组成员弹出框 -->
- <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="40%">
-              <div class="tr">
-                <el-transfer
-                  :button-texts="['移出', '加入']"
-                  :titles="['未绑定设备', '已绑定设备']"
-                  v-model="value1"
-                  :data="dataGroupHmi"
-                  @left-check-change="aaa1"
-                  @right-check-change="bbb1"
-                  filterable
-                  @change="handleChange"
-                ></el-transfer>
-              </div>
+    <el-dialog title="管理组成员" :visible.sync="dialogManagerMember" width="40%">
+      <div class="tr">
+        <el-transfer
+          :button-texts="['移出', '加入']"
+          :titles="['未绑定设备', '已绑定设备']"
+          v-model="value1"
+          :data="dataGroupHmi"
+          @left-check-change="aaa1"
+          @right-check-change="bbb1"
+          filterable
+          @change="handleChange"
+        ></el-transfer>
+      </div>
 
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogManagerMember = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupHmi()">完 成</el-button>
-              </div>
-            </el-dialog>
-            <!-- 绑定用户弹出框 -->
-              <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="40%">
-              <div class="tr">
-                <el-transfer
-                  :button-texts="['进行解绑', '进行绑定']"
-                  :titles="['未绑定用户', '已绑定用户']"
-                  v-model="value2"
-                  :data="dataUser"
-                  filterable
-                  @left-check-change="aaa"
-                  @right-check-change="bbb"
-                  @change="handleChange2"
-                ></el-transfer>
-              </div>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogBindUser = false">返 回</el-button>
-                <el-button type="primary" @click="saveGroupUser()">完 成</el-button>
-              </div>
-            </el-dialog>
-              <!-- 更改组名弹出框 -->
-            <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
-              <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="组名">
-                  <el-input v-model="form.group_name" ></el-input>
-                </el-form-item>
-              </el-form>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogGroupName = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit()">确 定</el-button>
-              </span>
-            </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogManagerMember = false">返 回</el-button>
+        <el-button type="primary" @click="saveGroupHmi()">完 成</el-button>
+      </div>
+    </el-dialog>
+    <!-- 绑定用户弹出框 -->
+    <el-dialog title="绑定用户" :visible.sync="dialogBindUser" width="40%">
+      <div class="tr">
+        <el-transfer
+          :button-texts="['进行解绑', '进行绑定']"
+          :titles="['未绑定用户', '已绑定用户']"
+          v-model="value2"
+          :data="dataUser"
+          filterable
+          @left-check-change="aaa"
+          @right-check-change="bbb"
+          @change="handleChange2"
+        ></el-transfer>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogBindUser = false">返 回</el-button>
+        <el-button type="primary" @click="saveGroupUser()">完 成</el-button>
+      </div>
+    </el-dialog>
+    <!-- 更改组名弹出框 -->
+    <el-dialog title="更改组名" :visible.sync="dialogGroupName" width="30%">
+      <el-form ref="form" :model="form" label-width="50px">
+        <el-form-item label="组名">
+          <el-input v-model="form.group_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogGroupName = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit()">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 删除提示框 -->
     <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
       <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
@@ -159,8 +158,16 @@ import store from "../../store/store.js";
 export default {
   name: "basetable",
   data() {
-      //组名校验
-     const pure = (rule, value, callback) => {
+    //组名校验
+    const pure = (rule, value, callback) => {
+      callback();
+    };
+    const enOrnunText = (rule, value, callback) => {
+      if (value && !/^[A-Za-z0-9]+$/.test(value)) {
+        callback(new Error("只能填写英文或者数字"));
+      } else {
+        callback();
+      }
     };
     return {
       ff: "",
@@ -195,12 +202,16 @@ export default {
       is_search: false,
       editVisible: false,
       delVisible: false,
-       //匹配校验器
+      //匹配校验器
       ruleValidate: {
         group_name:[
-             { required: true, message: "请输入组名", trigger: "blur" },
+          { required: true, message: "请输入序列号", trigger: "blur" },
           { validator: pure, trigger: "blur" }
-        ]
+        ],
+        // group_name: [
+        //   { required: true, message: "请输入组名", trigger: "blur" },
+        //   { validator: pure, trigger: "blur" }
+        // ]
       },
       form: {
         group_name: "",
@@ -231,8 +242,8 @@ export default {
       console.log(11111111111111);
       // console.log(res.data.message.length);
       console.log(res);
-      if(res.data.code == 302){
-this.$router.push("/login");
+      if (res.data.code == 302) {
+        this.$router.push("/login");
       }
       this.total = res.data.total;
       this.tableData = res.data.message;
@@ -321,9 +332,9 @@ this.$router.push("/login");
     }
   },
   methods: {
-     clickRow(row){
-                this.$refs.multipleTable.toggleRowSelection(row);
-            },
+    clickRow(row) {
+      this.$refs.multipleTable.toggleRowSelection(row);
+    },
     addGroupStart() {
       this.form = [];
       this.dialogFormVisible = true;
@@ -575,8 +586,8 @@ this.$router.push("/login");
             id: this.shuzu31
           }
         }).then(res => {
-          if(res.data.status=="S"){
-            this.$message.success('加入设备组成功');
+          if (res.data.status == "S") {
+            this.$message.success("加入设备组成功");
           }
         });
       } else if (this.ff1 == 0) {
@@ -589,8 +600,8 @@ this.$router.push("/login");
             id: this.shuzu31
           }
         }).then(res => {
-          if(res.data.status=="S"){
-            this.$message.success('移出设备组成功！');
+          if (res.data.status == "S") {
+            this.$message.success("移出设备组成功！");
           }
         });
       }
@@ -608,8 +619,8 @@ this.$router.push("/login");
             id: this.shuzu3
           }
         }).then(res => {
-          if(res.data.status=="S"){
-	            this.$message.success('组绑定用户成功!');
+          if (res.data.status == "S") {
+            this.$message.success("组绑定用户成功!");
           }
         });
       } else if (this.ff == 0) {
@@ -622,8 +633,8 @@ this.$router.push("/login");
             id: this.shuzu3
           }
         }).then(res => {
-           if(res.data.status=="S"){
-	            this.$message.success('组解绑用户成功!');
+          if (res.data.status == "S") {
+            this.$message.success("组解绑用户成功!");
           }
         });
       }
@@ -631,9 +642,9 @@ this.$router.push("/login");
 
     //添加设备群组
     addGroup(formName) {
-       this.$refs[formName].validate(valid => {
-         if (valid) {
- this.$http({
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+           this.$http({
         method: "post",
         url: "/api/group/addGroup",
         data: {
@@ -656,9 +667,8 @@ this.$router.push("/login");
           });
         }
       });
-         }
-  });
-     
+        }
+      });
     },
     //保存管理组成员按钮
     saveGroupHmi() {
@@ -747,21 +757,21 @@ this.$router.push("/login");
     delAll() {
       this.shuzu = [];
       const length = this.multipleSelection.length;
-     
+
       for (let i = 0; i < length; i++) {
         this.shuzu.push(this.multipleSelection[i].id);
       }
 
-   this.$http({
+      this.$http({
         method: "post",
         url: "/api/group/deleteGroup",
         data: {
-           id: this.shuzu
+          id: this.shuzu
         }
       }).then(res => {
         if (res.data.status == "S") {
-           this.del_list = this.del_list.concat(this.multipleSelection);
-           this.multipleSelection = [];
+          this.del_list = this.del_list.concat(this.multipleSelection);
+          this.multipleSelection = [];
           // this.$message.success("删除成功");
           // this.$set(this.tableData, this.idx, this.form);
           // this.tableData.splice(this.idx, 1);
@@ -783,7 +793,7 @@ this.$router.push("/login");
     },
     // 保存编辑
     saveEdit() {
-  this.$http({
+      this.$http({
         method: "post",
         url: "/api/group/updateGroup",
         data: {

@@ -3,7 +3,7 @@
   <div class="ms-login">
 <el-form 
 	class="card-box login-form"
-	 ref="formValidate"
+	  ref="ruleForm"
     :model="formValidate"
     :rules="ruleValidate">
 	   <span class="reg-adm">注册管理员</span>
@@ -24,16 +24,6 @@
     <el-form-item label="所在地区">
      <v-distpicker  @province="onChangeProvince" @city="onChangeCity" @area="onChangeArea"></v-distpicker>
     </el-form-item>
-    
-      <!-- <FormItem label="省" prop="province">
-      <Input v-model="formValidate.province"></Input>
-    </FormItem>
-      <FormItem label="市" prop="city">
-      <Input v-model="formValidate.city"></Input>
-    </FormItem>
-      <FormItem label="区" prop="area">
-      <Input v-model="formValidate.area"></Input>
-    </FormItem> -->
     <el-form-item label="详细地址" prop="address">
       <el-input v-model="formValidate.address"></el-input>
     </el-form-item>
@@ -53,11 +43,9 @@
       <el-button
         type="primary"
         class="reg"
-        @click="reg()"
+        @click="reg('ruleForm')"
       >注册</el-button>
 </el-row>
-      
-      <!-- <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button> -->
 </el-form>
 </div>
 </div>
@@ -187,8 +175,10 @@
 		 		this.$router.push('/login');
        },
        //注册按钮
-		 	reg(){
-  this.$http({
+		 	reg(formName){
+         this.$refs[formName].validate(valid => {
+           if (valid) {
+               this.$http({
         method: "post",
         url: "/api/admin/register",
         data: {
@@ -212,30 +202,9 @@
             }
      console.log(res);
       });
-	// 	 		 this.$http.post('/api/admin/register',
-  //  {
-  //  user_name:this.formValidate.user_name,
-  //  email:this.formValidate.email,
-  // //  password:this.formValidate.password,
-  //  first_name:this.formValidate.first_name,
-  //  address:this.formValidate.address,
-  //  company_name:this.formValidate.company_name,
-  //  province:this.formValidate.province,
-  //  city:this.formValidate.city,
-  //  area:this.formValidate.area,
-  //  phone:this.formValidate.phone
-  //    }
-  //    )
-  //    .then(response=>{
-  //        if(response.data.status=="S"){
-  //       this.$router.push('/login');
-  //           }
-        
-  //    console.log(response);
-  //     })
-  //     .catch(function (error) {
-  //         console.log(error);
-  //    }); 
+           }
+       });
+
 		 	}
 		 },
 		   components: { VDistpicker },
