@@ -227,6 +227,15 @@ this.$http({
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if(command == 'loginout'){
+ this.$http({
+        method: "get",
+        url: "/api/admin/logout",
+        params: {
+          id: localStorage.getItem("loginDomainId"), //域id
+        }
+      }).then(res => {
+      });
+
                     localStorage.removeItem('ms_username')
                     this.$router.push('/login');
                 }
