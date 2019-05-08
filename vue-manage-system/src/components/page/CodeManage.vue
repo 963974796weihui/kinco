@@ -37,12 +37,13 @@
         @selection-change="handleSelectionChange"
         @row-click="clickRow"
       >
-        <el-table-column type="selection" min-width="5%" align="center"></el-table-column>
-        <el-table-column prop="sncode" label="授权码" min-width="19%"></el-table-column>
-        <el-table-column prop="long" label="有效期" min-width="19%"></el-table-column>
-        <el-table-column prop="activate_time" label="激活时间" min-width="19%"></el-table-column>
-        <el-table-column prop="bind" label="绑定情况" min-width="19%"></el-table-column>
-        <el-table-column label="相关操作" min-width="19%" align="center">
+        <el-table-column type="selection" min-width="4%" align="center"></el-table-column>
+        <el-table-column prop="sncode" label="授权码" min-width="16%"></el-table-column>
+        <el-table-column prop="buy_time" :formatter="timestampToTime" label="购买时间" min-width="16%"></el-table-column>
+        <el-table-column prop="long" label="有效期" min-width="16%"></el-table-column>
+        <el-table-column prop="activate_time" label="激活时间" min-width="16%"></el-table-column>
+        <el-table-column prop="bind" label="绑定情况" min-width="16%"></el-table-column>
+        <el-table-column label="相关操作" min-width="16%" align="center">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -257,6 +258,18 @@ export default {
     }
   },
   methods: {
+    //购买时间
+       timestampToTime (row, column) {
+        var date = new Date(row.buy_time) 
+        var Y = date.getFullYear() + '-'
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
+        var D = date.getDate() + ' '
+        var h = date.getHours() + ':'
+        var m = date.getMinutes() + ':'
+        var s = date.getSeconds()
+        return Y+M+D+h+m+s
+        // console.log(timestampToTime (1533293827000))
+    },
      clickRow(row){
                 this.$refs.multipleTable.toggleRowSelection(row);
             },

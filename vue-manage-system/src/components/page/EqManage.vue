@@ -17,7 +17,7 @@
             <el-input v-model="form.auth_code" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="设备名" :label-width="formLabelWidth" prop="hmi_name">
-            <el-input v-model="form.hmi_name" autocomplete="off" ></el-input>
+            <el-input v-model="form.hmi_name" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -77,14 +77,14 @@
         </el-table-column>
       </el-table>
     </div>
-      <div class="pagination">
-        <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout="prev, pager, next"
-          :total="total"
-        ></el-pagination>
-      </div>
+    <div class="pagination">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </div>
 
     <!-- 编辑弹出框 -->
     <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -136,8 +136,8 @@ export default {
         callback();
       }
     };
-      const pure = (rule, value, callback) => {
-        callback();
+    const pure = (rule, value, callback) => {
+      callback();
     };
     return {
       flag: 0,
@@ -149,9 +149,9 @@ export default {
           { required: true, message: "请输入序列号", trigger: "blur" },
           { validator: enOrnunText, trigger: "blur" }
         ],
-        hmi_name:[
- { required: true, message: "请输入设备名", trigger: "blur" },
- { validator: pure, trigger: "blur" }
+        hmi_name: [
+          { required: true, message: "请输入设备名", trigger: "blur" },
+          { validator: pure, trigger: "blur" }
         ],
         auth_code: [
           // { required: true, message: '请输入授权码' },
@@ -193,8 +193,7 @@ export default {
   // },
 
   created() {
-      this.getData();
-
+    this.getData();
     // this.$http({
     //   method: "post",
     //   url: "/api/admin/login",
@@ -273,9 +272,9 @@ export default {
     }
   },
   methods: {
-      clickRow(row){
-                this.$refs.multipleTable.toggleRowSelection(row);
-            },
+    clickRow(row) {
+      this.$refs.multipleTable.toggleRowSelection(row);
+    },
     // 多选高亮选中行
     rowClass({ row, rowIndex }) {
       if (this.selectRow.includes(rowIndex)) {
@@ -297,7 +296,7 @@ export default {
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
-         return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
+        return "background-color: #7dc1ff;color: #ffffff;font-weight:10;";
       }
     },
     //禁用按钮
@@ -309,27 +308,27 @@ export default {
         id: item.id
       };
       if (this.flag == 0) {
-      this.$http({
-        method: "post",
-        url: "/api/supply/forbid",
-        params: {
-          id: this.form.id
-        }
-      }).then(res => {
-        this.getData();
-      });
-      this.flag = this.flag + 1;
-      }else if(this.flag == 1){
-         this.$http({
-        method: "post",
-        url: "/api/supply/unforbid",
-        params: {
-          id: this.form.id
-        }
-      }).then(res => {
-        this.getData();
-      });
-      this.flag = this.flag - 1;
+        this.$http({
+          method: "post",
+          url: "/api/supply/forbid",
+          params: {
+            id: this.form.id
+          }
+        }).then(res => {
+          this.getData();
+        });
+        this.flag = this.flag + 1;
+      } else if (this.flag == 1) {
+        this.$http({
+          method: "post",
+          url: "/api/supply/unforbid",
+          params: {
+            id: this.form.id
+          }
+        }).then(res => {
+          this.getData();
+        });
+        this.flag = this.flag - 1;
       }
     },
     //解禁按钮
@@ -355,39 +354,39 @@ export default {
     },
     //添加序列号
     addSerial(formName) {
-       this.$refs[formName].validate(valid => {
-          if (valid) {
-  this.$http({
-        method: "post",
-        url: "/api/supply/addSupply",
-        data: {
-          auth_code: this.form.auth_code,
-          sncode: this.form.sncode,
-          domain_id: localStorage.getItem("loginDomainId"),
-          hmi_name: this.form.hmi_name
-        }
-      }).then(res => {
-        if (res.data.status == "S") {
-          this.$message({
-            message: "新增设备成功",
-            type: "success"
-          });
-          this.getData();
-          this.dialogFormVisible = false;
-        } else if (res.data.message == "该序列号已存在") {
-          this.$message({
-            message: "该序列号已存在",
-            type: "warning"
-          });
-        }else if(res.data.message == "授权码不存在"){
-  this.$message({
-            message: "授权码不存在",
-            type: "warning"
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http({
+            method: "post",
+            url: "/api/supply/addSupply",
+            data: {
+              auth_code: this.form.auth_code,
+              sncode: this.form.sncode,
+              domain_id: localStorage.getItem("loginDomainId"),
+              hmi_name: this.form.hmi_name
+            }
+          }).then(res => {
+            if (res.data.status == "S") {
+              this.$message({
+                message: "新增设备成功",
+                type: "success"
+              });
+              this.getData();
+              this.dialogFormVisible = false;
+            } else if (res.data.message == "该序列号已存在") {
+              this.$message({
+                message: "该序列号已存在",
+                type: "warning"
+              });
+            } else if (res.data.message == "授权码不存在") {
+              this.$message({
+                message: "授权码不存在",
+                type: "warning"
+              });
+            }
           });
         }
       });
-          }
-        });
     },
     // 分页导航
     handleCurrentChange(val) {
@@ -396,7 +395,6 @@ export default {
     },
     // 获取 easy-mock 的模拟数据
     getData() {
-      //  alert(this.$store.state.domainId)
       this.$http({
         method: "post",
         url: "/api/supply/supplyInfo",
@@ -406,9 +404,12 @@ export default {
           page: this.cur_page
         }
       }).then(res => {
-         if(res.data.code == 302){
-this.$router.push("/login");
-      }
+        if (res.data.code == 302) {
+          this.$router.push("/login");
+        }
+        setTimeout(()=>{
+        this.getData()
+        },5000)
         this.total = res.data.message.total;
         this.tableData = res.data.message.data;
       });
@@ -442,15 +443,15 @@ this.$router.push("/login");
       this.delVisible = true;
     },
     delAll() {
-       this.shuzu = [];
-     const length = this.multipleSelection.length;
+      this.shuzu = [];
+      const length = this.multipleSelection.length;
       // let str = "";
       for (let i = 0; i < length; i++) {
         this.shuzu.push(this.multipleSelection[i].id);
         // str += this.multipleSelection[i].user_name + " ";
       }
       // this.$message.error("删除了" + str);
-      
+
       this.$http({
         method: "post",
         url: "/api/supply/deleteSupply",
@@ -459,16 +460,15 @@ this.$router.push("/login");
         }
       }).then(res => {
         if (res.data.status == "S") {
-          if(this.shuzu.length>0){
-            
-             this.del_list = this.del_list.concat(this.multipleSelection);
-       this.multipleSelection = [];
-        // this.$message({
-        //     message: "设备删除成功   !",
-        //     type: "error"
-        //   });
+          if (this.shuzu.length > 0) {
+            this.del_list = this.del_list.concat(this.multipleSelection);
+            this.multipleSelection = [];
+            // this.$message({
+            //     message: "设备删除成功   !",
+            //     type: "error"
+            //   });
           }
-       } else if (res.data.status == "F") {
+        } else if (res.data.status == "F") {
           this.$message({
             message: "已绑定授权码，不能删除   !",
             type: "warning"
@@ -563,7 +563,7 @@ this.$router.push("/login");
 .el-table--border td {
   border-right: 1px solid #dcdee2;
 }
-.add-user{
+.add-user {
   margin-left: 30px;
 }
 
