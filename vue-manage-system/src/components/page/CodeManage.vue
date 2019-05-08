@@ -31,7 +31,7 @@
         :header-cell-style="tableHeaderColor"
         :data="data1"
         class="table"
-        :stripe= "test"
+        :stripe="test"
         ref="multipleTable"
         :row-style="rowClass"
         @selection-change="handleSelectionChange"
@@ -50,44 +50,41 @@
               icon="el-icon-date"
               @click="bindCode(scope.$index, scope.row)"
             >绑定设备</el-button>
-             <el-button
-             class="red"
+            <el-button
+              class="red"
               type="text"
               icon="el-icon-date"
               @click="bindRelieve(scope.$index, scope.row)"
             >解除绑定</el-button>
-
-            
-
           </template>
         </el-table-column>
       </el-table>
-      </div>
-       <div class="pagination">
-        <el-pagination
-          background
-          @current-change="handleCurrentChange"
-          layout="prev, pager, next"
-          :total="total"
-        ></el-pagination>
+    </div>
+    <div class="pagination">
+      <el-pagination
+        background
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
     </div>
     <!-- 绑定设备弹出框 -->
- <el-dialog title="未绑定授权码设备" :visible.sync="dialogCode" width="20%">
-              <!-- <input type="radio" name="test" v-for="item in dataCode" :key="item.id" :value="item.label" v-model="checkedValue"> -->
-              <el-radio-group v-model="radio" @change="onRadioChange()">
-                <el-radio
-                  :label="item.id+','+item.xlh"
-                  :key="item.id"
-                  v-for="item in dataCode"
-                >{{item.label}}</el-radio>
-              </el-radio-group>
-              <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogCode = false">取 消</el-button>
-                <el-button type="primary" @click="saveCode()">确 定</el-button>
-              </div>
-            </el-dialog>
-            <!-- 解除绑定弹出框 -->
-            <el-dialog title="提示" :visible.sync="dialogRelieve" width="300px" center>
+    <el-dialog title="未绑定授权码设备" :visible.sync="dialogCode" width="20%">
+      <!-- <input type="radio" name="test" v-for="item in dataCode" :key="item.id" :value="item.label" v-model="checkedValue"> -->
+      <el-radio-group v-model="radio" @change="onRadioChange()">
+        <el-radio
+          :label="item.id+','+item.xlh"
+          :key="item.id"
+          v-for="item in dataCode"
+        >{{item.label}}</el-radio>
+      </el-radio-group>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogCode = false">取 消</el-button>
+        <el-button type="primary" @click="saveCode()">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 解除绑定弹出框 -->
+    <el-dialog title="提示" :visible.sync="dialogRelieve" width="300px" center>
       <div class="del-dialog-cnt">是否确认解除绑定？</div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogRelieve = false">取 消</el-button>
@@ -155,12 +152,12 @@ export default {
     //     }
     //      };
     return {
-      test:true,
-      selectRow:[],
-      selectData:[],
+      test: true,
+      selectRow: [],
+      selectData: [],
       radio: "",
-      radioId:'',
-      radioxlh:'',
+      radioId: "",
+      radioxlh: "",
       sttusCodes: [
         {
           label: "男",
@@ -174,7 +171,7 @@ export default {
         }
       ],
       dialogCode: false,
-      dialogRelieve:false,
+      dialogRelieve: false,
       total: "",
       dialogTableVisible: false,
       //    items:[  { message:'Foo' },
@@ -196,7 +193,7 @@ export default {
       formLabelWidth: "120px",
       // url: './static/vuetable.json',
       // tableData1:[],
-     
+
       tableData: [],
       dataCode: [],
       cur_page: 1,
@@ -204,7 +201,7 @@ export default {
       select_cate: "",
       select_word: "",
       del_list: [],
-      shuzu:[],
+      shuzu: [],
       is_search: false,
       editVisible: false,
       delVisible: false,
@@ -250,7 +247,7 @@ export default {
   watch: {
     selectData(data) {
       this.selectRow = [];
-      if (data.length > 0) {  
+      if (data.length > 0) {
         data.forEach((item, index) => {
           this.selectRow.push(this.tableData.indexOf(item));
         });
@@ -259,31 +256,39 @@ export default {
   },
   methods: {
     //购买时间
-       timestampToTime (row, column) {
-      var date = new Date(row.buy_time * 1000);   //timestamp 为10位需*1000，timestamp 为13位的话不需乘1000
-var Y = date.getFullYear() + '-';
-var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-var D = (date.getDate() < 10 ? '0'+ date.getDate() : date.getDate()) + ' ';
-var h = (date.getHours() < 10 ? '0'+ date.getHours() : date.getHours()) + ':';
-var m = (date.getMinutes() < 10 ? '0'+ date.getMinutes() : date.getMinutes()) + ':';
-var s = (date.getSeconds() < 10 ? '0'+ date.getSeconds() : date.getSeconds());
-return Y+M+D+h+m+s;
+    timestampToTime(row, column) {
+      var date = new Date(row.buy_time * 1000); //timestamp 为10位需*1000，timestamp 为13位的话不需乘1000
+      var Y = date.getFullYear() + "-";
+      var M =
+        (date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1) + "-";
+      var D =
+        (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+      var h =
+        (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+      var m =
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+        ":";
+      var s =
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
     },
-     clickRow(row){
-                this.$refs.multipleTable.toggleRowSelection(row);
-            },
-      
+    clickRow(row) {
+      this.$refs.multipleTable.toggleRowSelection(row);
+    },
+
     // 多选高亮选中行
-    rowClass({row, rowIndex}){
-      if(this.selectRow.includes(rowIndex)){
-        return { "background-color": "rgba(185, 221, 249, 0.75)" }
+    rowClass({ row, rowIndex }) {
+      if (this.selectRow.includes(rowIndex)) {
+        return { "background-color": "rgba(185, 221, 249, 0.75)" };
       }
     },
     //解除绑定
-    saveRelieve(){
-       this.dialogRelieve = false;
-          //  this.$set(this.tableData, this.idx, this.form);
-       
+    saveRelieve() {
+      this.dialogRelieve = false;
+      //  this.$set(this.tableData, this.idx, this.form);
+
       this.$http({
         method: "post",
         url: "/api/AuthCode/unbind",
@@ -292,13 +297,13 @@ return Y+M+D+h+m+s;
         }
       }).then(res => {
         console.log(res);
-          this.getData();
-          this.$message.success('解绑成功！');
+        this.getData();
+        this.$message.success("解绑成功！");
       });
     },
     //绑定设备确定按钮
     saveCode() {
-       this.$http({
+      this.$http({
         method: "post",
         url: "/api/AuthCode/bind",
         data: {
@@ -308,17 +313,16 @@ return Y+M+D+h+m+s;
           id: this.radioId
         }
       }).then(res => {
-        if(res.data.code==202){
-          this.$message.success('授权码已被使用！');
-        }else if(res.data.code==203){
-          this.$message.success('授权码已过期 请重新购买!');
-        }else if(res.data.code==204){
-          this.$message.success('请选择要绑定的设备!');
-        }else{
-this.getData();
- this.$message.success('绑定成功！');
+        if (res.data.code == 202) {
+          this.$message.success("授权码已被使用！");
+        } else if (res.data.code == 203) {
+          this.$message.success("授权码已过期 请重新购买!");
+        } else if (res.data.code == 204) {
+          this.$message.success("请选择要绑定的设备!");
+        } else {
+          this.getData();
+          this.$message.success("绑定成功！");
         }
-
       });
       // this.$set(this.tableData, this.idx, this.form);
       this.dialogCode = false;
@@ -360,11 +364,11 @@ this.getData();
     //绑定设备
     bindCode(index, row) {
       this.getCode();
-        this.idx = index;
+      this.idx = index;
       // const item = this.tableData[index];
       const item = this.tableData[index];
       this.form = {
-        auth_code: item.sncode,
+        auth_code: item.sncode
         // hmi_num: item.hmi_num,
         // domain_id: this.domain_id,
         // //设备id
@@ -374,7 +378,7 @@ this.getData();
     },
     //解除绑定
     bindRelieve(index, row) {
-        this.idx = index;
+      this.idx = index;
       // const item = this.tableData[index];
       const item = this.tableData[index];
       this.form = {
@@ -388,8 +392,8 @@ this.getData();
     },
     onRadioChange() {
       console.log(this.radio); //要写的方法,
-      this.radioId=this.radio.split(",")[0]
-      this.radioxlh=this.radio.split(",")[1]
+      this.radioId = this.radio.split(",")[0];
+      this.radioxlh = this.radio.split(",")[1];
     },
     //表头样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
@@ -437,9 +441,9 @@ this.getData();
           // user_id:164
         }
       }).then(res => {
-         if(res.data.code == 302){
-this.$router.push("/login");
-      }
+        if (res.data.code == 302) {
+          this.$router.push("/login");
+        }
         // console.log(5555555555);
         //               console.log(res);
         //               console.log(res.data.message)
@@ -481,24 +485,24 @@ this.$router.push("/login");
     //   // this.$message.error("删除了" + str);
     //   this.multipleSelection = [];
     // },
-       delAll() {
+    delAll() {
       this.shuzu = [];
       const length = this.multipleSelection.length;
-     
+
       for (let i = 0; i < length; i++) {
         this.shuzu.push(this.multipleSelection[i].id);
       }
 
-   this.$http({
+      this.$http({
         method: "get",
         url: "/api/user/delete",
         params: {
-           user_id: this.shuzu
+          user_id: this.shuzu
         }
       }).then(res => {
         if (res.data.status == "S") {
-           this.del_list = this.del_list.concat(this.multipleSelection);
-           this.multipleSelection = [];
+          this.del_list = this.del_list.concat(this.multipleSelection);
+          this.multipleSelection = [];
           // this.$message.success("删除成功");
           // this.$set(this.tableData, this.idx, this.form);
           // this.tableData.splice(this.idx, 1);
@@ -511,12 +515,12 @@ this.$router.push("/login");
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-       if(val.length > 0){
-          this.test = false;
-        }else{
-          this.test = true;
-        }
-        this.selectData = val
+      if (val.length > 0) {
+        this.test = false;
+      } else {
+        this.test = true;
+      }
+      this.selectData = val;
     },
     // 保存编辑
     saveEdit() {

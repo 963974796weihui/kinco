@@ -904,9 +904,9 @@ if(res.data.status=="S"){
           // this.$set(this.tableData, this.idx, this.form);
           // this.tableData.splice(this.idx, 1);
         } else if (res.data.code == 201) {
-          this.$message.success("请先进行设备解绑");
+          this.$message.success("请先进行设备组解绑");
         } else if (res.data.code == 202) {
-          this.$message.success("请先进行用户解绑");
+          this.$message.success("请先进行设备解绑");
         }
       });
     },
