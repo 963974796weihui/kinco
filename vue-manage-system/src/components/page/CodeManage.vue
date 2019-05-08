@@ -260,7 +260,7 @@ export default {
   methods: {
     //购买时间
        timestampToTime (row, column) {
-        var date = new Date(row.buy_time) 
+        var date = new Date(row.buy_time*1000) 
         var Y = date.getFullYear() + '-'
         var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-'
         var D = date.getDate() + ' '
