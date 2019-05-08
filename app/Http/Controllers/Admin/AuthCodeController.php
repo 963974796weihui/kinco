@@ -68,7 +68,7 @@ class AuthCodeController extends Controller
                 return response()->json(['status' => 'F', 'code' => '202', 'message' => '授权码已被使用']);
             }
             $time=$bind[0]->activate_time+$bind[0]->long*60*60*24-time();
-            if($time<0){
+            if($time<0 && $bind[0]->activate_time){
                 return response()->json(['status' => 'F', 'code' => '203', 'message' => '授权码已过期 请重新购买']);
             }
             $activate_time = DB::table('ki_admin_code')->where('sncode', $request['auth_code'])->select('activate_time')->get()->toArray();
