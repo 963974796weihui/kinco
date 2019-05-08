@@ -49,13 +49,11 @@ export default new Router({
                     meta: { title: '用户' }
                 },
                 {
-                    // 富文本编辑器组件
                     path: '/eqmanage',
                     component: resolve => require(['../components/page/EqManage'], resolve),
                     meta: { title: '设备管理' }
                 },
                 {
-                    // markdown组件
                     path: '/eqgroup',
                     component: resolve => require(['../components/page/EqGroup.vue'], resolve),
                     meta: { title: '设备群组' }    
