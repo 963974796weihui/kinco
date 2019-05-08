@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 var state = {
-    count: 5,
+    count: 6,
     domainId: '',
     // trArray: []
 }
