@@ -140,6 +140,7 @@ export default {
       callback();
     };
     return {
+      timer:null,
       flag: 0,
       selectRow: [],
       selectData: [],
@@ -407,7 +408,7 @@ export default {
         if (res.data.code == 302) {
           this.$router.push("/login");
         }
-        setTimeout(()=>{
+        this.timer = setTimeout(()=>{
         this.getData()
         },5000)
         this.total = res.data.message.total;
@@ -514,7 +515,13 @@ export default {
         }
       });
     }
-  }
+  },
+   destroyed(){
+            if(this.timer) { //如果定时器在运行则关闭
+                clearTimeout(this.timer); 
+            }
+        }
+
 };
 </script>
 
