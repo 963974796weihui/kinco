@@ -130,8 +130,9 @@ export default {
     //             }
     //         })
     //             },
-    //新建域
+    //新建域 确定
     addRegion(formName) {
+      // location.reload()
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http
@@ -150,6 +151,8 @@ export default {
                 }
               }).then(res => {
                 if (res.data.status == "S") {
+                  //存在浏览器
+                  localStorage.setItem("loginDomainName", res.data.message[0].domain_name);
                   localStorage.setItem("loginDomainId", res.data.message[0].id);
                   // this.$router.push({ path: "/codemanage" });
                 }
