@@ -150,6 +150,7 @@ export default {
                 }
               }).then(res => {
                 if (res.data.status == "S") {
+                  localStorage.setItem("loginDomainName", res.data.message[0].domain_name);
                   localStorage.setItem("loginDomainId", res.data.message[0].id);
                   // this.$router.push({ path: "/codemanage" });
                 }
